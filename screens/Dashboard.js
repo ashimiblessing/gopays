@@ -2,10 +2,16 @@ import React from 'react';
 import {
   StyleSheet, ScrollView, Platform,
 } from 'react-native';
-import { LinearGradient as Gradient } from 'expo';
+import { LinearGradient as Gradient } from 'expo-linear-gradient';
 import { Defs, LinearGradient, Stop } from 'react-native-svg';
 // import { AreaChart } from 'react-native-svg-charts';
 //import * as shape from 'd3-shape';
+
+
+
+import { Images, argonTheme } from "../constants"; 
+
+
 
 // galio components
 import {
