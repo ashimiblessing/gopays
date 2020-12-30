@@ -8,11 +8,16 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Block } from "galio-framework";
 
 // screens
+
+import Register from "../screens/Register";
+import Login from "../screens/Login";
+import Dashboard from "../screens/Dashboard";
+
+
 import Home from "../screens/Home";
 import Onboarding from "../screens/Onboarding";
 import Pro from "../screens/Pro";
 import Profile from "../screens/Profile";
-import Register from "../screens/Register";
 import Elements from "../screens/Elements";
 import Articles from "../screens/Articles";
 // drawer
@@ -75,23 +80,12 @@ function ArticlesStack(props) {
           cardStyle: { backgroundColor: "#F8F9FE" }
         }}
       />
-            <Stack.Screen
-        name="Pro"
-        component={Pro}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header
-              title=""
-              back
-              white
-              transparent
-              navigation={navigation}
-              scene={scene}
-            />
-          ),
-          headerTransparent: true
-        }}
-      />
+ 
+
+
+
+
+
     </Stack.Navigator>
   );
 }
@@ -116,23 +110,7 @@ function ProfileStack(props) {
           headerTransparent: true
         }}
       />
-            <Stack.Screen
-        name="Pro"
-        component={Pro}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header
-              title=""
-              back
-              white
-              transparent
-              navigation={navigation}
-              scene={scene}
-            />
-          ),
-          headerTransparent: true
-        }}
-      />
+ 
     </Stack.Navigator>
   );
 }
@@ -156,23 +134,13 @@ function HomeStack(props) {
           cardStyle: { backgroundColor: "#F8F9FE" }
         }}
       />
-      <Stack.Screen
-        name="Pro"
-        component={Pro}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header
-              title=""
-              back
-              white
-              transparent
-              navigation={navigation}
-              scene={scene}
-            />
-          ),
-          headerTransparent: true
-        }}
-      />
+ 
+
+
+
+
+
+
     </Stack.Navigator>
   );
 }
@@ -188,9 +156,73 @@ export default function OnboardingStack(props) {
         }}
       />
       <Stack.Screen name="App" component={AppStack} />
+       <Stack.Screen name="Register" component={RegisterStack} />
+        <Stack.Screen name="Login" component={LoginStack} />
+    </Stack.Navigator>
+  );
+}  
+
+
+
+
+
+ function RegisterStack(props) {
+  return (
+    <Stack.Navigator mode="card" headerMode="none">
+      <Stack.Screen
+        name="Register"
+        component={Register}
+        option={{
+          headerTransparent: true
+        }}
+      />
+       <Stack.Screen name="Login" component={LoginStack} />
     </Stack.Navigator>
   );
 }
+
+
+
+
+ function LoginStack(props) {
+  return (
+    <Stack.Navigator mode="card" headerMode="none">
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        option={{
+          headerTransparent: true
+        }}
+      />
+         <Stack.Screen name="Dashboard" component={DashboardStack} />
+    </Stack.Navigator>
+  );
+}
+
+
+
+
+ function DashboardStack(props) {
+  return (
+    <Stack.Navigator mode="card" headerMode="screen">
+      <Stack.Screen
+        name="Dashboard"
+        component={Dashboard}
+        option={{
+          headerTransparent: false
+        }}
+      />
+       
+    </Stack.Navigator>
+  );
+}
+
+
+
+
+
+
+
 
 function AppStack(props) {
   return (

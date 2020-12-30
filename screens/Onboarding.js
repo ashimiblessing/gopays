@@ -13,6 +13,7 @@ const { height, width } = Dimensions.get("screen");
 import argonTheme from "../constants/Theme";
 import Images from "../constants/Images";
 
+
 class Onboarding extends React.Component {
   render() {
     const { navigation } = this.props;
@@ -20,46 +21,66 @@ class Onboarding extends React.Component {
     return (
       <Block flex style={styles.container}>
         <StatusBar hidden />
-        <Block flex center>
-        <ImageBackground
-            source={Images.Onboarding}
-            style={{ height, width, zIndex: 1 }}
-          />
-        </Block>
+        
+
+
         <Block center>
-          <Image source={Images.LogoOnboarding} style={styles.logo} />
+          <Image source={Images.LogoOnboarding}  style={styles.logo} />
         </Block>
-        <Block flex space="between" style={styles.padded}>
-            <Block flex space="around" style={{ zIndex: 2 }}>
-              <Block style={styles.title}>
-                <Block>
-                  <Text color="white" size={60}>
-                    Design
-                  </Text>
-                </Block>
-                <Block>
-                  <Text color="white" size={60}>
-                    System
-                  </Text>
-                </Block>
-                <Block style={styles.subTitle}>
-                  <Text color="white" size={16}>
-                    Fully coded React Native components.
-                  </Text>
-                </Block>
-              </Block>
+
+
+
+        <Block flex space="around" style={styles.padded}>
+
+
+            <Block  style={{ zIndex: 2 }}>
+
+
+              
               <Block center>
                 <Button
                   style={styles.button}
                   color={argonTheme.COLORS.SECONDARY}
+                  onPress={() => navigation.navigate("Register")}
+                  textStyle={{ color: argonTheme.COLORS.WHITE }}
+                >
+                  Register
+                </Button>
+
+  <Block style={styles.subTitle}>
+                  <Text color={theme.COLORS.WHITE} size={16}>
+                    Already have an account?
+                  </Text>
+                </Block>
+              </Block>
+
+
+              <Block style={{marginTop:30}} center>
+                <Button
+                  style={styles.button2}
+                  color={argonTheme.COLORS.SECONDARY}
                   onPress={() => navigation.navigate("App")}
                   textStyle={{ color: argonTheme.COLORS.BLACK }}
                 >
-                  Get Started
+                  Login
                 </Button>
+
+  
               </Block>
+
+
+
+
+
           </Block>
+
+
+
         </Block>
+
+
+
+
       </Block>
     );
   }
@@ -79,20 +100,35 @@ const styles = StyleSheet.create({
     width: width - theme.SIZES.BASE * 4,
     height: theme.SIZES.BASE * 3,
     shadowRadius: 0,
-    shadowOpacity: 0
+    shadowOpacity: 0,
+    backgroundColor:'blue',
+    color:'white'
   },
+
+
+
+  button2: {
+    width: width - theme.SIZES.BASE * 4,
+    height: theme.SIZES.BASE * 3,
+    shadowRadius: 0,
+    shadowOpacity: 0,
+    backgroundColor:'white',
+    color:'white'
+  },
+
+
   logo: {
     width: 200,
     height: 60,
-    zIndex: 2,
+    zIndex: 20,
     position: 'relative',
-    marginTop: '-50%'
+    marginTop: '20%'
   },
   title: {
     marginTop:'-5%'
   },
   subTitle: {
-    marginTop: 20
+    marginTop: 60
   }
 });
 

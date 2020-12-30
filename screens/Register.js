@@ -15,6 +15,7 @@ const { width, height } = Dimensions.get("screen");
 
 class Register extends React.Component {
   render() {
+        const { navigation } = this.props;
     return (
       <Block flex middle>
         <StatusBar hidden />
@@ -24,41 +25,16 @@ class Register extends React.Component {
         >
           <Block flex middle>
             <Block style={styles.registerContainer}>
-              <Block flex={0.25} middle style={styles.socialConnect}>
-                <Text color="#8898AA" size={12}>
-                  Sign up with
+              <Block flex={0.15} middle style={styles.socialConnect}>
+                <Text color="#8898AA" size={22}>
+                 Register Now
                 </Text>
-                <Block row style={{ marginTop: theme.SIZES.BASE }}>
-                  <Button style={{ ...styles.socialButtons, marginRight: 30 }}>
-                    <Block row>
-                      <Icon
-                        name="logo-github"
-                        family="Ionicon"
-                        size={14}
-                        color={"black"}
-                        style={{ marginTop: 2, marginRight: 5 }}
-                      />
-                      <Text style={styles.socialTextButtons}>GITHUB</Text>
-                    </Block>
-                  </Button>
-                  <Button style={styles.socialButtons}>
-                    <Block row>
-                      <Icon
-                        name="logo-google"
-                        family="Ionicon"
-                        size={14}
-                        color={"black"}
-                        style={{ marginTop: 2, marginRight: 5 }}
-                      />
-                      <Text style={styles.socialTextButtons}>GOOGLE</Text>
-                    </Block>
-                  </Button>
-                </Block>
+                
               </Block>
               <Block flex>
                 <Block flex={0.17} middle>
                   <Text color="#8898AA" size={12}>
-                    Or sign up the classic way
+                    Please fill in your details
                   </Text>
                 </Block>
                 <Block flex center>
@@ -70,7 +46,7 @@ class Register extends React.Component {
                     <Block width={width * 0.8} style={{ marginBottom: 15 }}>
                       <Input
                         borderless
-                        placeholder="Name"
+                        placeholder="First Name"
                         iconContent={
                           <Icon
                             size={16}
@@ -81,7 +57,31 @@ class Register extends React.Component {
                           />
                         }
                       />
+ 
                     </Block>
+
+ <Block width={width * 0.8} style={{ marginBottom: 15 }}>
+                      <Input
+                        borderless
+                        placeholder="Last Name"
+                        iconContent={
+                          <Icon
+                            size={16}
+                            color={argonTheme.COLORS.ICON}
+                            name="hat-3"
+                            family="ArgonExtra"
+                            style={styles.inputIcons}
+                          />
+                        }
+                      />
+
+  
+
+                    </Block>
+
+
+
+
                     <Block width={width * 0.8} style={{ marginBottom: 15 }}>
                       <Input
                         borderless
@@ -101,7 +101,7 @@ class Register extends React.Component {
                       <Input
                         password
                         borderless
-                        placeholder="Password"
+                        placeholder="Pin (4 Digits)"
                         iconContent={
                           <Icon
                             size={16}
@@ -112,37 +112,18 @@ class Register extends React.Component {
                           />
                         }
                       />
-                      <Block row style={styles.passwordCheck}>
-                        <Text size={12} color={argonTheme.COLORS.MUTED}>
-                          password strength:
-                        </Text>
-                        <Text bold size={12} color={argonTheme.COLORS.SUCCESS}>
-                          {" "}
-                          strong
-                        </Text>
-                      </Block>
+                      
                     </Block>
-                    <Block row width={width * 0.75}>
-                      <Checkbox
-                        checkboxStyle={{
-                          borderWidth: 3
-                        }}
-                        color={argonTheme.COLORS.PRIMARY}
-                        label="I agree with the"
-                      />
-                      <Button
-                        style={{ width: 100 }}
-                        color="transparent"
-                        textStyle={{
-                          color: argonTheme.COLORS.PRIMARY,
-                          fontSize: 14
-                        }}
-                      >
-                        Privacy Policy
-                      </Button>
+                    <Block row width={width * 0.75} style={styles.termtxt}>
+                      <Text color={argonTheme.COLORS.MUTED}>
+                          By creating an account, you hereby agree to our terms of service
+                        </Text>
+                      
                     </Block>
                     <Block middle>
-                      <Button color="primary" style={styles.createButton}>
+                      <Button color="primary" style={styles.createButton} 
+                       onPress={() => navigation.navigate("Login")}
+                      >
                         <Text bold size={14} color={argonTheme.COLORS.WHITE}>
                           CREATE ACCOUNT
                         </Text>
@@ -160,6 +141,11 @@ class Register extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  
+  termtxt: {
+    marginTop:10,
+  } ,
+
   registerContainer: {
     width: width * 0.9,
     height: height * 0.78,
