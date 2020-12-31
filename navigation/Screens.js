@@ -12,6 +12,7 @@ import { Block } from "galio-framework";
 import Register from "../screens/Register";
 import Login from "../screens/Login";
 import Dashboard from "../screens/Dashboard";
+import BioData from "../screens/Dashboard";
 
 
 import Home from "../screens/Home";
@@ -184,6 +185,26 @@ export default function OnboardingStack(props) {
 
 
 
+
+ function BioDataStack(props) {
+  return (
+    <Stack.Navigator mode="card" headerMode="none">
+      <Stack.Screen
+        name="BioData"
+        component={BioData}
+        option={{
+          headerTransparent: true
+        }}
+      />
+       <Stack.Screen name="Dashboard" component={DashboardStack} />
+    </Stack.Navigator>
+  );
+}
+
+
+
+
+
  function LoginStack(props) {
   return (
     <Stack.Navigator mode="card" headerMode="none">
@@ -212,7 +233,7 @@ export default function OnboardingStack(props) {
           headerTransparent: false
         }}
       />
-       
+        <Stack.Screen name="BioData" component={BioDataStack} />
     </Stack.Navigator>
   );
 }

@@ -28,10 +28,11 @@ const COLOR_GREY = theme.COLORS.MUTED; // '#D8DDE1';
 // mock data
 const cards = [
   {
-    title: 'Tasks',
+    title: 'BioData',
     subtitle: '15 completed tasks',
     icon: 'list-bullet',
     iconFamily: 'Galio',
+    goesTo: 'BioData',
   },
 
   {
@@ -39,12 +40,14 @@ const cards = [
     subtitle: '15 completed tasks',
     icon: 'bag-17',
     iconFamily: 'Galio',
+ goesTo: 'BioData',
   },
   {
     title: 'Cards',
     subtitle: '15 completed tasks',
     icon: 'credit-card',
     iconFamily: 'Galio',
+ goesTo: 'BioData',
   },
 
   {
@@ -52,9 +55,11 @@ const cards = [
     subtitle: '15 completed tasks',
     icon: 'settings-gear-65',
     iconFamily: 'Galio',
+ goesTo: 'BioData',
+
   },
 ];
-const statsTitles = ['Jul', 'Aug', 'Sep', 'Oct', 'Nov'];
+
 
 class Dashboard extends React.Component {
   renderHeader = () => (
@@ -70,6 +75,8 @@ class Dashboard extends React.Component {
 
 
   renderCard = (props, index) => {
+ const { navigation } = this.props;
+
     const gradientColors = index % 2 ? GRADIENT_BLUE : GRADIENT_PINK;
 
     return (
@@ -92,8 +99,12 @@ class Dashboard extends React.Component {
           <Text size={BASE_SIZE * 1.125}>{props.title}</Text>
           <Text size={BASE_SIZE * 0.875} muted>{props.subtitle}</Text>
         </Block>
-        <Button style={styles.right}>
-          <Icon size={BASE_SIZE} name="minimal-right" family="Galio" color={COLOR_GREY} />
+        <Button style={styles.right} 
+
+ onPress={() => navigation.navigate("BioData")}
+
+>
+          <Icon size={BASE_SIZE} name="minimal-right" family="Galio"  color={COLOR_GREY} />
         </Button>
       </Block>
     );
@@ -102,6 +113,7 @@ class Dashboard extends React.Component {
   renderCards = () => cards.map((card, index) => this.renderCard(card, index))
 
   render() {
+ const { navigation } = this.props;
     return (
       <Block safe flex>
         {/* header */}
