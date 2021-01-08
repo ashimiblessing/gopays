@@ -11,8 +11,14 @@ import { Block } from "galio-framework";
 
 import Register from "../screens/Register";
 import Login from "../screens/Login";
+import Borrow from "../screens/Borrow";
+import Repay from "../screens/Repay";
+import LoanHistory from "../screens/LoanHistory";
+import BioData from "../screens/BioData";
+
+
+
 import Dashboard from "../screens/Dashboard";
-import BioData from "../screens/Dashboard";
 
 
 import Home from "../screens/Home";
@@ -81,7 +87,7 @@ function ArticlesStack(props) {
           cardStyle: { backgroundColor: "#F8F9FE" }
         }}
       />
- 
+
 
 
 
@@ -100,18 +106,26 @@ function ProfileStack(props) {
         options={{
           header: ({ navigation, scene }) => (
             <Header
-              transparent
-              white
-              title="Profile"
+
+              title="Gopays"
               navigation={navigation}
               scene={scene}
             />
           ),
           cardStyle: { backgroundColor: "#FFFFFF" },
-          headerTransparent: true
+
         }}
       />
- 
+
+
+
+              <Stack.Screen name="Borrow" component={BorrowStack} />
+                <Stack.Screen name="Repay" component={RepayStack} />
+                <Stack.Screen name="LoanHistory" component={LoanHistoryStack} />
+                  <Stack.Screen name="BioData" component={BioDataStack} />
+
+
+
     </Stack.Navigator>
   );
 }
@@ -126,8 +140,7 @@ function HomeStack(props) {
           header: ({ navigation, scene }) => (
             <Header
               title="Home"
-              search
-              options
+
               navigation={navigation}
               scene={scene}
             />
@@ -135,7 +148,7 @@ function HomeStack(props) {
           cardStyle: { backgroundColor: "#F8F9FE" }
         }}
       />
- 
+
 
 
 
@@ -156,12 +169,115 @@ export default function OnboardingStack(props) {
           headerTransparent: true
         }}
       />
+
       <Stack.Screen name="App" component={AppStack} />
-       <Stack.Screen name="Register" component={RegisterStack} />
-        <Stack.Screen name="Login" component={LoginStack} />
+      <Stack.Screen name="Register" component={RegisterStack} />
+       <Stack.Screen name="Login" component={LoginStack} />
     </Stack.Navigator>
   );
-}  
+}
+
+
+
+
+
+
+function BorrowStack(props) {
+ return (
+   <Stack.Navigator mode="card" headerMode="none">
+     <Stack.Screen
+       name="Borrow"
+       component={Borrow}
+       options={{
+
+         header: ({ navigation, scene }) => (
+           <Header
+
+             title="Get a Loan"
+             navigation={navigation}
+             scene={scene}
+           />
+         ),
+         cardStyle: { backgroundColor: "#FFFFFF" },
+
+       }}
+     />
+
+   </Stack.Navigator>
+ );
+}
+
+
+
+
+
+function RepayStack(props) {
+ return (
+   <Stack.Navigator mode="card" headerMode="none">
+     <Stack.Screen
+       name="Repay"
+       component={Repay}
+       options={{
+
+         header: ({ navigation, scene }) => (
+           <Header
+
+             title="Repay Your Loan"
+             navigation={navigation}
+             scene={scene}
+           />
+         ),
+         cardStyle: { backgroundColor: "#FFFFFF" },
+
+       }}
+     />
+
+   </Stack.Navigator>
+ );
+}
+
+
+
+
+
+
+
+
+function LoanHistoryStack(props) {
+ return (
+   <Stack.Navigator mode="card" headerMode="none">
+     <Stack.Screen
+       name="LoanHistory"
+       component={LoanHistory}
+       options={{
+
+         header: ({ navigation, scene }) => (
+           <Header
+
+             title="Your previous loans"
+             navigation={navigation}
+             scene={scene}
+           />
+         ),
+         cardStyle: { backgroundColor: "#FFFFFF" },
+
+       }}
+     />
+
+   </Stack.Navigator>
+ );
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -192,11 +308,21 @@ export default function OnboardingStack(props) {
       <Stack.Screen
         name="BioData"
         component={BioData}
-        option={{
-          headerTransparent: true
+        options={{
+
+          header: ({ navigation, scene }) => (
+            <Header
+
+              title="Edit BioData"
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          cardStyle: { backgroundColor: "#F8F9FE" },
+
         }}
       />
-       <Stack.Screen name="Dashboard" component={DashboardStack} />
+
     </Stack.Navigator>
   );
 }
@@ -215,7 +341,7 @@ export default function OnboardingStack(props) {
           headerTransparent: true
         }}
       />
-         <Stack.Screen name="Dashboard" component={DashboardStack} />
+         <Stack.Screen name="Profile" component={ProfileStack} />
     </Stack.Navigator>
   );
 }
@@ -274,14 +400,18 @@ function AppStack(props) {
           fontWeight: "normal"
         }
       }}
-      initialRouteName="Home"
+      initialRouteName="Profile"
     >
-      <Drawer.Screen name="Home" component={HomeStack} />
-      <Drawer.Screen name="Profile" component={ProfileStack} />
-      <Drawer.Screen name="Account" component={Register} />
-      <Drawer.Screen name="Elements" component={ElementsStack} />
-      <Drawer.Screen name="Articles" component={ArticlesStack} />
+
+      <Drawer.Screen name="Home" component={ProfileStack} />
+      <Drawer.Screen name="Info" component={BioDataStack} />
+        <Drawer.Screen name="Loan" component={BorrowStack} />
+
+
+
+
+
+ 
     </Drawer.Navigator>
   );
 }
-

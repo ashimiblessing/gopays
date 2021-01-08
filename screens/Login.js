@@ -31,7 +31,7 @@ class Login extends React.Component {
                 <Text color="#8898AA" size={22}>
                  Login
                 </Text>
-                
+
               </Block>
               <Block flex>
                 <Block flex={0.17} middle>
@@ -45,9 +45,9 @@ class Login extends React.Component {
                     behavior="padding"
                     enabled
                   >
-                    
 
-  
+
+
 
 
 
@@ -82,17 +82,12 @@ class Login extends React.Component {
                           />
                         }
                       />
-                      
+
                     </Block>
-                    <Block row width={width * 0.75} style={styles.termtxt}>
-                      <Text color={argonTheme.COLORS.MUTED}>
-                          By creating an account, you hereby agree to our terms of service
-                        </Text>
-                      
-                    </Block>
+
                     <Block middle>
-                      <Button color="primary" style={styles.createButton} 
-                       onPress={() => navigation.navigate("Dashboard")}
+                      <Button color="primary" style={styles.createButton}
+                       onPress={() => navigation.navigate("Profile")}
                       >
                         <Text bold size={14} color={argonTheme.COLORS.WHITE}>
                           Login
@@ -111,7 +106,7 @@ class Login extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  
+
   termtxt: {
     marginTop:10,
   } ,

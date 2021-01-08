@@ -1,156 +1,121 @@
 import React from "react";
 import {
-  ImageBackground,
-  Image,
   StyleSheet,
-  StatusBar,
-  Dimensions, Picker
+  Dimensions,
+  ScrollView,
+  Image,
+  ImageBackground,
+  Platform,FlatList, Animated,SafeAreaView,KeyboardAvoidingView,Picker
 } from "react-native";
-import { Block, Button, Text, theme } from "galio-framework";
-import DateTimePicker from '@react-native-community/datetimepicker';
+import { Block, Text,Icon,  theme, Button as GaButton} from "galio-framework";
 
-const { height, width } = Dimensions.get("screen");
+import { Button,Header, Input,} from "../components";
+import { Images, argonTheme,Tabs } from "../constants";
+import { HeaderHeight } from "../constants/utils";
 
-import argonTheme from "../constants/Theme";
-import Images from "../constants/Images";
+const { width, height } = Dimensions.get("screen");
 
+const thumbMeasure = (width - 48 - 32) / 3;
 
-class BioData extends React.Component {
 
-  const [date, setDate] = useState(new Date(1598051730000));
-  const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
+const BioData = ({ navigation }) => {
+  const [text, setText] = React.useState('');
 
- const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setShow(Platform.OS === 'ios');
-    setDate(currentDate);
-  };
+  return (
+   <ScrollView>
+    <KeyboardAvoidingView
 
+                       style={styles.group}
+                       behavior="padding"
+                       enabled
+                     >
 
-const showMode = (currentMode) => {
-    setShow(true);
-    setMode(currentMode);
-  };
 
+                       <Block  style={{ marginBottom: 15 }}>
+                       <Text size={14}>
+                         First Name
+                       </Text>
+                         <Input
 
- const showDatepicker = () => {
-    showMode('date');
-  };
+                           placeholder="First Name"
+                           style={{
+                             borderColor: argonTheme.COLORS.INFO,
+                             borderRadius: 4,
+                             backgroundColor: "#fff"
+                           }}
+                           iconContent={<Block />}
+                         />
 
+                       </Block>
 
 
 
+              <Block  style={{ marginBottom: 15 }}>
+              <Text size={14}>
+                Middle Name
+              </Text>
+                         <Input
 
+                           placeholder="Middle Name"
 
 
+                           style={{
+                             borderColor: argonTheme.COLORS.INFO,
+                             borderRadius: 4,
+                             backgroundColor: "#fff"
+                           }}
+                           iconContent={<Block />}
 
+                         />
 
+                       </Block>
 
 
 
-  render() {
-    const { navigation } = this.props;
+    <Block  style={{ marginBottom: 15 }}>
+    <Text size={14}>
+    Last Name
+    </Text>
+                         <Input
 
-    return (
-      <Block flex style={styles.container}>
-        <StatusBa />
-        
- <KeyboardAvoidingView
-                    style={{ flex: 1 }}
-                    behavior="padding"
-                    enabled
-                  >
-                    <Block width={width * 0.8} style={{ marginBottom: 15 }}>
-                      <Input
-                        borderless
-                        placeholder="First Name"
-                        iconContent={
-                          <Icon
-                            size={16}
-                            color={argonTheme.COLORS.ICON}
-                            name="hat-3"
-                            family="ArgonExtra"
-                            style={styles.inputIcons}
-                          />
-                        }
-                      />
- 
-                    </Block>
+                           placeholder="Last Name"
+                           style={{
+                             borderColor: argonTheme.COLORS.INFO,
+                             borderRadius: 4,
+                             backgroundColor: "#fff"
+                           }}
+                           iconContent={<Block />}
+                         />
 
 
 
-           <Block width={width * 0.8} style={{ marginBottom: 15 }}>
-                      <Input
-                        borderless
-                        placeholder="Middle Name"
-                        iconContent={
-                          <Icon
-                            size={16}
-                            color={argonTheme.COLORS.ICON}
-                            name="hat-3"
-                            family="ArgonExtra"
-                            style={styles.inputIcons}
-                          />
-                        }
-                      />
- 
-                    </Block>
+                       </Block>
 
 
 
- <Block width={width * 0.8} style={{ marginBottom: 15 }}>
-                      <Input
-                        borderless
-                        placeholder="Last Name"
-                        iconContent={
-                          <Icon
-                            size={16}
-                            color={argonTheme.COLORS.ICON}
-                            name="hat-3"
-                            family="ArgonExtra"
-                            style={styles.inputIcons}
-                          />
-                        }
-                      />
 
-  
 
-                    </Block>
 
+              <Block  style={{ marginBottom: 15 }}>
+              <Text size={14}>
+                Date of Birth
+              </Text>
+                         <Input
 
+                           placeholder="DOB"
+                           style={{
+                             borderColor: argonTheme.COLORS.INFO,
+                             borderRadius: 4,
+                             backgroundColor: "#fff"
+                           }}
+                           iconContent={<Block />}
+                         />
 
+                       </Block>
 
-  
 
-           <Block width={width * 0.8} style={{ marginBottom: 15 }}>
-                      <Input onFocus={showDatepicker}
-                        borderless
-                        placeholder="DOB"
-                        iconContent={
-                          <Icon
-                            size={16}
-                            color={argonTheme.COLORS.ICON}
-                            name="hat-3"
-                            family="ArgonExtra"
-                            style={styles.inputIcons}
-                          />
-                        }
-                      />
- 
-                    </Block>
 
 
-     {show && (
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={date}
-          mode={mode}
-          is24Hour={true}
-          display="default"
-          onChange={onChange}
-        />
-      )}
 
 
 
@@ -158,178 +123,259 @@ const showMode = (currentMode) => {
 
 
 
- 
 
 
+                       <Block  style={{ marginBottom: 15 }}>
+                       <Text size={14}>
+                      Email Address
+                       </Text>
+                         <Input
 
-                    <Block width={width * 0.8} style={{ marginBottom: 15 }}>
-                      <Input
-                        borderless
-                        placeholder="Email"
-                        iconContent={
-                          <Icon
-                            size={16}
-                            color={argonTheme.COLORS.ICON}
-                            name="ic_mail_24px"
-                            family="ArgonExtra"
-                            style={styles.inputIcons}
-                          />
-                        }
-                      />
-                    </Block>
 
- 
-                     
+                           placeholder="Email"
+                           style={{
+                             borderColor: argonTheme.COLORS.INFO,
+                             borderRadius: 4,
+                             backgroundColor: "#fff"
+                           }}
+                           iconContent={<Block />}
+                         />
+                       </Block>
 
-           <Block width={width * 0.8} style={{ marginBottom: 15 }}>
-                      <Input 
-                        borderless
-                        placeholder="Phone"
-                        iconContent={
-                          <Icon
-                            size={16}
-                            color={argonTheme.COLORS.ICON}
-                            name="hat-3"
-                            family="ArgonExtra"
-                            style={styles.inputIcons}
-                          />
-                        }
-                      />
- 
-                    </Block>
- 
 
 
 
- 
+              <Block  style={{ marginBottom: 15 }}>
+              <Text size={14}>
+                Phone Number
+              </Text>
+                         <Input
 
+                           placeholder="Phone"
+                           style={{
+                             borderColor: argonTheme.COLORS.INFO,
+                             borderRadius: 4,
+                             backgroundColor: "#fff"
+                           }}
+                           iconContent={<Block />}
+                         />
 
+                       </Block>
 
 
 
 
-           <Block width={width * 0.8} style={{ marginBottom: 15 }}>
-                      <Picker
-   
-  style={{ height: 50, width: 100 }}
-  onValueChange={(itemValue, itemIndex) => this.setState({ language: itemValue })}>
 
-  <Picker.Item label="Type of Residence" value="" />
-  <Picker.Item label="Rented" value="rented" />
-  <Picker.Item label="Owned" value="owned" />
-  <Picker.Item label="Family House" value="family-house" />
-  <Picker.Item label="Employer Provided" value="employer-provided" />
-  <Picker.Item label="Temporary" value="temporary" />
 
-</Picker>
 
- 
-                    </Block>
 
 
 
-  <Block width={width * 0.8} style={{ marginBottom: 15 }}>
-                      <Picker
-   
-  style={{ height: 50, width: 100 }}
-  onValueChange={(itemValue, itemIndex) => this.setState({ language: itemValue })}>
 
-  <Picker.Item label="Employment Status" value="" />
-  <Picker.Item label="Employed" value="employed" />
-  <Picker.Item label="Self-Employed" value="self-employed" />
-  <Picker.Item label="Retired" value="retired" />
-  <Picker.Item label="Unemployed" value="unemployed" />
-  <Picker.Item label="Student" value="student" />
+              <Block  style={{ marginBottom: 15 }}>
+              <Text size={14}>
+                Type of Residence
+              </Text>
+                         <Picker
 
-</Picker>
+     style={{ height: 50, }}
+   >
 
- 
-                    </Block>
+     <Picker.Item label="Select one" value="" />
+     <Picker.Item label="Rented" value="rented" />
+     <Picker.Item label="Owned" value="owned" />
+     <Picker.Item label="Family House" value="family-house" />
+     <Picker.Item label="Employer Provided" value="employer-provided" />
+     <Picker.Item label="Temporary" value="temporary" />
 
+    </Picker>
 
 
+                       </Block>
 
 
-           <Block width={width * 0.8} style={{ marginBottom: 15 }}>
-                      <Input 
-                        borderless
-                        placeholder="Monthly Income"
-                        iconContent={
-                          <Icon
-                            size={16}
-                            color={argonTheme.COLORS.ICON}
-                            name="hat-3"
-                            family="ArgonExtra"
-                            style={styles.inputIcons}
-                          />
-                        }
-                      />
- 
-                    </Block>
 
+     <Block  style={{ marginBottom: 15 }}>
+     <Text size={14}>
+       Employment Status
+     </Text>
+                         <Picker
 
 
+     style={{ height: 50 }}
+     >
 
+     <Picker.Item label="Select one" value="" />
+     <Picker.Item label="Employed" value="employed" />
+     <Picker.Item label="Self-Employed" value="self-employed" />
+     <Picker.Item label="Retired" value="retired" />
+     <Picker.Item label="Unemployed" value="unemployed" />
+     <Picker.Item label="Student" value="student" />
 
+    </Picker>
 
 
-                  </KeyboardAvoidingView>
- 
+                       </Block>
 
 
-        <Block>
 
- 
 
-      </Block>
-    );
-  }
-}
+
+              <Block  style={{ marginBottom: 15 }}>
+              <Text size={14}>
+              Monthly Income
+              </Text>
+                         <Input
+
+                           placeholder="Monthly Income"
+                           style={{
+                             borderColor: argonTheme.COLORS.INFO,
+                             borderRadius: 4,
+                             backgroundColor: "#fff"
+                           }}
+                           iconContent={<Block />}
+                         />
+
+                       </Block>
+
+
+
+
+                       <Block
+                         middle
+                         row
+                         space="evenly"
+                         style={{ marginTop: 20 }}
+                       >
+
+                         <Button
+                           medium
+                           style={{ backgroundColor: argonTheme.COLORS.DEFAULT }}
+onPress={() => navigation.navigate("Profile")}
+                         >
+                           Save
+                         </Button>
+                       </Block>
+
+
+                     </KeyboardAvoidingView>
+                     </ScrollView>
+
+  );
+};
+
+
+
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: theme.COLORS.BLACK
+  profile: {
+    marginTop: Platform.OS === "android" ? -HeaderHeight : 0,
+    // marginBottom: -HeaderHeight * 2,
+    flex: 1
   },
-  padded: {
-    paddingHorizontal: theme.SIZES.BASE * 2,
+  profileContainer: {
+    width: width,
+    height: height,
+    padding: 0,
+    zIndex: 1
+  },
+  profileBackground: {
+    width: width,
+    height: height / 2
+  },
+  profileCard: {
+    // position: "relative",
+    padding: theme.SIZES.BASE,
+    marginHorizontal: theme.SIZES.BASE,
+    marginTop: 65,
+    borderTopLeftRadius: 6,
+    borderTopRightRadius: 6,
+    backgroundColor: theme.COLORS.WHITE,
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 0 },
+    shadowRadius: 8,
+    shadowOpacity: 0.2,
+    zIndex: 2
+  },
+  info: {
+    paddingHorizontal: 40
+  },
+  avatarContainer: {
     position: "relative",
-    bottom: theme.SIZES.BASE,
+    marginTop: -80
+  },
+  avatar: {
+    width: 124,
+    height: 124,
+    borderRadius: 62,
+    borderWidth: 0
+  },
+  nameInfo: {
+    marginTop: 35
+  },
+  divider: {
+    width: "90%",
+    borderWidth: 1,
+    borderColor: "#E9ECEF"
+  },
+  thumb: {
+    borderRadius: 4,
+    marginVertical: 4,
+    alignSelf: "center",
+    width: thumbMeasure,
+    height: thumbMeasure
+  },
+
+
+  container: {
+    width: width,
+    backgroundColor: theme.COLORS.BLACK,
     zIndex: 2,
   },
-  button: {
-    width: width - theme.SIZES.BASE * 4,
-    height: theme.SIZES.BASE * 3,
-    shadowRadius: 0,
-    shadowOpacity: 0,
-    backgroundColor:'blue',
-    color:'white'
+  shadow: {
+    shadowColor: theme.COLORS.BLACK,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 8,
+    shadowOpacity: 0.2,
+    elevation: 4,
+  },
+  menu: {
+    paddingHorizontal: theme.SIZES.BASE * 2.5,
+    paddingTop: 8,
+    paddingBottom: 16,
+  },
+  titleContainer: {
+    alignItems: 'center',
+    backgroundColor: argonTheme.COLORS.ACTIVE,
+    borderRadius: 4,
+    marginRight: 9
+  },
+  containerShadow: {
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    shadowOpacity: 0.1,
+    elevation: 1,
+  },
+  menuTitle: {
+    fontWeight: '600',
+    fontSize: 14,
+    // lineHeight: 28,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    color: argonTheme.COLORS.MUTED
   },
 
+  group: {
+    paddingTop: theme.SIZES.BASE * 2,
+    paddingHorizontal: theme.SIZES.BASE,
 
-
-  button2: {
-    width: width - theme.SIZES.BASE * 4,
-    height: theme.SIZES.BASE * 3,
-    shadowRadius: 0,
-    shadowOpacity: 0,
-    backgroundColor:'white',
-    color:'white'
   },
-
-
-  logo: {
-    width: 200,
-    height: 60,
-    zIndex: 20,
-    position: 'relative',
-    marginTop: '20%'
-  },
-  title: {
-    marginTop:'-5%'
-  },
-  subTitle: {
-    marginTop: 60
-  }
 });
 
-export default Onboarding;
+
+
+
+
+
+export default BioData;

@@ -21,7 +21,7 @@ class Onboarding extends React.Component {
     return (
       <Block flex style={styles.container}>
         <StatusBar hidden />
-        
+
 
 
         <Block center>
@@ -29,14 +29,21 @@ class Onboarding extends React.Component {
         </Block>
 
 
+        <Block center style={{marginTop:40}}>
+                        <Text style={styles.subTop}>
+                          Welcome to Gopays!
+                        </Text>
+                      </Block>
 
-        <Block flex space="around" style={styles.padded}>
+
+
+        <Block  style={styles.padded}>
 
 
             <Block  style={{ zIndex: 2 }}>
 
 
-              
+
               <Block center>
                 <Button
                   style={styles.button}
@@ -48,24 +55,24 @@ class Onboarding extends React.Component {
                 </Button>
 
   <Block style={styles.subTitle}>
-                  <Text color={theme.COLORS.WHITE} size={16}>
-                    Already have an account?
+                  <Text style={styles.subBottom}>
+                    Already have a Gopays account?
                   </Text>
                 </Block>
               </Block>
 
 
-              <Block style={{marginTop:30}} center>
+              <Block style={{marginTop:20}} center>
                 <Button
-                  style={styles.button2}
-                  color={argonTheme.COLORS.SECONDARY}
-                  onPress={() => navigation.navigate("App")}
-                  textStyle={{ color: argonTheme.COLORS.BLACK }}
+                  style={styles.button}
+                  color={argonTheme.COLORS.INFO}
+                  onPress={() => navigation.navigate("Login")}
+                  textStyle={{ color: argonTheme.COLORS.WHITE }}
                 >
                   Login
                 </Button>
 
-  
+
               </Block>
 
 
@@ -88,20 +95,21 @@ class Onboarding extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: theme.COLORS.BLACK
+    backgroundColor: theme.COLORS.DEFAULT
   },
   padded: {
     paddingHorizontal: theme.SIZES.BASE * 2,
-    position: "relative",
+    position: "absolute",
     bottom: theme.SIZES.BASE,
     zIndex: 2,
+    bottom:55
   },
   button: {
     width: width - theme.SIZES.BASE * 4,
     height: theme.SIZES.BASE * 3,
     shadowRadius: 0,
     shadowOpacity: 0,
-    backgroundColor:'blue',
+    backgroundColor:'#4404c4',
     color:'white'
   },
 
@@ -112,14 +120,14 @@ const styles = StyleSheet.create({
     height: theme.SIZES.BASE * 3,
     shadowRadius: 0,
     shadowOpacity: 0,
-    backgroundColor:'white',
+    backgroundColor: '#4404c4',
     color:'white'
   },
 
 
   logo: {
-    width: 200,
-    height: 60,
+    width: 160,
+    height: 27,
     zIndex: 20,
     position: 'relative',
     marginTop: '20%'
@@ -129,7 +137,26 @@ const styles = StyleSheet.create({
   },
   subTitle: {
     marginTop: 60
-  }
+  },
+
+
+
+  subTop: {
+  color:'#4404c4',
+  fontSize:23,
+  fontWeight:'bold'
+
+  },
+
+  subBottom: {
+  color:'#4404c4',
+  fontSize:16,
+
+
+  },
+
+
+
 });
 
 export default Onboarding;

@@ -1,7 +1,7 @@
 {
-  "name": "argon-react-native",
+  "name": "gopays-mobile",
   "version": "1.6.0",
-  "description": "Argon React Native, based on Argon Design System. Coded by Creative Tim",
+  "description": "Gopays",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
@@ -14,6 +14,7 @@
     "url": "git+https://github.com/creativetimofficial/argon-react-native.git"
   },
   "dependencies": {
+    "@react-native-community/datetimepicker": "3.0.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/bottom-tabs": "^5.0.6",
     "@react-navigation/compat": "^5.0.0",
@@ -31,11 +32,12 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.3.tar.gz",
     "react-native-gesture-handler": "~1.7.0",
     "react-native-modal-dropdown": "git+https://github.com/siemiatj/react-native-modal-dropdown.git",
+    "react-native-paper": "^4.5.0",
     "react-native-reanimated": "~1.13.0",
     "react-native-safe-area-context": "3.1.4",
     "react-native-screens": "~2.10.1",
     "react-native-svg": "12.1.0",
-    "@react-native-community/datetimepicker": "3.0.0"
+    "react-native-web-swiper": "^2.1.7"
   },
   "devDependencies": {
     "babel-preset-expo": "^8.3.0"

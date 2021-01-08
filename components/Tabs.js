@@ -51,13 +51,7 @@ export default class Tabs extends React.Component {
   selectMenu = (id) => {
     this.setState({ active: id });
 
-    this.menuRef.current.scrollToIndex({
-      index: this.props.data.findIndex(item => item.id === id),
-      viewPosition: 0.5
-    });
-
-    this.animate();
-    this.props.onChange && this.props.onChange(id);
+    //this.props.navigation.navigate(id)
   }
 
   renderItem = (item) => {
@@ -68,7 +62,7 @@ export default class Tabs extends React.Component {
       outputRange: [argonTheme.COLORS.BLACK, isActive ? argonTheme.COLORS.WHITE : argonTheme.COLORS.BLACK],
       extrapolate: 'clamp',
     });
-    
+
     const containerStyles = [
       styles.titleContainer,
       !isActive && { backgroundColor: argonTheme.COLORS.SECONDARY },
