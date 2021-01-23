@@ -4,18 +4,76 @@ import {
   ImageBackground,
   Dimensions,
   StatusBar,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  ActivityIndicator,
+  TextInput
 } from "react-native";
 import { Block, Checkbox, Text, theme } from "galio-framework";
 
 import { Button, Icon, Input } from "../components";
 import { Images, argonTheme } from "../constants";
-
+import axios from 'axios'; 
 const { width, height } = Dimensions.get("screen");
-
+axios.defaults.baseURL = ' https://protected-journey-04256.herokuapp.com';
 class Register extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      isLoading:false,
+    
+      firstname:"",
+      lastname:"",
+      email:"",
+      password:""
+    }
+    this.regState = this.regState.bind(this);
+    this.register = this.register.bind(this);
+    global.errors = "";
+  }
+
+
+  regState(event){
+
+    this.setState({
+      [event.target.name]:event.target.value,
+    });
+
+  // console.log(event.target.value);
+  
+    
+  };
+
+  register() {
+    this.setState({isLoading:true})
+    axios.post('/api/create-user',{
+      firstname:this.state.firstname,
+      lastname:this.state.lastname,
+      email:this.state.email,
+      password:this.state.password,
+      
+  })
+  .then(response => {
+    const { navigation } = this.props;
+     navigation.navigate("Login")
+    
+})
+.catch(error => { 
+  const key = Object.keys(error.response.data)[0]; 
+   errors = error.response.data[key][0];
+ this.setState({isLoading:false})
+  console.log(errors)
+})
+
+  
+
+  }
+
   render() {
         const { navigation } = this.props;
+
+
+
+      
     return (
       <Block flex middle>
         <StatusBar hidden />
@@ -33,9 +91,16 @@ class Register extends React.Component {
               </Block>
               <Block flex>
                 <Block flex={0.17} middle>
+                     {/* {
+                    errors &&
+                   <Text color="red" size={12}>
+                    {errors}
+                  </Text> 
+                
+                  } */}
                   <Text color="#8898AA" size={12}>
                     Please fill in your details
-                  </Text>
+                  </Text>                  
                 </Block>
                 <Block flex center>
                   <KeyboardAvoidingView
@@ -45,6 +110,7 @@ class Register extends React.Component {
                   >
                     <Block width={width * 0.8} style={{ marginBottom: 15 }}>
                       <Input
+                        name="firstname"
                         borderless
                         placeholder="First Name"
                         iconContent={
@@ -56,12 +122,15 @@ class Register extends React.Component {
                             style={styles.inputIcons}
                           />
                         }
+                        value={this.state.value}
+                        onChangeText={(text) => this.setState({ firstname:text })}
                       />
  
                     </Block>
 
- <Block width={width * 0.8} style={{ marginBottom: 15 }}>
+              <Block width={width * 0.8} style={{ marginBottom: 15 }}>
                       <Input
+                      name="lastname"
                         borderless
                         placeholder="Last Name"
                         iconContent={
@@ -73,17 +142,14 @@ class Register extends React.Component {
                             style={styles.inputIcons}
                           />
                         }
+                        value={this.state.value}
+                        onChangeText={(text) => this.setState({ lastname:text })}
                       />
-
-  
-
                     </Block>
-
-
-
 
                     <Block width={width * 0.8} style={{ marginBottom: 15 }}>
                       <Input
+                        name="email"
                         borderless
                         placeholder="Email"
                         iconContent={
@@ -95,10 +161,13 @@ class Register extends React.Component {
                             style={styles.inputIcons}
                           />
                         }
+                        value={this.state.value}
+                        onChangeText={(text) => this.setState({ email:text })}
                       />
                     </Block>
                     <Block width={width * 0.8}>
                       <Input
+                        name="password"
                         password
                         borderless
                         placeholder="Pin (4 Digits)"
@@ -111,6 +180,8 @@ class Register extends React.Component {
                             style={styles.inputIcons}
                           />
                         }
+                        value={this.state.value}
+                        onChangeText={(text) => this.setState({ password:text })}
                       />
                       
                     </Block>
@@ -121,13 +192,26 @@ class Register extends React.Component {
                       
                     </Block>
                     <Block middle>
-                      <Button color="primary" style={styles.createButton} 
+                      {/* <Button color="primary" style={styles.createButton} 
                        onPress={() => navigation.navigate("Login")}
                       >
                         <Text bold size={14} color={argonTheme.COLORS.WHITE}>
                           CREATE ACCOUNT
                         </Text>
+                      </Button> */}
+                   
+                      <Button color="primary" style={styles.createButton} 
+                       onPress={this.register}
+                      >
+                         {this.state.isLoading ?
+                      <ActivityIndicator  size="large" color="#ffff" />
+                      :
+                        <Text bold size={14} color={argonTheme.COLORS.WHITE}>
+                          CREATE ACCOUNT
+                        </Text>
+                      }
                       </Button>
+                      
                     </Block>
                   </KeyboardAvoidingView>
                 </Block>

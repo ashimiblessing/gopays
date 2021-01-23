@@ -4,16 +4,71 @@ import {
   ImageBackground,
   Dimensions,
   StatusBar,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  ActivityIndicator,
 } from "react-native";
 import { Block, Checkbox, Text, theme } from "galio-framework";
-
+import * as SecureStore from 'expo-secure-store';
 import { Button, Icon, Input } from "../components";
 import { Images, argonTheme } from "../constants";
+import axios from 'axios';
 
 const { width, height } = Dimensions.get("screen");
 
+axios.defaults.baseURL = ' https://protected-journey-04256.herokuapp.com';
 class Login extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      isLoading:false,
+      email:"",
+      password:""
+    }
+    this.loginState = this.loginState.bind(this);
+    this.login = this.login.bind(this);
+    global.errors = "";
+  }
+
+
+  loginState(event){
+
+    this.setState({
+      [event.target.name]:event.target.value,
+    });
+
+  // console.log(event.target.value);
+  
+    
+  };
+
+  login() {
+    this.setState({isLoading:true})
+    axios.post('/api/login',{
+      email:this.state.email,
+      password:this.state.password,
+      
+  })
+  .then(response => {
+    let userResponse =  {
+      username: response.data.user.username,
+      token: response.data.token
+    } 
+    
+    SecureStore.setItemAsync('user', JSON.stringify(userResponse));
+    const { navigation } = this.props;
+     navigation.navigate("Profile")
+    
+})
+.catch(error => { 
+  const key = Object.keys(error.response.data)[0]; 
+   errors = error.response.data[key][0];
+ this.setState({isLoading:false})
+  console.log(error)
+})
+
+  
+
+  }
   render() {
 
     const { navigation } = this.props;
@@ -45,17 +100,11 @@ class Login extends React.Component {
                     behavior="padding"
                     enabled
                   >
-
-
-
-
-
-
-
                     <Block width={width * 0.8} style={{ marginBottom: 15 }}>
                       <Input
+                      name="email"
                         borderless
-                        placeholder="Email"
+                        placeholder="email"
                         iconContent={
                           <Icon
                             size={16}
@@ -65,10 +114,13 @@ class Login extends React.Component {
                             style={styles.inputIcons}
                           />
                         }
+                        value={this.state.value}
+                        onChangeText={(text) => this.setState({ email:text })}
                       />
                     </Block>
                     <Block width={width * 0.8}>
                       <Input
+                        name="password"
                         password
                         borderless
                         placeholder="Pin (4 Digits)"
@@ -81,17 +133,31 @@ class Login extends React.Component {
                             style={styles.inputIcons}
                           />
                         }
+                        value={this.state.value}
+                        onChangeText={(text) => this.setState({ password:text })}
                       />
 
                     </Block>
 
                     <Block middle>
-                      <Button color="primary" style={styles.createButton}
+                      {/* <Button color="primary" style={styles.createButton}
                        onPress={() => navigation.navigate("Profile")}
                       >
                         <Text bold size={14} color={argonTheme.COLORS.WHITE}>
                           Login
                         </Text>
+                      </Button> */}
+                        
+                      <Button color="primary" style={styles.createButton} 
+                       onPress={this.login}
+                      >
+                         {this.state.isLoading ?
+                      <ActivityIndicator  size="large" color="#ffff" />
+                      :
+                        <Text bold size={14} color={argonTheme.COLORS.WHITE}>
+                        Login
+                        </Text>
+                      }
                       </Button>
                     </Block>
                   </KeyboardAvoidingView>
