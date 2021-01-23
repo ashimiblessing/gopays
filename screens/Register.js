@@ -14,7 +14,7 @@ import { Button, Icon, Input } from "../components";
 import { Images, argonTheme } from "../constants";
 import axios from 'axios'; 
 const { width, height } = Dimensions.get("screen");
-axios.defaults.baseURL = ' https://protected-journey-04256.herokuapp.com';
+axios.defaults.baseURL = 'https://salty-shore-73617.herokuapp.com';
 class Register extends React.Component {
   constructor(props){
     super(props);

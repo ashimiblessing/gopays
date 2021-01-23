@@ -15,7 +15,7 @@ import axios from 'axios';
 
 const { width, height } = Dimensions.get("screen");
 
-axios.defaults.baseURL = ' https://protected-journey-04256.herokuapp.com';
+axios.defaults.baseURL = 'https://salty-shore-73617.herokuapp.com';
 class Login extends React.Component {
   constructor(props){
     super(props);
