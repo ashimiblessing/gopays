@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { Block, Checkbox, Text, theme } from "galio-framework";
+
 import * as SecureStore from 'expo-secure-store';
 import { Button, Icon, Input } from "../components";
 import { Images, argonTheme } from "../constants";
@@ -22,11 +23,12 @@ class Login extends React.Component {
     this.state = {
       isLoading:false,
       email:"",
-      password:""
+      password:"",
+      setError:""
     }
     this.loginState = this.loginState.bind(this);
     this.login = this.login.bind(this);
-    global.errors = "";
+    
   }
 
 
@@ -49,21 +51,26 @@ class Login extends React.Component {
       
   })
   .then(response => {
+    
     let userResponse =  {
-      username: response.data.user.username,
+      user: response.data.user,
+      message: response.data.message,
       token: response.data.token
     } 
     
-    SecureStore.setItemAsync('user', JSON.stringify(userResponse));
+    SecureStore.setItemAsync('userInfo', JSON.stringify(userResponse));
     const { navigation } = this.props;
      navigation.navigate("Profile")
     
 })
 .catch(error => { 
   const key = Object.keys(error.response.data)[0]; 
-   errors = error.response.data[key][0];
+  
+   this.setState({
+     setError:errors
+   })
  this.setState({isLoading:false})
-  console.log(error)
+  console.log(errors)
 })
 
   
@@ -90,9 +97,14 @@ class Login extends React.Component {
               </Block>
               <Block flex>
                 <Block flex={0.17} middle>
-                  <Text color="#8898AA" size={12}>
-                    Enter login details
+                {/* {this.state.setError ? 
+                  <Text color="red" size={12}>
+                  hghghhghghg
                   </Text>
+                  :
+                  ""
+                } */}
+                  
                 </Block>
                 <Block flex center>
                   <KeyboardAvoidingView

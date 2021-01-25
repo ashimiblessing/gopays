@@ -9,7 +9,7 @@ import {
   Platform,FlatList, Animated,SafeAreaView,KeyboardAvoidingView,Picker
 } from "react-native";
 import { Block, Text,Icon,  theme, Button as GaButton} from "galio-framework";
-
+import * as SecureStore from 'expo-secure-store';
 import { Button,Header, Input,} from "../components";
 import { Images, argonTheme,Tabs } from "../constants";
 import { HeaderHeight } from "../constants/utils";
@@ -29,38 +29,64 @@ const BioData = ({ navigation }) => {
   const [email, setEmail] = React.useState('');
   const [phone, setPhone] = React.useState('');
   const [type_of_residence, setTypeOfResidence] = React.useState('');
-  const [employment_status, setEmploymentStatus] = React.useState('');
+  const [employement_status, setEmploymentStatus] = React.useState('');
   const [monthly_income, setMonthlyIncome] = React.useState('');
   const [loading, setLoading] = useState(false);
+  const [userDetails, setUserDetails] = useState('');
+  const [posts, setPosts] = useState([]);
+  // import * as SecureStore from 'expo-secure-store';
   
-    biodata: (first_name,middle_name,last_name,dob,email,phone,type_of_residence,employment_status,monthly_income) => {
-      setLoading(true)
-    axios.post('/api/profile',{
-      first_name:first_name,
-      middle_name:middle_name,
-      last_name:last_name,
-      dob:dob,
-      email:email,
-      phone:phone,
-      type_of_residence:type_of_residence,
-      employment_status:employment_status,
-      monthly_income:monthly_income
-      
-  })
-  .then(response => {
-    const { navigation } = this.props;
-     navigation.navigate("Login")
+  // let secure = SecureStore.getItem('user');
+  // console.log(secure);
+  // React.createContext({
+    
+  //   biodata: () => {},
+  
+  // });
+  
+  function biodata() {
+    setLoading(true)
+  axios.post('/api/profile',{
+    first_name:first_name,
+    middle_name:middle_name,
+    last_name:last_name,
+    dob:dob,
+    email:email,
+    phone:phone,
+    type_of_residence:'Rented',
+    employement_status:'Student',
+    monthly_income:monthly_income
     
 })
-.catch(error => { 
-  const key = Object.keys(error.response.data)[0]; 
-   errors = error.response.data[key][0];
- setLoading(false)
-  console.log(errors)
+.then(response => {
+  console.log(response)
+  const { navigation } = this.props;
+  navigation.navigate("Profile")
+  
 })
-    }
-
-
+.catch(error => { 
+// const key = Object.keys(error.response.data)[0]; 
+//  errors = error.response.data[key][0];
+setLoading(false)
+console.log(errors)
+})
+  }
+    useEffect(() => {
+      biodata()
+      // check if the user is logged in or not
+    SecureStore.getItemAsync("userInfo")
+    .then(userString => {
+      let user = JSON.parse(userString).user;
+      setUserDetails(user)
+      setFirstName(user.first_name)
+      setEmail(user.email)
+      setLastName(user.last_name)
+      //  console.log(user.email)
+    });
+  
+    }, []);
+    
+    
   
   return (
     
@@ -78,7 +104,7 @@ const BioData = ({ navigation }) => {
                          First Name
                        </Text>
                          <Input
-
+                          
                            placeholder="First Name"
                            style={{
                              borderColor: argonTheme.COLORS.INFO,
@@ -89,6 +115,7 @@ const BioData = ({ navigation }) => {
                            iconContent={<Block />
                            
                            }
+                           value={first_name}
                            onChangeText={text => setFirstName(text)}
                          />
                       
@@ -131,6 +158,7 @@ const BioData = ({ navigation }) => {
                              backgroundColor: "#fff"
                            }}
                            iconContent={<Block />}
+                            value={last_name}
                            onChangeText={text => setLastName(text)}
                          />
 
@@ -187,6 +215,7 @@ const BioData = ({ navigation }) => {
                              backgroundColor: "#fff"
                            }}
                            iconContent={<Block />}
+                            value={email}
                            onChangeText={text => setEmail(text)}
                          />
                        </Block>
@@ -229,15 +258,15 @@ const BioData = ({ navigation }) => {
              <Picker
 
      style={{ height: 50, }}
-     onChangeText={text => setTypeOfResidence(text)}
+      
    >
 
-     <Picker.Item label="Select one" value="" />
-     <Picker.Item label="Rented" value="rented" />
-     <Picker.Item label="Owned" value="owned" />
-     <Picker.Item label="Family House" value="family-house" />
-     <Picker.Item label="Employer Provided" value="employer-provided" />
-     <Picker.Item label="Temporary" value="temporary" />
+     <Picker.Item label="Select one" value="" onChangeText={text => setTypeOfResidence(text)}/>
+     <Picker.Item label="Rented" value="rented" onChangeText={text => setTypeOfResidence(text)}/>
+     <Picker.Item label="Owned" value="owned" onChangeText={text => setTypeOfResidence(text)}/>
+     <Picker.Item label="Family House" value="family-house" onChangeText={text => setTypeOfResidence(text)}/>
+     <Picker.Item label="Employer Provided" value="employer-provided" onChangeText={text => setTypeOfResidence(text)}/>
+     <Picker.Item label="Temporary" value="temporary" onChangeText={text => setTypeOfResidence(text)}/>
 
     </Picker>
 
@@ -254,15 +283,15 @@ const BioData = ({ navigation }) => {
 
 
      style={{ height: 50 }}
-     onChangeText={text => setEmploymentStatus(text)}
+    
      >
 
-     <Picker.Item label="Select one" value="" />
-     <Picker.Item label="Employed" value="employed" />
-     <Picker.Item label="Self-Employed" value="self-employed" />
+     <Picker.Item label="Select one" value="" onChangeText={text => setEmploymentStatus(text)}/>
+     <Picker.Item label="Employed" value="employed" onChangeText={text => setEmploymentStatus(text)}/>
+     <Picker.Item label="Self-Employed" value="self-employed" onChangeText={text => setEmploymentStatus(text)}/>
      <Picker.Item label="Retired" value="retired" />
-     <Picker.Item label="Unemployed" value="unemployed" />
-     <Picker.Item label="Student" value="student" />
+     <Picker.Item label="Unemployed" value="unemployed" onChangeText={text => setEmploymentStatus(text)}/>
+     <Picker.Item label="Student" value="student" onChangeText={text => setEmploymentStatus(text)}/>
 
     </Picker>
 
@@ -312,7 +341,7 @@ const BioData = ({ navigation }) => {
                          <Button
                            medium
                            style={{ backgroundColor: argonTheme.COLORS.DEFAULT }}
-                      onPress={() => biodata(first_name,middle_name,last_name,dob,email,phone,type_of_residence,employment_status,monthly_income)}
+                      onPress={() => biodata(first_name,middle_name,last_name,dob,email,phone,type_of_residence,employement_status,monthly_income)}
                          >
                          {
                            loading ? 

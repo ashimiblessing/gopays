@@ -8,7 +8,7 @@ import {
   Platform
 } from "react-native";
 import { Block, Text, theme , Button as GaButton} from "galio-framework";
-
+import * as SecureStore from 'expo-secure-store';
 import { Button } from "../components";
 import { Images, argonTheme } from "../constants";
 import { HeaderHeight } from "../constants/utils";
@@ -18,6 +18,36 @@ const { width, height } = Dimensions.get("screen");
 const thumbMeasure = (width - 48 - 32) / 3;
 
 class Profile extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      isLoading:false,
+      setUserInfo:""
+     
+    }
+    this.getUserData = this.getUserData.bind(this);
+    
+    global.errors = "";
+  }
+  getUserData(){
+    let data = SecureStore.getItemAsync("userInfo").then(userString => {
+      let userInfo = JSON.parse(userString);
+      this.setState({
+        setUserInfo:userInfo.user.first_name
+      })
+
+      
+    })
+  
+
+    
+  }
+  componentDidMount(){
+    this.getUserData()
+    
+  }
+
+  
   render() {
         const { navigation } = this.props;
     return (
@@ -38,7 +68,7 @@ class Profile extends React.Component {
               style={{ marginBottom: 4 }}
             >
 
-             Welcome, Blessing</Text>
+             Welcome, {this.state.setUserInfo}</Text>
              <Text size={16} color="#32325D" style={{ marginTop: 10 }}>
                Credit Limit - NGN 300,000
              </Text>
