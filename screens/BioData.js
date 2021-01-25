@@ -318,7 +318,9 @@ const BioData = ({ navigation }) => {
                            loading ? 
                            <ActivityIndicator  size="large" color="#ffff" />
                            :
-                           Save
+                           <Text bold size={14} color={argonTheme.COLORS.WHITE}>
+                        Save
+                        </Text>
                          }
                            
                          </Button>
