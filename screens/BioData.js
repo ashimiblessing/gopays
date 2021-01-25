@@ -3,6 +3,7 @@ import {
   StyleSheet,
   Dimensions,
   ScrollView,
+  ActivityIndicator,
   Image,
   ImageBackground,
   Platform,FlatList, Animated,SafeAreaView,KeyboardAvoidingView,Picker
@@ -12,16 +13,57 @@ import { Block, Text,Icon,  theme, Button as GaButton} from "galio-framework";
 import { Button,Header, Input,} from "../components";
 import { Images, argonTheme,Tabs } from "../constants";
 import { HeaderHeight } from "../constants/utils";
-
+import axios from 'axios';
+import { useEffect, useState } from "react";
 const { width, height } = Dimensions.get("screen");
 
 const thumbMeasure = (width - 48 - 32) / 3;
 
-
+axios.defaults.baseURL = 'https://secret-reef-44275.herokuapp.com';
 const BioData = ({ navigation }) => {
   const [text, setText] = React.useState('');
+  const [first_name, setFirstName] = React.useState('');
+  const [middle_name, setMiddleName] = React.useState('');
+  const [last_name, setLastName] = React.useState('');
+  const [dob, setDob] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [phone, setPhone] = React.useState('');
+  const [type_of_residence, setTypeOfResidence] = React.useState('');
+  const [employment_status, setEmploymentStatus] = React.useState('');
+  const [monthly_income, setMonthlyIncome] = React.useState('');
+  const [loading, setLoading] = useState(false);
+  
+    biodata: (first_name,middle_name,last_name,dob,email,phone,type_of_residence,employment_status,monthly_income) => {
+      setLoading(true)
+    axios.post('/api/profile',{
+      first_name:first_name,
+      middle_name:middle_name,
+      last_name:last_name,
+      dob:dob,
+      email:email,
+      phone:phone,
+      type_of_residence:type_of_residence,
+      employment_status:employment_status,
+      monthly_income:monthly_income
+      
+  })
+  .then(response => {
+    const { navigation } = this.props;
+     navigation.navigate("Login")
+    
+})
+.catch(error => { 
+  const key = Object.keys(error.response.data)[0]; 
+   errors = error.response.data[key][0];
+ setLoading(false)
+  console.log(errors)
+})
+    }
 
+
+  
   return (
+    
    <ScrollView>
     <KeyboardAvoidingView
 
@@ -43,9 +85,13 @@ const BioData = ({ navigation }) => {
                              borderRadius: 4,
                              backgroundColor: "#fff"
                            }}
-                           iconContent={<Block />}
+                           
+                           iconContent={<Block />
+                           
+                           }
+                           onChangeText={text => setFirstName(text)}
                          />
-
+                      
                        </Block>
 
 
@@ -65,7 +111,7 @@ const BioData = ({ navigation }) => {
                              backgroundColor: "#fff"
                            }}
                            iconContent={<Block />}
-
+                           onChangeText={text => setMiddleName(text)}
                          />
 
                        </Block>
@@ -85,6 +131,7 @@ const BioData = ({ navigation }) => {
                              backgroundColor: "#fff"
                            }}
                            iconContent={<Block />}
+                           onChangeText={text => setLastName(text)}
                          />
 
 
@@ -109,6 +156,7 @@ const BioData = ({ navigation }) => {
                              backgroundColor: "#fff"
                            }}
                            iconContent={<Block />}
+                           onChangeText={text => setDob(text)}
                          />
 
                        </Block>
@@ -139,6 +187,7 @@ const BioData = ({ navigation }) => {
                              backgroundColor: "#fff"
                            }}
                            iconContent={<Block />}
+                           onChangeText={text => setEmail(text)}
                          />
                        </Block>
 
@@ -158,6 +207,7 @@ const BioData = ({ navigation }) => {
                              backgroundColor: "#fff"
                            }}
                            iconContent={<Block />}
+                           onChangeText={text => setPhone(text)}
                          />
 
                        </Block>
@@ -176,9 +226,10 @@ const BioData = ({ navigation }) => {
               <Text size={14}>
                 Type of Residence
               </Text>
-                         <Picker
+             <Picker
 
      style={{ height: 50, }}
+     onChangeText={text => setTypeOfResidence(text)}
    >
 
      <Picker.Item label="Select one" value="" />
@@ -203,6 +254,7 @@ const BioData = ({ navigation }) => {
 
 
      style={{ height: 50 }}
+     onChangeText={text => setEmploymentStatus(text)}
      >
 
      <Picker.Item label="Select one" value="" />
@@ -234,6 +286,7 @@ const BioData = ({ navigation }) => {
                              backgroundColor: "#fff"
                            }}
                            iconContent={<Block />}
+                           onChangeText={text => setMonthlyIncome(text)}
                          />
 
                        </Block>
@@ -247,13 +300,27 @@ const BioData = ({ navigation }) => {
                          space="evenly"
                          style={{ marginTop: 20 }}
                        >
+{/* 
+                         <Button
+                           medium
+                           style={{ backgroundColor: argonTheme.COLORS.DEFAULT }}
+                      onPress={() => navigation.navigate("Profile")}
+                         >
+                           Save
+                         </Button> */}
 
                          <Button
                            medium
                            style={{ backgroundColor: argonTheme.COLORS.DEFAULT }}
-onPress={() => navigation.navigate("Profile")}
+                      onPress={() => biodata(first_name,middle_name,last_name,dob,email,phone,type_of_residence,employment_status,monthly_income)}
                          >
+                         {
+                           loading ? 
+                           <ActivityIndicator  size="large" color="#ffff" />
+                           :
                            Save
+                         }
+                           
                          </Button>
                        </Block>
 

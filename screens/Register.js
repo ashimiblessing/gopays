@@ -14,13 +14,12 @@ import { Button, Icon, Input } from "../components";
 import { Images, argonTheme } from "../constants";
 import axios from 'axios'; 
 const { width, height } = Dimensions.get("screen");
-axios.defaults.baseURL = 'https://salty-shore-73617.herokuapp.com';
+axios.defaults.baseURL = 'https://secret-reef-44275.herokuapp.com';
 class Register extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       isLoading:false,
-    
       firstname:"",
       lastname:"",
       email:"",
@@ -45,7 +44,7 @@ class Register extends React.Component {
 
   register() {
     this.setState({isLoading:true})
-    axios.post('/api/create-user',{
+    axios.post('/api/register',{
       firstname:this.state.firstname,
       lastname:this.state.lastname,
       email:this.state.email,
