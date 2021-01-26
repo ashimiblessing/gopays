@@ -67,10 +67,10 @@ class Login extends React.Component {
   const key = Object.keys(error.response.data)[0]; 
   
    this.setState({
-     setError:errors
+     setError:error.response.data[key][0]
    })
  this.setState({isLoading:false})
-  console.log(errors)
+  console.log(error)
 })
 
   
@@ -97,13 +97,17 @@ class Login extends React.Component {
               </Block>
               <Block flex>
                 <Block flex={0.17} middle>
-                {/* {this.state.setError ? 
+                {this.state.setError ?
                   <Text color="red" size={12}>
-                  hghghhghghg
+                    {/* Email/Password is invalid */}
+                    {this.state.setError}
                   </Text>
                   :
-                  ""
-                } */}
+                  <Text color="red" size={12}>
+              
+                  </Text>
+                 
+                }
                   
                 </Block>
                 <Block flex center>

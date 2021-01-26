@@ -23,7 +23,8 @@ class Register extends React.Component {
       firstname:"",
       lastname:"",
       email:"",
-      password:""
+      password:"",
+      setError:""
     }
     this.regState = this.regState.bind(this);
     this.register = this.register.bind(this);
@@ -58,9 +59,12 @@ class Register extends React.Component {
 })
 .catch(error => { 
   const key = Object.keys(error.response.data)[0]; 
-   errors = error.response.data[key][0];
+  
+  this.setState({
+    setError:error.response.data[key][0]
+  })
  this.setState({isLoading:false})
-  console.log(errors)
+  //console.log(errors)
 })
 
   
@@ -90,13 +94,16 @@ class Register extends React.Component {
               </Block>
               <Block flex>
                 <Block flex={0.17} middle>
-                     {/* {
-                    errors &&
+                     {
+                    this.state.setError ?
                    <Text color="red" size={12}>
-                    {errors}
+                    {this.state.setError}
                   </Text> 
-                
-                  } */}
+                  :
+                  <Text color="red" size={12}>
+                    
+                  </Text>
+                  }
                   <Text color="#8898AA" size={12}>
                     Please fill in your details
                   </Text>                  
