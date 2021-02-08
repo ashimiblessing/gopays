@@ -22,11 +22,12 @@ class Profile extends React.Component {
     super(props);
     this.state = {
       isLoading:false,
-      setUserInfo:""
-     
+      setUserInfo:"",
+
+
     }
     this.getUserData = this.getUserData.bind(this);
-    
+
     global.errors = "";
   }
   getUserData(){
@@ -36,27 +37,139 @@ class Profile extends React.Component {
         setUserInfo:userInfo.user.first_name
       })
 
-      
-    })
-  
+// alert(userInfo.user.dob )
 
-    
+    })
+
+
+
   }
   componentDidMount(){
-    this.getUserData()
-    
+    this.getUserData();
+
+
+
+              let data = SecureStore.getItemAsync("isProfileSaved").then(userString => {
+
+
+
+          if(userString !=='YES'  )
+          {
+            alert('Please fill your profile to continue');
+            navigation.navigate("BioData")
+          }
+              })
+
+
+
+                        let data2 = SecureStore.getItemAsync("CurrentLoanOffer").then(userString => {
+
+
+
+               this.setState({current_limit:userString})
+                        })
+
+
+
+
+
+
+
+
+                        let data3 = SecureStore.getItemAsync("CurrentLoaned").then(userString => {
+
+
+
+                        if(userString == '' || typeof userString === 'undefined' )
+                        {
+
+                        this.setState({current_loaned:0})
+                        }
+                        else{
+                         var the_amt = userString;
+
+                           this.setState({current_loaned:the_amt})
+                        }
+                        })
+
+
+
+
+
+
+
+
+
+
+
+
+
   }
 
-  
+
+
+
+
+
+
+
+
+
+determineLoan()
+{
+
+  let data = SecureStore.getItemAsync("CurrentLoanOffer").then(userString => {
+
+
+
+  if(userString == '' || typeof userString === 'undefined' )
+  {
+
+  this.props.navigation.navigate("UserPerms")
+  }
+  else{
+      this.props.navigation.navigate("Borrow")
+  }
+  })
+}
+
+
+
+
+
+
+
+
   render() {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         const { navigation } = this.props;
+
+
+
+
+
+
+
     return (
       <Block flex style={styles.profile}>
         <Block flex>
 
             <ScrollView
               showsVerticalScrollIndicator={false}
-              style={{ width, marginTop: '5%' }}
+              style={{ width, marginTop: '10%',textTransform: 'uppercase'}}
             >
 
             <Block flex style={styles.profileCard}>
@@ -64,14 +177,12 @@ class Profile extends React.Component {
             <Text
               bold
               color="#525F7F"
-              size={28}
-              style={{ marginBottom: 4 }}
+              size={16}
+              style={{ marginBottom: 0 }}
             >
 
              Welcome, {this.state.setUserInfo}</Text>
-             <Text size={16} color="#32325D" style={{ marginTop: 10 }}>
-               Credit Limit - NGN 300,000
-             </Text>
+
 
 
               </Block>
@@ -94,13 +205,16 @@ class Profile extends React.Component {
                     middle
                     row
                     space="evenly"
-                    style={{ marginTop: 20 }}
+                    style={{ marginTop: 0 }}
                   >
 
                     <Button
                       medium
-                      style={{ backgroundColor: argonTheme.COLORS.DEFAULT }}
-                       onPress={() => navigation.navigate("Borrow")}
+                       color="primary"
+                       style={{width:'90%'}}
+
+
+                       onPress={() => this.determineLoan()}
                     >
                       APPLY FOR LOAN
                     </Button>
@@ -112,10 +226,10 @@ class Profile extends React.Component {
 
 
 
-                <Block row space="around"   style={{ marginTop: 35,marginBottom: 35, backgroundColor:argonTheme.COLORS.PRIMARY }}>
+                <Block row space="around"   style={{ marginTop: 35,marginBottom: 35, backgroundColor:'#f1f1f1' }}>
                 <Block middle style={{ paddingBottom: 30, paddingTop: 30,}} >
-                  <Text bold size={20} color="#fff">
-                    Current Debt: NGN 27
+                  <Text bold size={14} color="#333">
+                    Wallet Balance: {'	\u20A6'} {this.state.current_loaned ? this.state.current_loaned :0}
                   </Text>
 
 
@@ -137,48 +251,48 @@ class Profile extends React.Component {
                 <Block row space="around">
                   <Block middle>
                   <GaButton
-                    round
+
                     onlyIcon
                     shadowless
-                    icon="money"
+                    icon="dollar"
                     iconFamily="Font-Awesome"
-                    iconColor={theme.COLORS.WHITE}
-                    iconSize={theme.SIZES.BASE * 1.125}
-                    color={theme.COLORS.FACEBOOK}
+                    iconColor={icoColor}
+                    iconSize={theme.SIZES.BASE *   1.425}
+                     color={'transparent'}
                     style={[styles.social, styles.shadow]}
-                    onPress={() => navigation.navigate("Borrow")}
+                    onPress={() => this.determineLoan()}
                   />
-                    <Text size={15} color={argonTheme.COLORS.TEXT}>Borrow</Text>
+                    <Text style={styles.but} color={argonTheme.COLORS.TEXT}>Borrow</Text>
                   </Block>
                   <Block middle>
                   <GaButton
-                    round
+
                     onlyIcon
                     shadowless
                     icon="calculator"
                     iconFamily="Font-Awesome"
-                    iconColor={theme.COLORS.WHITE}
-                    iconSize={theme.SIZES.BASE * 1.125}
-                    color={theme.COLORS.FACEBOOK}
+                    iconColor={icoColor}
+                    iconSize={theme.SIZES.BASE *   1.425}
+                     color={'transparent'}
                     style={[styles.social, styles.shadow]}
                       onPress={() => navigation.navigate("Repay")}
                   />
-                    <Text size={15} color={argonTheme.COLORS.TEXT}>Repay</Text>
+                    <Text style={styles.but} color={argonTheme.COLORS.TEXT}>Repay</Text>
                   </Block>
                   <Block middle>
                   <GaButton
-                    round
+
                     onlyIcon
                     shadowless
                     icon="credit-card"
                     iconFamily="Font-Awesome"
-                    iconColor={theme.COLORS.WHITE}
-                    iconSize={theme.SIZES.BASE * 1.125}
-                    color={theme.COLORS.FACEBOOK}
+                    iconColor={icoColor}
+                    iconSize={theme.SIZES.BASE *   1.425}
+                       color={'transparent'}
                     style={[styles.social, styles.shadow]}
                     onPress={() => alert('coming soon')}
                   />
-                    <Text size={15} color={argonTheme.COLORS.TEXT}>Cards</Text>
+                    <Text style={styles.but} color={argonTheme.COLORS.TEXT}>Cards</Text>
                   </Block>
 
 
@@ -191,49 +305,49 @@ class Profile extends React.Component {
                 <Block row space="around"   style={{ marginTop: 20, paddingBottom: 24 }}>
                   <Block middle>
                   <GaButton
-                    round
+
                     onlyIcon
                     shadowless
                     icon="history"
                     iconFamily="Font-Awesome"
-                    iconColor={theme.COLORS.WHITE}
-                    iconSize={theme.SIZES.BASE * 1.125}
-                    color={theme.COLORS.FACEBOOK}
+                    iconColor={icoColor}
+                    iconSize={theme.SIZES.BASE *   1.425}
+                     color={'transparent'}
                     style={[styles.social, styles.shadow]}
 
                         onPress={() => navigation.navigate("LoanHistory")}
 
                   />
-                    <Text size={15} color={argonTheme.COLORS.TEXT}>Loan History</Text>
+                    <Text style={styles.but} color={argonTheme.COLORS.TEXT}>History</Text>
                   </Block>
                   <Block middle>
                   <GaButton
-                    round
+
                     onlyIcon
                     shadowless
                     icon="user"
                     iconFamily="Font-Awesome"
-                    iconColor={theme.COLORS.WHITE}
-                    iconSize={theme.SIZES.BASE * 1.125}
-                    color={theme.COLORS.FACEBOOK}
+                    iconColor={icoColor}
+                    iconSize={theme.SIZES.BASE *   1.425}
+                       color={'transparent'}
                     style={[styles.social, styles.shadow]}
                       onPress={() => navigation.navigate("BioData")}
                   />
-                    <Text size={15} color={argonTheme.COLORS.TEXT}>Info</Text>
+                    <Text style={styles.but} color={argonTheme.COLORS.TEXT}>Info</Text>
                   </Block>
                   <Block middle>
                   <GaButton
-                    round
+
                     onlyIcon
                     shadowless
                     icon="gift"
                     iconFamily="Font-Awesome"
-                    iconColor={theme.COLORS.WHITE}
-                    iconSize={theme.SIZES.BASE * 1.125}
-                    color={theme.COLORS.FACEBOOK}
+                    iconColor={icoColor}
+                    iconSize={theme.SIZES.BASE *   1.425}
+                    color={'transparent'}
                     style={[styles.social, styles.shadow]}
                   />
-                    <Text size={15} color={argonTheme.COLORS.TEXT}>Invite</Text>
+                    <Text style={styles.but} color={argonTheme.COLORS.TEXT}>Invite</Text>
                   </Block>
 
 
@@ -256,6 +370,8 @@ class Profile extends React.Component {
   }
 }
 
+const icoColor = '#333';
+
 const styles = StyleSheet.create({
   profile: {
     marginTop: Platform.OS === "android" ? -HeaderHeight : 0,
@@ -268,6 +384,23 @@ const styles = StyleSheet.create({
     padding: 0,
     zIndex: 1
   },
+
+  social: {
+  backgroundColor:'#fff',
+  width:50,
+  height:50,
+
+  borderColor:'#fff',
+
+  },
+
+
+  but: {
+fontSize:13
+
+  },
+
+
   profileBackground: {
     width: width,
     height: height / 2

@@ -16,6 +16,11 @@ import Repay from "../screens/Repay";
 import LoanHistory from "../screens/LoanHistory";
 import BioData from "../screens/BioData";
 
+import UserPerms from "../screens/UserPerms";
+import DummyLoading from "../screens/DummyLoading";
+import AddCard from "../screens/AddCard";
+
+
 
 
 import Dashboard from "../screens/Dashboard";
@@ -118,11 +123,14 @@ function ProfileStack(props) {
       />
 
 
-
+                 <Stack.Screen name="UserPerms" component={UserPermsStack} />
               <Stack.Screen name="Borrow" component={BorrowStack} />
                 <Stack.Screen name="Repay" component={RepayStack} />
                 <Stack.Screen name="LoanHistory" component={LoanHistoryStack} />
                   <Stack.Screen name="BioData" component={BioDataStack} />
+
+                 <Stack.Screen name="DummyLoading" component={DummyLoadingStack} />
+                  <Stack.Screen name="AddCard" component={AddCardStack} />
 
 
 
@@ -182,6 +190,44 @@ export default function OnboardingStack(props) {
 
 
 
+
+
+
+function AddCardStack(props) {
+ return (
+   <Stack.Navigator mode="card" headerMode="none">
+     <Stack.Screen
+       name="AddCard"
+       component={AddCard}
+       options={{
+
+         header: ({ navigation, scene }) => (
+           <Header
+
+             title="Add a card"
+             navigation={navigation}
+             scene={scene}
+           />
+         ),
+         cardStyle: { backgroundColor: "#FFFFFF" },
+
+       }}
+
+     />
+
+      
+        </Stack.Navigator>
+      );
+     }
+
+
+
+
+
+
+
+
+
 function BorrowStack(props) {
  return (
    <Stack.Navigator mode="card" headerMode="none">
@@ -203,9 +249,87 @@ function BorrowStack(props) {
        }}
      />
 
+
+ <Stack.Screen name="DummyLoading" component={DummyLoadingStack} />
+
    </Stack.Navigator>
  );
 }
+
+
+
+
+
+
+function UserPermsStack(props) {
+ return (
+   <Stack.Navigator mode="card" headerMode="none">
+     <Stack.Screen
+       name="UserPerms"
+       component={UserPerms}
+      options={{
+          header: ({ navigation, scene }) => (
+            <Header
+
+              title="Gopays"
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          cardStyle: { backgroundColor: "#FFFFFF" },
+
+        }}
+     />
+
+
+
+ <Stack.Screen name="Borrow" component={BorrowStack} />
+
+
+
+   </Stack.Navigator>
+ );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+function DummyLoadingStack(props) {
+ return (
+   <Stack.Navigator mode="card" headerMode="none">
+    <Stack.Screen
+        name="DummyLoading"
+        component={DummyLoading}
+        option={{
+          headerTransparent: true
+        }}
+      />
+
+
+
+
+
+
+
+   </Stack.Navigator>
+ );
+}
+
+
+
+
+
+
+
 
 
 
@@ -341,6 +465,7 @@ function LoanHistoryStack(props) {
           headerTransparent: true
         }}
       />
+            <Stack.Screen name="BioData" component={BioDataStack} />
          <Stack.Screen name="Profile" component={ProfileStack} />
     </Stack.Navigator>
   );
@@ -411,7 +536,7 @@ function AppStack(props) {
 
 
 
- 
+
     </Drawer.Navigator>
   );
 }

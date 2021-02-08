@@ -3,25 +3,40 @@ import {
   StyleSheet,
   ImageBackground,
   Dimensions,
-  StatusBar,
-  KeyboardAvoidingView,
-  ActivityIndicator,
-  TextInput
+  StatusBar, ActivityIndicator, 
+  KeyboardAvoidingView,TouchableOpacity,
+  ScrollView,
+  Image,
 } from "react-native";
 import { Block, Checkbox, Text, theme } from "galio-framework";
 
-import { Button, Icon, Input } from "../components";
-import { Images, argonTheme } from "../constants";
+import { Button, Icon} from "../components";
+import {   argonTheme } from "../constants";
+import Images from "../constants/Images";
 import axios from 'axios'; 
+
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+
+import { TextInput } from 'react-native-paper';
+
 const { width, height } = Dimensions.get("screen");
+
 axios.defaults.baseURL = 'https://secret-reef-44275.herokuapp.com';
+
 class Register extends React.Component {
+  
+
+
   constructor(props){
     super(props);
     this.state = {
+    date:"",
+isDatePickerVisible:false,
       isLoading:false,
-      firstname:"",
-      lastname:"",
+      first_name:"",
+      last_name:"",
+      dob:"",
+      phone:"",
       email:"",
       password:"",
       setError:""
@@ -30,6 +45,38 @@ class Register extends React.Component {
     this.register = this.register.bind(this);
     global.errors = "";
   }
+
+
+
+
+
+
+    showDatePicker()  {
+    this.setDatePickerVisibility(true);
+  };
+
+   hideDatePicker ()  {
+    this.setDatePickerVisibility(false);
+  };
+
+    handleConfirm   (date)   {
+
+      const dt = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
+          this.setState({date:dt});
+          this.setState({dob:dt});
+    
+    this.hideDatePicker();
+
+  };
+
+
+
+   setDatePickerVisibility   (dstate)  {
+       this.setState({isDatePickerVisible:dstate})
+     };
+
+
+
 
 
   regState(event){
@@ -46,10 +93,12 @@ class Register extends React.Component {
   register() {
     this.setState({isLoading:true})
     axios.post('/api/register',{
-      firstname:this.state.firstname,
-      lastname:this.state.lastname,
+      firstname:this.state.first_name,
+      lastname:this.state.last_name,
       email:this.state.email,
       password:this.state.password,
+      dob:this.state.dob,
+      phone:this.state.phone,
       
   })
   .then(response => {
@@ -64,149 +113,188 @@ class Register extends React.Component {
     setError:error.response.data[key][0]
   })
  this.setState({isLoading:false})
-  //console.log(errors)
+  alert(error.response.data[key])
 })
 
   
 
   }
 
+
+
+
+
+
   render() {
         const { navigation } = this.props;
-
-
-
-      
     return (
-      <Block flex middle>
-        <StatusBar hidden />
-        <ImageBackground
-          source={Images.RegisterBackground}
-          style={{ width, height, zIndex: 1 }}
-        >
-          <Block flex middle>
-            <Block style={styles.registerContainer}>
-              <Block flex={0.15} middle style={styles.socialConnect}>
-                <Text color="#8898AA" size={22}>
-                 Register Now
-                </Text>
-                
-              </Block>
-              <Block flex>
-                <Block flex={0.17} middle>
-                     {
-                    this.state.setError ?
-                   <Text color="red" size={12}>
-                    {this.state.setError}
-                  </Text> 
-                  :
-                  <Text color="red" size={12}>
-                    
-                  </Text>
-                  }
-                  <Text color="#8898AA" size={12}>
-                    Please fill in your details
-                  </Text>                  
-                </Block>
-                <Block flex center>
+
+      <Block flex>
+      <StatusBar hidden />
+      <ScrollView style={{backgroundColor:"white"}}>
+
+      <Block center>
+        <Image source={Images.LogoOnboarding}  style={styles.logo} />
+      </Block>
+
+
+
+                <Block flex center style={styles.registerContainer}>
                   <KeyboardAvoidingView
                     style={{ flex: 1 }}
                     behavior="padding"
                     enabled
                   >
-                    <Block width={width * 0.8} style={{ marginBottom: 15 }}>
-                      <Input
-                        name="firstname"
-                        borderless
-                        placeholder="First Name"
-                        iconContent={
-                          <Icon
-                            size={16}
-                            color={argonTheme.COLORS.ICON}
-                            name="hat-3"
-                            family="ArgonExtra"
-                            style={styles.inputIcons}
-                          />
-                        }
-                        value={this.state.value}
-                        onChangeText={(text) => this.setState({ firstname:text })}
-                      />
- 
+
+ <Block center style={styles.formContain}>
+ <TextInput
+     label="First name"
+     mode="flat"
+     underlineColor="blue" style={styles.formi}
+     value={this.state.value}
+                        onChangeText={(text) => this.setState({ first_name:text })}
+
+   />
+
+   <Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
+      Your first name as seen on your bank account details.
+     </Text>
                     </Block>
 
-              <Block width={width * 0.8} style={{ marginBottom: 15 }}>
-                      <Input
-                      name="lastname"
-                        borderless
-                        placeholder="Last Name"
-                        iconContent={
-                          <Icon
-                            size={16}
-                            color={argonTheme.COLORS.ICON}
-                            name="hat-3"
-                            family="ArgonExtra"
-                            style={styles.inputIcons}
-                          />
-                        }
-                        value={this.state.value}
-                        onChangeText={(text) => this.setState({ lastname:text })}
-                      />
-                    </Block>
 
-                    <Block width={width * 0.8} style={{ marginBottom: 15 }}>
-                      <Input
-                        name="email"
-                        borderless
-                        placeholder="Email"
-                        iconContent={
-                          <Icon
-                            size={16}
-                            color={argonTheme.COLORS.ICON}
-                            name="ic_mail_24px"
-                            family="ArgonExtra"
-                            style={styles.inputIcons}
-                          />
-                        }
+
+
+                    <Block center style={styles.formContain}>
+
+                      <TextInput
+                          label="Last name"
+                          mode="flat"
+                          underlineColor="blue" style={styles.formi}
+
+                            
                         value={this.state.value}
+                        onChangeText={(text) => this.setState({ last_name:text })}
+
+                        />
+                      <Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
+                         Your last name as seen on your bank account details.
+                        </Text>
+                                       </Block>
+
+
+
+
+
+
+                    <Block  center style={styles.formContain}>
+                    <TextInput
+                        label="Email address"
+                        mode="flat"
+                        underlineColor="blue" style={styles.formi}
+
+  value={this.state.value}
                         onChangeText={(text) => this.setState({ email:text })}
+
                       />
-                    </Block>
-                    <Block width={width * 0.8}>
-                      <Input
-                        name="password"
-                        password
-                        borderless
-                        placeholder="Pin (4 Digits)"
-                        iconContent={
-                          <Icon
-                            size={16}
-                            color={argonTheme.COLORS.ICON}
-                            name="padlock-unlocked"
-                            family="ArgonExtra"
-                            style={styles.inputIcons}
-                          />
-                        }
-                        value={this.state.value}
-                        onChangeText={(text) => this.setState({ password:text })}
-                      />
-                      
-                    </Block>
-                    <Block row width={width * 0.75} style={styles.termtxt}>
-                      <Text color={argonTheme.COLORS.MUTED}>
-                          By creating an account, you hereby agree to our terms of service
+
+                      <Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
+                         For important notifications
                         </Text>
-                      
-                    </Block>
+
+                                       </Block>
+
+
+                                       <Block center style={styles.formContain}>
+
+
+
+                                       <TouchableOpacity
+                                         activeOpaticy={1}
+                                         onPress={() => this.showDatePicker()}
+
+                                           >
+
+
+                                         <TextInput
+                                         editable={false} // optional
+                                         value={this.state.date}
+                                             label="Date of birth"
+                                             mode="flat"
+                                             underlineColor="blue" style={styles.formi}
+                                           />
+
+
+                                       </TouchableOpacity>
+
+
+                                         <DateTimePickerModal
+                                           isVisible={this.state.isDatePickerVisible}
+                                           onConfirm={(date) => {
+                                             this.hideDatePicker(); // <- first thing
+                                             this.handleConfirm(date);
+                                           }}
+                                           onCancel={() => this.hideDatePicker()}
+                                         />
+
+
+
+
+                                         <Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
+                                            Please ensure that the date provided is the same
+                                            captured by your bank.
+                                           </Text>
+               </Block>
+
+
+
+               <Block center style={styles.formContain}>
+               <TextInput
+               KeyboardType="number"
+                   label="Phone number"
+                   mode="flat"
+                   underlineColor="blue" style={styles.formi}
+
+                     onChangeText={(text) => this.setState({ phone:text })}
+
+                 />
+
+                 <Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
+                We recommend using the phone number used by your bank for verification purposes
+                   </Text>
+</Block>
+
+
+
+
+                           <Block center style={styles.formContain}>
+               <TextInput
+               KeyboardType="password"
+                   label="Pin"
+                   mode="flat"
+                   underlineColor="blue" style={styles.formi}
+
+                     onChangeText={(text) => this.setState({ password:text })}
+
+                 />
+
+                 <Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
+               Select Pin
+                   </Text>
+</Block>
+
+
+
+
+
+
+
+
+
+ 
+
+
                     <Block middle>
-                      {/* <Button color="primary" style={styles.createButton} 
-                       onPress={() => navigation.navigate("Login")}
-                      >
-                        <Text bold size={14} color={argonTheme.COLORS.WHITE}>
-                          CREATE ACCOUNT
-                        </Text>
-                      </Button> */}
-                   
-                      <Button color="primary" style={styles.createButton} 
+                      <Button color="primary" style={styles.createButton}
                        onPress={this.register}
                       >
                          {this.state.isLoading ?
@@ -217,39 +305,59 @@ class Register extends React.Component {
                         </Text>
                       }
                       </Button>
-                      
                     </Block>
                   </KeyboardAvoidingView>
                 </Block>
+                </ScrollView>
               </Block>
-            </Block>
-          </Block>
-        </ImageBackground>
-      </Block>
+
+
     );
   }
 }
 
 const styles = StyleSheet.create({
-  
-  termtxt: {
-    marginTop:10,
+
+
+    formContain: {
+ width:width*0.9
+    } ,
+
+  formtext: {
+    fontSize:12,
+    marginTop:2,
+    marginLeft:2,
+    textAlign:'left',
+    alignSelf:'flex-start',
   } ,
 
+
+  logo: {
+    width: 160,
+    height: 27,
+    zIndex: 20,
+    position: 'relative',
+    marginTop: '20%'
+  },
+
+
+  formi: {
+    marginTop:10,
+    backgroundColor:"white",
+    width:width*0.9,
+    fontSize:14,
+    color:'#000',
+  } ,
+
+
+
   registerContainer: {
-    width: width * 0.9,
-    height: height * 0.78,
-    backgroundColor: "#F4F5F7",
-    borderRadius: 4,
-    shadowColor: argonTheme.COLORS.BLACK,
-    shadowOffset: {
-      width: 0,
-      height: 4
-    },
-    shadowRadius: 8,
-    shadowOpacity: 0.1,
-    elevation: 1,
-    overflow: "hidden"
+    width: width * 0.98,
+
+    backgroundColor: "#fff",
+
+
+
   },
   socialConnect: {
     backgroundColor: argonTheme.COLORS.WHITE,

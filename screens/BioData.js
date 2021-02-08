@@ -6,17 +6,19 @@ import {
   ActivityIndicator,
   Image,
   ImageBackground,
-  Platform,FlatList, Animated,SafeAreaView,KeyboardAvoidingView,Picker
+  Platform,FlatList, Animated,SafeAreaView,KeyboardAvoidingView,
 } from "react-native";
 import { Block, Text,Icon,  theme, Button as GaButton} from "galio-framework";
 import * as SecureStore from 'expo-secure-store';
-import { Button,Header, Input,} from "../components";
+import { Button,Header} from "../components";
 import { Images, argonTheme,Tabs } from "../constants";
 import { HeaderHeight } from "../constants/utils";
 import axios from 'axios';
 import { useEffect, useState } from "react";
 const { width, height } = Dimensions.get("screen");
+import {Picker} from '@react-native-picker/picker';
 
+import { TextInput  , Paragraph, Dialog, Portal } from 'react-native-paper';
 const thumbMeasure = (width - 48 - 32) / 3;
 
 axios.defaults.baseURL = 'https://secret-reef-44275.herokuapp.com';
@@ -35,15 +37,15 @@ const BioData = ({ navigation }) => {
   const [userDetails, setUserDetails] = useState('');
   const [posts, setPosts] = useState([]);
   // import * as SecureStore from 'expo-secure-store';
-  
+
   // let secure = SecureStore.getItem('user');
   // console.log(secure);
   // React.createContext({
-    
+
   //   biodata: () => {},
-  
+
   // });
-  
+
   function biodata() {
     setLoading(true)
   axios.post('/api/profile',{
@@ -53,22 +55,29 @@ const BioData = ({ navigation }) => {
     dob:dob,
     email:email,
     phone:phone,
-    type_of_residence:'Rented',
+    type_of_residence:type_of_residence,
     employement_status:'Student',
     monthly_income:monthly_income
-    
+
 })
 .then(response => {
   console.log(response)
-  const { navigation } = this.props;
+  //const { navigation } = this.props;
+
+  SecureStore.setItemAsync('isProfileSaved', 'YES');
+
   navigation.navigate("Profile")
-  
+
 })
-.catch(error => { 
-// const key = Object.keys(error.response.data)[0]; 
+.catch(error => {
+  setLoading(false)
+//alert(error)
+    const key = Object.keys(error.response.data)[0];
+// const key = Object.keys(error.response.data)[0];
 //  errors = error.response.data[key][0];
-setLoading(false)
-console.log(errors)
+
+
+   alert(error.response.data[key])
 })
   }
     useEffect(() => {
@@ -79,46 +88,41 @@ console.log(errors)
       let user = JSON.parse(userString).user;
       setUserDetails(user)
       setFirstName(user.first_name)
+   
       setEmail(user.email)
       setLastName(user.last_name)
       //  console.log(user.email)
     });
-  
+
     }, []);
-    
-    
-  
+
+
+
   return (
-    
-   <ScrollView>
+
+
     <KeyboardAvoidingView
 
                        style={styles.group}
                        behavior="padding"
                        enabled
                      >
-
+ <ScrollView>
 
                        <Block  style={{ marginBottom: 15 }}>
                        <Text size={14}>
                          First Name
                        </Text>
-                         <Input
-                          
-                           placeholder="First Name"
-                           style={{
-                             borderColor: argonTheme.COLORS.INFO,
-                             borderRadius: 4,
-                             backgroundColor: "#fff"
-                           }}
-                           
-                           iconContent={<Block />
-                           
-                           }
+                         <TextInput  mode="flat" underlineColor="blue"
+
+
+                          style={styles.formi}
+
+
                            value={first_name}
                            onChangeText={text => setFirstName(text)}
                          />
-                      
+
                        </Block>
 
 
@@ -127,17 +131,11 @@ console.log(errors)
               <Text size={14}>
                 Middle Name
               </Text>
-                         <Input
-
-                           placeholder="Middle Name"
+                         <TextInput  mode="flat" underlineColor="blue"
 
 
-                           style={{
-                             borderColor: argonTheme.COLORS.INFO,
-                             borderRadius: 4,
-                             backgroundColor: "#fff"
-                           }}
-                           iconContent={<Block />}
+
+ style={styles.formi}
                            onChangeText={text => setMiddleName(text)}
                          />
 
@@ -149,15 +147,10 @@ console.log(errors)
     <Text size={14}>
     Last Name
     </Text>
-                         <Input
+                         <TextInput  mode="flat" underlineColor="blue"
 
-                           placeholder="Last Name"
-                           style={{
-                             borderColor: argonTheme.COLORS.INFO,
-                             borderRadius: 4,
-                             backgroundColor: "#fff"
-                           }}
-                           iconContent={<Block />}
+
+                        style={styles.formi}
                             value={last_name}
                            onChangeText={text => setLastName(text)}
                          />
@@ -175,15 +168,10 @@ console.log(errors)
               <Text size={14}>
                 Date of Birth
               </Text>
-                         <Input
+                         <TextInput  mode="flat" underlineColor="blue"
 
-                           placeholder="DOB"
-                           style={{
-                             borderColor: argonTheme.COLORS.INFO,
-                             borderRadius: 4,
-                             backgroundColor: "#fff"
-                           }}
-                           iconContent={<Block />}
+
+                        style={styles.formi}
                            onChangeText={text => setDob(text)}
                          />
 
@@ -205,16 +193,12 @@ console.log(errors)
                        <Text size={14}>
                       Email Address
                        </Text>
-                         <Input
+                         <TextInput  mode="flat" underlineColor="blue"
 
 
-                           placeholder="Email"
-                           style={{
-                             borderColor: argonTheme.COLORS.INFO,
-                             borderRadius: 4,
-                             backgroundColor: "#fff"
-                           }}
-                           iconContent={<Block />}
+
+
+                        style={styles.formi}
                             value={email}
                            onChangeText={text => setEmail(text)}
                          />
@@ -227,15 +211,10 @@ console.log(errors)
               <Text size={14}>
                 Phone Number
               </Text>
-                         <Input
+                         <TextInput  mode="flat" underlineColor="blue"
 
-                           placeholder="Phone"
-                           style={{
-                             borderColor: argonTheme.COLORS.INFO,
-                             borderRadius: 4,
-                             backgroundColor: "#fff"
-                           }}
-                           iconContent={<Block />}
+
+                          style={styles.formi}
                            onChangeText={text => setPhone(text)}
                          />
 
@@ -258,20 +237,37 @@ console.log(errors)
              <Picker
 
      style={{ height: 50, }}
-      
+ selectedValue={type_of_residence}
+     onValueChange={(itemValue, itemIndex) =>
+       setTypeOfResidence(itemValue)
+     }
+
    >
 
-     <Picker.Item label="Select one" value="" onChangeText={text => setTypeOfResidence(text)}/>
-     <Picker.Item label="Rented" value="rented" onChangeText={text => setTypeOfResidence(text)}/>
-     <Picker.Item label="Owned" value="owned" onChangeText={text => setTypeOfResidence(text)}/>
-     <Picker.Item label="Family House" value="family-house" onChangeText={text => setTypeOfResidence(text)}/>
-     <Picker.Item label="Employer Provided" value="employer-provided" onChangeText={text => setTypeOfResidence(text)}/>
-     <Picker.Item label="Temporary" value="temporary" onChangeText={text => setTypeOfResidence(text)}/>
+     <Picker.Item label="Select one" value=""
+
+
+     />
+     <Picker.Item label="Rented" value="rented"
+
+
+     />
+     <Picker.Item label="Owned" value="owned"  />
+     <Picker.Item label="Family House" value="family-house"  />
+     <Picker.Item label="Employer Provided" value="employer-provided"  />
+     <Picker.Item label="Temporary" value="temporary"  />
 
     </Picker>
 
 
                        </Block>
+
+
+
+
+
+
+
 
 
 
@@ -281,17 +277,23 @@ console.log(errors)
      </Text>
                          <Picker
 
+                              style={{ height: 50, }}
+                          selectedValue={employement_status}
+                              onValueChange={(itemValue, itemIndex) =>
+                                setEmploymentStatus(itemValue)
+                              }
 
-     style={{ height: 50 }}
-    
      >
 
-     <Picker.Item label="Select one" value="" onChangeText={text => setEmploymentStatus(text)}/>
-     <Picker.Item label="Employed" value="employed" onChangeText={text => setEmploymentStatus(text)}/>
-     <Picker.Item label="Self-Employed" value="self-employed" onChangeText={text => setEmploymentStatus(text)}/>
+     <Picker.Item label="Select one" value=""
+
+
+     />
+     <Picker.Item label="Employed" value="employed"   />
+     <Picker.Item label="Self-Employed" value="self-employed"    />
      <Picker.Item label="Retired" value="retired" />
-     <Picker.Item label="Unemployed" value="unemployed" onChangeText={text => setEmploymentStatus(text)}/>
-     <Picker.Item label="Student" value="student" onChangeText={text => setEmploymentStatus(text)}/>
+     <Picker.Item label="Unemployed" value="unemployed"     />
+     <Picker.Item label="Student" value="student"   />
 
     </Picker>
 
@@ -306,15 +308,11 @@ console.log(errors)
               <Text size={14}>
               Monthly Income
               </Text>
-                         <Input
+                         <TextInput  mode="flat" underlineColor="blue"
 
-                           placeholder="Monthly Income"
-                           style={{
-                             borderColor: argonTheme.COLORS.INFO,
-                             borderRadius: 4,
-                             backgroundColor: "#fff"
-                           }}
-                           iconContent={<Block />}
+
+                          style={styles.formi}
+
                            onChangeText={text => setMonthlyIncome(text)}
                          />
 
@@ -329,7 +327,7 @@ console.log(errors)
                          space="evenly"
                          style={{ marginTop: 20 }}
                        >
-{/* 
+{/*
                          <Button
                            medium
                            style={{ backgroundColor: argonTheme.COLORS.DEFAULT }}
@@ -340,24 +338,25 @@ console.log(errors)
 
                          <Button
                            medium
-                           style={{ backgroundColor: argonTheme.COLORS.DEFAULT }}
+                           color="primary"
+
                       onPress={() => biodata(first_name,middle_name,last_name,dob,email,phone,type_of_residence,employement_status,monthly_income)}
                          >
                          {
-                           loading ? 
+                           loading ?
                            <ActivityIndicator  size="large" color="#ffff" />
                            :
                            <Text bold size={14} color={argonTheme.COLORS.WHITE}>
                         Save
                         </Text>
                          }
-                           
+
                          </Button>
                        </Block>
 
-
+</ScrollView>
                      </KeyboardAvoidingView>
-                     </ScrollView>
+
 
   );
 };
@@ -377,6 +376,17 @@ const styles = StyleSheet.create({
     padding: 0,
     zIndex: 1
   },
+
+  formi: {
+    marginTop:10,
+    backgroundColor:"transparent",
+    width:width*0.9,
+    fontSize:14,
+    color:'#000',
+  } ,
+
+
+
   profileBackground: {
     width: width,
     height: height / 2

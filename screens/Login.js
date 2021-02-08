@@ -6,6 +6,8 @@ import {
   StatusBar,
   KeyboardAvoidingView,
   ActivityIndicator,
+  ScrollView,
+  Image,
 } from "react-native";
 import { Block, Checkbox, Text, theme } from "galio-framework";
 
@@ -13,6 +15,9 @@ import * as SecureStore from 'expo-secure-store';
 import { Button, Icon, Input } from "../components";
 import { Images, argonTheme } from "../constants";
 import axios from 'axios';
+
+
+import { TextInput } from 'react-native-paper';
 
 const { width, height } = Dimensions.get("screen");
 
@@ -28,7 +33,7 @@ class Login extends React.Component {
     }
     this.loginState = this.loginState.bind(this);
     this.login = this.login.bind(this);
-    
+
   }
 
 
@@ -39,8 +44,8 @@ class Login extends React.Component {
     });
 
   // console.log(event.target.value);
-  
-    
+
+
   };
 
   login() {
@@ -48,126 +53,158 @@ class Login extends React.Component {
     axios.post('/api/login',{
       email:this.state.email,
       password:this.state.password,
-      
+
   })
   .then(response => {
-    
+
     let userResponse =  {
       user: response.data.user,
       message: response.data.message,
       token: response.data.token
-    } 
-    
+    }
+
     SecureStore.setItemAsync('userInfo', JSON.stringify(userResponse));
     const { navigation } = this.props;
-     navigation.navigate("Profile")
-    
+     this.setState({isLoading:false})
+
+
+               let data = SecureStore.getItemAsync("isProfileSaved").then(userString => {
+
+
+
+           if(userString !=='YES'  )
+           {
+             alert('Please fill your profile to continue');
+             navigation.navigate("BioData")
+           }
+               })
+
+ navigation.navigate("Profile")
+
 })
-.catch(error => { 
-  const key = Object.keys(error.response.data)[0]; 
-  
+.catch(error => {
+
+
+
+  const key = Object.keys(error.response.data)[0];
+
    this.setState({
      setError:error.response.data[key][0]
    })
+
+
  this.setState({isLoading:false})
-  console.log(error)
+if(error.response.data[key] == 'Unauthorized'){
+  alert("Sorry. Your credentials are incorrect")
+}
+else{
+   alert(error.response.data[key])
+}
+
+
 })
 
-  
+
 
   }
+
+
+
+
+
+
+
+
+
   render() {
-
-    const { navigation } = this.props;
-
+        const { navigation } = this.props;
     return (
-      <Block flex middle>
-        <StatusBar hidden />
-        <ImageBackground
-          source={Images.RegisterBackground}
-          style={{ width, height, zIndex: 1 }}
-        >
-          <Block flex middle>
-            <Block style={styles.registerContainer}>
-              <Block flex={0.15} middle style={styles.socialConnect}>
-                <Text color="#8898AA" size={22}>
-                 Login
-                </Text>
 
-              </Block>
-              <Block flex>
-                <Block flex={0.17} middle>
-                {this.state.setError ?
-                  <Text color="red" size={12}>
-                    {/* Email/Password is invalid */}
-                    {this.state.setError}
-                  </Text>
-                  :
-                  <Text color="red" size={12}>
-              
-                  </Text>
-                 
-                }
-                  
-                </Block>
-                <Block flex center>
+      <Block flex>
+      <StatusBar hidden />
+      <ScrollView style={{backgroundColor:"white"}}>
+
+      <Block center>
+        <Image source={Images.LogoOnboarding}  style={styles.logo} />
+        <Text bold size={15} style={{marginTop:30}}>
+         Welcome to Gopays!
+        </Text>
+
+
+
+
+      </Block>
+
+
+
+                <Block flex center style={styles.registerContainer}>
                   <KeyboardAvoidingView
                     style={{ flex: 1 }}
                     behavior="padding"
                     enabled
                   >
-                    <Block width={width * 0.8} style={{ marginBottom: 15 }}>
-                      <Input
-                      name="email"
-                        borderless
-                        placeholder="email"
-                        iconContent={
-                          <Icon
-                            size={16}
-                            color={argonTheme.COLORS.ICON}
-                            name="ic_mail_24px"
-                            family="ArgonExtra"
-                            style={styles.inputIcons}
-                          />
-                        }
-                        value={this.state.value}
-                        onChangeText={(text) => this.setState({ email:text })}
-                      />
-                    </Block>
-                    <Block width={width * 0.8}>
-                      <Input
-                        name="password"
-                        password
-                        borderless
-                        placeholder="Pin (4 Digits)"
-                        iconContent={
-                          <Icon
-                            size={16}
-                            color={argonTheme.COLORS.ICON}
-                            name="padlock-unlocked"
-                            family="ArgonExtra"
-                            style={styles.inputIcons}
-                          />
-                        }
-                        value={this.state.value}
-                        onChangeText={(text) => this.setState({ password:text })}
-                      />
 
-                    </Block>
+
+
+
+
+
+
+
+
+
+
+
+               <Block center style={styles.formContain}>
+               <TextInput
+                   label="Email"
+                   mode="flat"
+                   underlineColor="blue" style={styles.formi}
+
+
+                        onChangeText={(text) => this.setState({ email:text })}
+
+                 />
+
+                 <TextInput
+                     label="Enter PIN"
+                     mode="flat"
+                     underlineColor="blue" style={styles.formi}
+                      name="password"
+                        password
+                        onChangeText={(text) => this.setState({ password:text })}
+
+                   />
+
+                 <Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
+                Forgot PIN?
+                   </Text>
+</Block>
+
+
+
+
 
                     <Block middle>
-                      {/* <Button color="primary" style={styles.createButton}
+
+
+   {/* <Button color="primary" style={styles.createButton}
                        onPress={() => navigation.navigate("Profile")}
                       >
                         <Text bold size={14} color={argonTheme.COLORS.WHITE}>
                           Login
                         </Text>
                       </Button> */}
-                        
-                      <Button color="primary" style={styles.createButton} 
-                       onPress={this.login}
+
+
+
+
+
+
+                      <Button color="primary" style={styles.createButton}
+                      onPress={this.login}
                       >
-                         {this.state.isLoading ?
+                            {this.state.isLoading ?
                       <ActivityIndicator  size="large" color="#ffff" />
                       :
                         <Text bold size={14} color={argonTheme.COLORS.WHITE}>
@@ -175,38 +212,74 @@ class Login extends React.Component {
                         </Text>
                       }
                       </Button>
+
+
+
+
+
                     </Block>
+
+    <Block center>
+                    <Text
+ onPress={() => navigation.navigate("Register")}
+
+                     bold size={12} style={{marginTop:30}} color='#4404c4'>
+                     Not registered? Sign up now
+                    </Text>
+    </Block>
+
                   </KeyboardAvoidingView>
                 </Block>
+                </ScrollView>
               </Block>
-            </Block>
-          </Block>
-        </ImageBackground>
-      </Block>
+
+
     );
   }
 }
 
 const styles = StyleSheet.create({
 
-  termtxt: {
-    marginTop:10,
+
+    formContain: {
+ width:width*0.9
+    } ,
+
+  formtext: {
+    fontSize:12,
+    marginTop:2,
+    marginLeft:2,
+    textAlign:'left',
+    alignSelf:'flex-start',
   } ,
 
+
+  logo: {
+    width: 160,
+    height: 27,
+    zIndex: 20,
+    position: 'relative',
+    marginTop: '20%'
+  },
+
+
+  formi: {
+    marginTop:10,
+    backgroundColor:"white",
+    width:width*0.9,
+    fontSize:14,
+    color:'#000',
+  } ,
+
+
+
   registerContainer: {
-    width: width * 0.9,
-    height: height * 0.78,
-    backgroundColor: "#F4F5F7",
-    borderRadius: 4,
-    shadowColor: argonTheme.COLORS.BLACK,
-    shadowOffset: {
-      width: 0,
-      height: 4
-    },
-    shadowRadius: 8,
-    shadowOpacity: 0.1,
-    elevation: 1,
-    overflow: "hidden"
+    width: width * 0.98,
+
+    backgroundColor: "#fff",
+
+
+
   },
   socialConnect: {
     backgroundColor: argonTheme.COLORS.WHITE,
@@ -241,7 +314,8 @@ const styles = StyleSheet.create({
   },
   createButton: {
     width: width * 0.5,
-    marginTop: 25
+    marginTop: 25,
+    backgroundColor:'#4404c4'
   }
 });
 

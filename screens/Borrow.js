@@ -5,13 +5,17 @@ import {
   ScrollView,
   Image,
   ImageBackground,
-  Platform,FlatList, Animated
+  Platform,FlatList, Animated,KeyboardAvoidingView,Alert,AsyncStorage ,
 } from "react-native";
 import { Block, Text, theme , Button as GaButton} from "galio-framework";
 
 import { Button,Header, } from "../components";
 import { Images, argonTheme,Tabs } from "../constants";
 import { HeaderHeight } from "../constants/utils";
+import {Picker} from '@react-native-picker/picker';
+
+import { TextInput, Paragraph, Dialog, Portal } from 'react-native-paper';
+import * as SecureStore from 'expo-secure-store';
 
 const { width, height } = Dimensions.get("screen");
 
@@ -19,17 +23,24 @@ const thumbMeasure = (width - 48 - 32) / 3;
 const DATA = [
   {
     id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: '30 Days',
+    title: '3 Days',
   },
   {
     id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: '60 Days',
+    title: '7 Days',
   },
   {
     id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: '90 Days',
+    title: '15 Days',
   },
 ];
+
+
+var loan_amounts={
+  first_time:10000,
+  second_time: 30000,
+  third_time:70000
+}
 
 
 
@@ -42,14 +53,107 @@ class Borrow extends React.Component {
     initialIndex: null,
   }
 
-  state = {
-    active: null,
+
+
+
+
+  constructor(props){
+    super(props);
+    this.state = {
+      isLoading:false,
+      reason:"",
+      amount:"",
+      setError:"",
+      active:null,
+    }
+
+
   }
+
+
+
 
   componentDidMount() {
     const { initialIndex } = this.props;
     initialIndex && this.selectMenu(initialIndex);
   }
+
+
+
+validateVBorrow()
+{
+var amt = this.state.amount * 1;
+
+if(amt <1000){alert('Sorry, you cannot borrow less that NGN 1000')
+
+return;
+
+}
+var borrowable = 0;
+
+
+
+//CurrentLoanOffer is the amount borrowable by user currently
+let data = SecureStore.getItemAsync("CurrentLoanOffer").then(dataItem => {
+
+
+
+if(dataItem == '' || typeof dataItem === 'undefined' )
+{
+ SecureStore.setItemAsync('CurrentLoanOffer', loan_amounts.first_time);
+ borrowable = loan_amounts.first_time;
+
+this.props.navigation.navigate("DummyLoading");
+
+}
+else{
+
+ borrowable = dataItem;
+
+ if(amt > borrowable*1){
+   alert("Sorry, you can only borrrow "+ borrowable*1 + " at this time. Please adjust the amount");
+   return;
+ }
+
+ else{
+//attempt to give the loan
+
+
+Alert.alert(
+   "Loan confirmation",
+   "You are about to request for  loan of NGN "+ amt+ " . The loan will process willbe initiated if you click proceed",
+   [
+     {
+       text: "CANCEL",
+       onPress: () => console.log("Ask me later pressed"),
+        style: "cancel"
+     },
+
+
+     { text: "PROCEED", onPress: () => {AsyncStorage.setItem('loanToGive',amt+''); this.props.navigation.navigate("DummyLoading")} }
+   ],
+   { cancelable: false }
+ );
+
+
+
+
+
+
+
+ }
+
+
+}
+})
+
+
+}
+
+
+
+
+
 
   animatedValue = new Animated.Value(1);
 
@@ -77,6 +181,12 @@ class Borrow extends React.Component {
 
     //this.props.navigation.navigate(id)
   }
+
+
+
+
+
+
 
 
   renderItem = (item) => {
@@ -114,37 +224,83 @@ class Borrow extends React.Component {
         const { navigation } = this.props;
           const { data, ...props } = this.props;
     return (
-      <Block flex style={styles.profile}>
-        <Block flex>
+      <Block style={styles.profile}>
+        <Block>
 
             <ScrollView
               showsVerticalScrollIndicator={false}
-              style={{ width, marginTop: '5%' }}
+              style={{  marginTop: '10%' }}
             >
 
-            <Block flex style={styles.profileCard}>
-              <Block middle>
-            <Text
-              bold
-              color="#525F7F"
-              size={28}
-              style={{ marginBottom: 4 }}
+
+
+
+
+
+            <KeyboardAvoidingView
+              style={{ flex: 1 }}
+              behavior="padding"
+              enabled
             >
 
-             Current Limit</Text>
-             <Text size={16} color="green" style={{ marginTop: 10 }}>
-                NGN 300,000
-             </Text>
+                             <Block center style={styles.formContain}>
 
 
+                             <TextInput
+                                 label="Loan amount"
+                                 mode="flat"
+                                 underlineColor="blue" style={styles.formi}
+onChangeText={(text) => this.setState({ amount:text })}
+
+keyboardType="numeric"
+
+                               />
+
+                               <Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
+                          The typical amount for new users is {'	\u20A6'}10,000
+                                 </Text>
               </Block>
-              </Block>
 
 
 
 
 
 
+
+                            <Block space="around" style={{marginLeft:'5%',width:'95%', marginBottom: 15, marginTop:35 }}>
+                            <Text size={14}>
+                              Loan Reason
+                            </Text>
+                           <Picker
+
+                   style={{ height: 50, }}
+
+                   selectedValue={this.state.reason}
+                       onValueChange={(itemValue, itemIndex) =>
+                       this.setState({reason: itemValue})
+                       }
+
+
+                 >
+
+                   <Picker.Item label="Select one" value="" />
+                   <Picker.Item label="Housing" value="housing" />
+                   <Picker.Item label="Fees" value="fees" />
+                   <Picker.Item label="Family" value="family" />
+                   <Picker.Item label="Goods" value="goods" />
+                   <Picker.Item label="Other" value="tother" />
+
+                  </Picker>
+
+</Block>
+
+
+
+
+
+
+
+        </KeyboardAvoidingView>
 
 
 
@@ -159,9 +315,9 @@ class Borrow extends React.Component {
 
 
 
-                <Block middle style={{marginTop:20}}>
+                <Block middle style={{marginTop:40}}>
                   <Text
-                    size={17}
+                    size={14}
                     color="#525F7F"
 
                   >
@@ -169,7 +325,7 @@ class Borrow extends React.Component {
                   </Text>
 
                 </Block>
-<Block middle style={{marginTop:20}}>
+<Block middle style={{marginTop:1}}>
 
 
                   <FlatList
@@ -200,8 +356,10 @@ class Borrow extends React.Component {
 
                        <Button
                          medium
-                         style={{ backgroundColor: argonTheme.COLORS.DEFAULT }}
-                           
+                         color="primary"
+
+
+   onPress={() => this.validateVBorrow()}
                        >
                          APPLY
                        </Button>
@@ -229,15 +387,6 @@ class Borrow extends React.Component {
 
 
 
-                <Block row space="around"   style={{ marginTop: 35,marginBottom: 35, backgroundColor:argonTheme.COLORS.PRIMARY }}>
-                <Block middle style={{ paddingBottom: 30, paddingTop: 30,}} >
-                  <Text bold size={20} color="#fff">
-                    Current Debt: NGN 27
-                  </Text>
-
-
-                    </Block>
-                      </Block>
 
 
 
@@ -282,6 +431,32 @@ const styles = StyleSheet.create({
     // marginBottom: -HeaderHeight * 2,
     flex: 1
   },
+  formtext: {
+    fontSize:12,
+    marginTop:2,
+    marginLeft:25,
+    textAlign:'left',
+    alignSelf:'flex-start',
+  } ,
+
+
+
+      formContain: {
+   width:width,
+   marginTop:50,
+
+      } ,
+
+      formi: {
+        marginTop:10,
+        backgroundColor:"white",
+        width:width*0.9,
+        fontSize:14,
+        color:'#000',
+      } ,
+
+
+
   profileContainer: {
     width: width,
     height: height,
