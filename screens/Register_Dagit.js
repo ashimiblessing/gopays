@@ -14,7 +14,7 @@ import { Button, Icon, Input } from "../components";
 import { Images, argonTheme } from "../constants";
 import axios from 'axios'; 
 const { width, height } = Dimensions.get("screen");
-axios.defaults.baseURL = 'https://secret-reef-44275.herokuapp.com';
+axios.defaults.baseURL = 'https://gopaysapi.plus27.tech';
 class Register extends React.Component {
   constructor(props){
     super(props);

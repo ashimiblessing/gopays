@@ -98,7 +98,7 @@ let data = SecureStore.getItemAsync("CurrentLoanOffer").then(dataItem => {
 
 
 
-if(dataItem == '' || typeof dataItem === 'undefined' )
+if(dataItem == '' || typeof dataItem === 'undefined' || dataItem == null )
 {
  SecureStore.setItemAsync('CurrentLoanOffer', loan_amounts.first_time);
  borrowable = loan_amounts.first_time;
@@ -109,7 +109,7 @@ this.props.navigation.navigate("DummyLoading");
 else{
 
  borrowable = dataItem;
-
+alert(dataItem) 
  if(amt > borrowable*1){
    alert("Sorry, you can only borrrow "+ borrowable*1 + " at this time. Please adjust the amount");
    return;

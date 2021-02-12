@@ -21,7 +21,7 @@ import { TextInput } from 'react-native-paper';
 
 const { width, height } = Dimensions.get("screen");
 
-axios.defaults.baseURL = 'https://secret-reef-44275.herokuapp.com';
+axios.defaults.baseURL = 'https://gopaysapi.plus27.tech';
 class Login extends React.Component {
   constructor(props){
     super(props);
@@ -87,6 +87,10 @@ class Login extends React.Component {
 
 
   const key = Object.keys(error.response.data)[0];
+
+  alert(JSON.stringify(error.response))
+
+  return
 
    this.setState({
      setError:error.response.data[key][0]
