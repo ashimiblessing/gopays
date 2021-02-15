@@ -10,7 +10,8 @@ import {
   Image,
 } from "react-native";
 import { Block, Checkbox, Text, theme } from "galio-framework";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+ 
+ 
 
 import * as SecureStore from 'expo-secure-store';
 import { Button, Icon, Input } from "../components";
@@ -21,12 +22,6 @@ import axios from 'axios';
 import { TextInput } from 'react-native-paper';
 
 const { width, height } = Dimensions.get("screen");
-
-
-
-
-
-
 
 
 
@@ -109,7 +104,7 @@ const options = {
 };
   this.setState({isLoading:true})
 axios(options)
-
+ 
 
   .then(response => {
 
@@ -189,6 +184,8 @@ else{
 
       <Block flex>
       <StatusBar hidden />
+
+     
       <ScrollView style={{backgroundColor:"white"}}>
 
       <Block center>

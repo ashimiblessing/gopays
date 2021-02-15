@@ -27,71 +27,123 @@ const BioData = ({ navigation }) => {
   const [first_name, setFirstName] = React.useState('');
   const [middle_name, setMiddleName] = React.useState('');
   const [last_name, setLastName] = React.useState('');
-  const [dob, setDob] = React.useState('');
+  const [date_of_birth, setDob] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [phone, setPhone] = React.useState('');
   const [type_of_residence, setTypeOfResidence] = React.useState('');
-  const [employement_status, setEmploymentStatus] = React.useState('');
+  const [employment_status, setEmploymentStatus] = React.useState('');
   const [monthly_income, setMonthlyIncome] = React.useState('');
   const [loading, setLoading] = useState(false);
   const [userDetails, setUserDetails] = useState('');
   const [posts, setPosts] = useState([]);
-  // import * as SecureStore from 'expo-secure-store';
-
-  // let secure = SecureStore.getItem('user');
-  // console.log(secure);
-  // React.createContext({
-
-  //   biodata: () => {},
-
-  // });
+ 
 
   function biodata() {
     setLoading(true)
-  axios.post('/api/profile',{
+
+
+
+
+  let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
+
+
+const dat = JSON.parse(dtstr);
+  
+    const config = {
+      headers: { Authorization: 'Bearer '+dat.token }
+  };
+
+
+
+  axios.post('/api/update_profile',{
     first_name:first_name,
     middle_name:middle_name,
     last_name:last_name,
-    dob:dob,
+    dob:date_of_birth,
     email:email,
     phone:phone,
     type_of_residence:type_of_residence,
-    employement_status:'Student',
+    employment_status:employment_status,
     monthly_income:monthly_income
 
-})
+},
+config
+
+)
 .then(response => {
-  console.log(response)
+  alert(response.data.success);
   //const { navigation } = this.props;
-
+ 
+  SecureStore.deleteItemAsync('bioInfo');
+  SecureStore.setItemAsync('bioInfo', JSON.stringify(response.data.data));
   SecureStore.setItemAsync('isProfileSaved', 'YES');
+//alert(JSON.stringify(response.data.information));
 
-  navigation.navigate("Profile")
+ 
+  navigation.navigate('Profile');
 
+
+
+  
 })
 .catch(error => {
   setLoading(false)
-//alert(error)
+ 
     const key = Object.keys(error.response.data)[0];
 // const key = Object.keys(error.response.data)[0];
 //  errors = error.response.data[key][0];
 
 
-   alert(error.response.data[key])
+   alert(error.response.data[key][0])
 })
+
+
+
+})
+
+
+
+
+
   }
+
+
+
+
+
+
+
+
+
+
+
     useEffect(() => {
-      biodata()
+     // biodata()
       // check if the user is logged in or not
-    SecureStore.getItemAsync("userInfo")
+
+      setLoading(true)
+
+
+
+
+
+
+    SecureStore.getItemAsync("bioInfo")
     .then(userString => {
-      let user = JSON.parse(userString).user;
+      let user = JSON.parse(userString);
+   
       setUserDetails(user)
       setFirstName(user.first_name)
-   
+      setMiddleName(user.middle_name)
       setEmail(user.email)
       setLastName(user.last_name)
+      setPhone(user.phone)
+      setTypeOfResidence(user.type_of_residence)
+      setEmploymentStatus(user.employement_status)
+      setMonthlyIncome(user.monthly_income)
+
       //  console.log(user.email)
+      setLoading(false)
     });
 
     }, []);
@@ -108,12 +160,18 @@ const BioData = ({ navigation }) => {
                        enabled
                      >
  <ScrollView>
+ <Block  style={{ marginBottom: 15 }}>
 
+<Text center>
+
+  Fill your details
+</Text>
+
+
+   </Block>
                        <Block  style={{ marginBottom: 15 }}>
-                       <Text size={14}>
-                         First Name
-                       </Text>
-                         <TextInput  mode="flat" underlineColor="blue"
+                        
+                         <TextInput    label="First Name" mode="flat" underlineColor="blue"
 
 
                           style={styles.formi}
@@ -128,12 +186,11 @@ const BioData = ({ navigation }) => {
 
 
               <Block  style={{ marginBottom: 15 }}>
-              <Text size={14}>
-                Middle Name
-              </Text>
+             
                          <TextInput  mode="flat" underlineColor="blue"
+label="Middle Name" 
 
-
+value={middle_name}
 
  style={styles.formi}
                            onChangeText={text => setMiddleName(text)}
@@ -144,11 +201,9 @@ const BioData = ({ navigation }) => {
 
 
     <Block  style={{ marginBottom: 15 }}>
-    <Text size={14}>
-    Last Name
-    </Text>
+   
                          <TextInput  mode="flat" underlineColor="blue"
-
+label="Last Name" 
 
                         style={styles.formi}
                             value={last_name}
@@ -165,12 +220,10 @@ const BioData = ({ navigation }) => {
 
 
               <Block  style={{ marginBottom: 15 }}>
-              <Text size={14}>
-                Date of Birth
-              </Text>
+              
                          <TextInput  mode="flat" underlineColor="blue"
-
-
+label="Date of Birth" 
+value={date_of_birth}
                         style={styles.formi}
                            onChangeText={text => setDob(text)}
                          />
@@ -190,12 +243,10 @@ const BioData = ({ navigation }) => {
 
 
                        <Block  style={{ marginBottom: 15 }}>
-                       <Text size={14}>
-                      Email Address
-                       </Text>
+                       
                          <TextInput  mode="flat" underlineColor="blue"
 
-
+label="Email" 
 
 
                         style={styles.formi}
@@ -207,13 +258,11 @@ const BioData = ({ navigation }) => {
 
 
 
-              <Block  style={{ marginBottom: 15 }}>
-              <Text size={14}>
-                Phone Number
-              </Text>
+              <Block  style={{ marginBottom: 35 }}>
+             
                          <TextInput  mode="flat" underlineColor="blue"
-
-
+label="Phone Number" 
+value={phone}
                           style={styles.formi}
                            onChangeText={text => setPhone(text)}
                          />
@@ -230,7 +279,7 @@ const BioData = ({ navigation }) => {
 
 
 
-              <Block  style={{ marginBottom: 15 }}>
+              <Block  style={{ marginBottom: 35 }}>
               <Text size={14}>
                 Type of Residence
               </Text>
@@ -278,7 +327,7 @@ const BioData = ({ navigation }) => {
                          <Picker
 
                               style={{ height: 50, }}
-                          selectedValue={employement_status}
+                          selectedValue={employment_status}
                               onValueChange={(itemValue, itemIndex) =>
                                 setEmploymentStatus(itemValue)
                               }
@@ -305,12 +354,10 @@ const BioData = ({ navigation }) => {
 
 
               <Block  style={{ marginBottom: 15 }}>
-              <Text size={14}>
-              Monthly Income
-              </Text>
+          
                          <TextInput  mode="flat" underlineColor="blue"
-
-
+label="Monthly Income" 
+selectedValue={monthly_income}
                           style={styles.formi}
 
                            onChangeText={text => setMonthlyIncome(text)}
@@ -340,7 +387,7 @@ const BioData = ({ navigation }) => {
                            medium
                            color="primary"
 
-                      onPress={() => biodata(first_name,middle_name,last_name,dob,email,phone,type_of_residence,employement_status,monthly_income)}
+                      onPress={() => biodata(first_name,middle_name,last_name,date_of_birth,email,phone,type_of_residence,employement_status,monthly_income)}
                          >
                          {
                            loading ?

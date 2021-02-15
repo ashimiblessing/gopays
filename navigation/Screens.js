@@ -106,15 +106,23 @@ function ProfileStack(props) {
   return (
     <Stack.Navigator initialRouteName="Profile" mode="card" headerMode="screen">
       <Stack.Screen
+
+
+      
         name="Profile"
         component={Profile}
         options={{
+
+
+ 
+
           header: ({ navigation, scene }) => (
             <Header
 
               title="Gopays"
               navigation={navigation}
               scene={scene}
+              style={{height:60, alignSelf:'center',textAlign:'center'}}
             />
           ),
           cardStyle: { backgroundColor: "#FFFFFF" },
@@ -442,7 +450,7 @@ function LoanHistoryStack(props) {
               scene={scene}
             />
           ),
-          cardStyle: { backgroundColor: "#F8F9FE" },
+          cardStyle: { backgroundColor: "#FFF" },
 
         }}
       />

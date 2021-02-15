@@ -38,9 +38,9 @@ class Profile extends React.Component {
   getUserData(){
     let data = SecureStore.getItemAsync("userInfo").then(userString => {
       let userInfo = JSON.parse(userString);
-      this.setState({
-        setUserInfo:userInfo.user.first_name
-      })
+      // this.setState({
+      //   setUserInfo:userInfo.user.first_name
+      // })
 
 // alert(userInfo.user.dob )
 
@@ -57,8 +57,7 @@ class Profile extends React.Component {
 
           if(userString !=='YES'  )
           {
-
-            navigation.navigate("BioData")
+            this.props.navigation.navigate("BioData")
           }
               })
 
@@ -174,7 +173,15 @@ determineLoan()
 
   render() {
 
-
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    
+    var yyyy = today.getFullYear();
+    
+    today = mm + '/' + dd + '/' + yyyy;
+   
+     
 
 
 
@@ -209,11 +216,11 @@ determineLoan()
             <Text
               bold
               color="#525F7F"
-              size={16}
+              size={15}
               style={{ marginBottom: 0 }}
             >
 
-             Welcome, {this.state.setUserInfo}</Text>
+             Need Money Now?</Text>
 
 
 
@@ -231,7 +238,7 @@ determineLoan()
 
 
   <Block flex >
-                <Block style={styles.info}>
+                <Block>
 
                   <Block
                     middle
@@ -243,7 +250,7 @@ determineLoan()
                     <Button
                       medium
                        color="primary"
-                       style={{width:'90%'}}
+                       style={{width:'85%'}}
 
 
                        onPress={() => this.determineLoan()}
@@ -258,10 +265,30 @@ determineLoan()
 
 
 
-                <Block row space="around"   style={{ marginTop: 35,marginBottom: 35, backgroundColor:'#f1f1f1' }}>
-                <Block middle style={{ paddingBottom: 30, paddingTop: 30,}} >
-                  <Text bold size={14} color="#333">
-                    Wallet Balance: {'	\u20A6'} {this.state.wallet_balance}
+                <Block   style={{ marginTop: 5,marginBottom: 35, backgroundColor:'#87eeee', paddingTop:20,paddingLeft:20,paddingRight:20,paddingBottom:10 }}>
+
+                  <Block style={{flex:1, justifyContent:'space-between',flexDirection:'row'}}> 
+                  
+                  <Text size={13}>
+YOUR WALLET
+                  </Text>
+
+                  <Text size={13}>
+{today}
+                  </Text>
+                  
+                  </Block>
+
+
+
+
+                <Block style={{ flex:1, paddingBottom: 30, paddingTop: 30,alignSelf:'center'}} >
+                  <Text bold size={12} color="#333">
+                    Wallet Balance: 
+                  </Text>
+
+                  <Text bold size={22} color="#333" style={{marginTop:10, fontWeight:'bold'}}>
+                   {'	\u20A6'}{this.state.wallet_balance}
                   </Text>
 
 
@@ -289,7 +316,7 @@ determineLoan()
                     icon="dollar"
                     iconFamily="Font-Awesome"
                     iconColor={icoColor}
-                    iconSize={theme.SIZES.BASE *   1.425}
+                    iconSize={theme.SIZES.BASE *   1.725}
                      color={'transparent'}
                     style={[styles.social, styles.shadow]}
                     onPress={() => this.determineLoan()}
@@ -304,7 +331,7 @@ determineLoan()
                     icon="calculator"
                     iconFamily="Font-Awesome"
                     iconColor={icoColor}
-                    iconSize={theme.SIZES.BASE *   1.425}
+                    iconSize={theme.SIZES.BASE *   1.725}
                      color={'transparent'}
                     style={[styles.social, styles.shadow]}
                       onPress={() => navigation.navigate("Repay")}
@@ -319,10 +346,10 @@ determineLoan()
                     icon="credit-card"
                     iconFamily="Font-Awesome"
                     iconColor={icoColor}
-                    iconSize={theme.SIZES.BASE *   1.425}
+                    iconSize={theme.SIZES.BASE *   1.725}
                        color={'transparent'}
                     style={[styles.social, styles.shadow]}
-                    onPress={() => alert('coming soon')}
+                    onPress={() => navigation.navigate('AddCard')}
                   />
                     <Text style={styles.but} color={argonTheme.COLORS.TEXT}>Cards</Text>
                   </Block>
@@ -343,7 +370,7 @@ determineLoan()
                     icon="history"
                     iconFamily="Font-Awesome"
                     iconColor={icoColor}
-                    iconSize={theme.SIZES.BASE *   1.425}
+                    iconSize={theme.SIZES.BASE *   1.725}
                      color={'transparent'}
                     style={[styles.social, styles.shadow]}
 
@@ -360,7 +387,7 @@ determineLoan()
                     icon="user"
                     iconFamily="Font-Awesome"
                     iconColor={icoColor}
-                    iconSize={theme.SIZES.BASE *   1.425}
+                    iconSize={theme.SIZES.BASE *   1.725}
                        color={'transparent'}
                     style={[styles.social, styles.shadow]}
                       onPress={() => navigation.navigate("BioData")}
@@ -375,7 +402,7 @@ determineLoan()
                     icon="gift"
                     iconFamily="Font-Awesome"
                     iconColor={icoColor}
-                    iconSize={theme.SIZES.BASE *   1.425}
+                    iconSize={theme.SIZES.BASE *   1.725}
                     color={'transparent'}
                     style={[styles.social, styles.shadow]}
                   />
@@ -439,9 +466,9 @@ fontSize:13
   },
   profileCard: {
     // position: "relative",
-    padding: theme.SIZES.BASE,
-    marginHorizontal: theme.SIZES.BASE,
-    marginTop: 65,
+  
+    marginTop: 75,
+    marginBottom:4,
     borderTopLeftRadius: 6,
     borderTopRightRadius: 6,
     backgroundColor: theme.COLORS.WHITE,
@@ -451,9 +478,7 @@ fontSize:13
     shadowOpacity: 0.2,
     zIndex: 2
   },
-  info: {
-    paddingHorizontal: 40
-  },
+ 
   avatarContainer: {
     position: "relative",
     marginTop: -80

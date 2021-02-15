@@ -60,6 +60,7 @@ class Borrow extends React.Component {
       amount:"",
       setError:"",
       active:null,
+      tenue:'',
     }
 
 
@@ -88,6 +89,18 @@ return;
 
 }
 
+if(!this.state.reason){alert('Please select a loan reason')
+
+return;
+
+}
+
+
+if(!this.state.tenure){alert('Please select a loan tenure')
+
+return;
+
+}
 
 
 
@@ -284,6 +297,57 @@ keyboardType="numeric"
 
 
 
+
+
+
+
+
+
+<Block space="around" style={{marginLeft:'5%',width:'95%', marginBottom: 15, marginTop:15 }}>
+                            <Text size={14}>
+                             Loan Tenure
+                            </Text>
+                           <Picker
+
+                   style={{ height: 50, }}
+
+                   selectedValue={this.state.tenure}
+                       onValueChange={(itemValue, itemIndex) =>
+                       this.setState({tenure: itemValue})
+                       }
+
+
+                 >
+
+                   <Picker.Item label="Select one" value="" />
+                   <Picker.Item label="3 Days" value="7 Days" />
+                   <Picker.Item label="7 Days" value="7 Days" />
+                   <Picker.Item label="14 Days" value="14 Days" />
+                  
+
+                  </Picker>
+
+</Block>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         </KeyboardAvoidingView>
 
 
@@ -293,40 +357,7 @@ keyboardType="numeric"
   <Block flex >
 
 
-
-
-
-
-
-
-                <Block middle style={{marginTop:40}}>
-                  <Text
-                    size={14}
-                    color="#525F7F"
-
-                  >
-                  Loan term
-                  </Text>
-
-                </Block>
-<Block middle style={{marginTop:1}}>
-
-
-                  <FlatList
-                     {...props}
-                     data={data}
-                     horizontal={true}
-                     ref={this.menuRef}
-                     extraData={this.state}
-                     keyExtractor={(item) => item.id}
-                     showsHorizontalScrollIndicator={false}
-                     onScrollToIndexFailed={this.onScrollToIndexFailed}
-                     renderItem={({ item }) => this.renderItem(item)}
-                     contentContainerStyle={styles.menu}
-                   />
-
-                   </Block>
-
+ 
 
 
                    <Block style={styles.info}>

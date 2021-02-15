@@ -8,6 +8,8 @@ import {
   Platform,FlatList, Animated,SafeAreaView,
 } from "react-native";
 import { Block, Text, theme , Button as GaButton} from "galio-framework";
+import * as SecureStore from 'expo-secure-store';
+import axios from 'axios';
 
 import { Button,Header, } from "../components";
 import { Images, argonTheme,Tabs } from "../constants";
@@ -56,67 +58,78 @@ class Repay extends React.Component {
   }
 
   componentDidMount() {
-    const { initialIndex } = this.props;
-    initialIndex && this.selectMenu(initialIndex);
+  
+
+
+
+
+
+    let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
+
+
+      if(dtstr)
+      {
+         var dat = JSON.parse(dtstr);
+    
+    
+    
+         const config = {
+             headers: { Authorization: 'Bearer '+dat.token }
+         };
+    
+    
+    
+         axios.post(
+              '/api/me',{
+              foo:''
+    
+             },
+           config
+            )
+    
+    
+                .then(response => {
+    
+    
+    
+         const user_info = response.data.user;
+         const token_info = response.data.token;
+    
+    
+    
+    
+             this.setState({loan_limit:user_info.loan_limit});
+              this.setState({outstanding_balance:user_info.outstanding_balance});
+               this.setState({wallet_balance:user_info.wallet_balance});
+    
+              })
+              .catch(error => {
+    
+           alert('sorry, there was an error loading your information');
+    
+              })
+    
+    
+    
+      }
+          })
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
   }
-
-  animatedValue = new Animated.Value(1);
-
-  animate() {
-    this.animatedValue.setValue(0);
-
-    Animated.timing(this.animatedValue, {
-      toValue: 1,
-      duration: 300,
-      // useNativeDriver: true, // color not supported
-    }).start()
-  }
-
-  menuRef = React.createRef();
-
-  onScrollToIndexFailed = () => {
-    this.menuRef.current.scrollToIndex({
-      index: 0,
-      viewPosition: 0.5
-    });
-  }
-
-  selectMenu = (id) => {
-    this.setState({ active: id });
-
-    //this.props.navigation.navigate(id)
-  }
-
-
-  renderItem = (item) => {
-    const isActive = this.state.active === item.id;
-
-    const textColor = this.animatedValue.interpolate({
-      inputRange: [0, 1],
-      outputRange: [argonTheme.COLORS.BLACK, isActive ? argonTheme.COLORS.WHITE : argonTheme.COLORS.BLACK],
-      extrapolate: 'clamp',
-    });
-
-    const containerStyles = [
-      styles.titleContainer,
-      !isActive && { backgroundColor: argonTheme.COLORS.SECONDARY },
-      isActive && styles.containerShadow
-    ];
-
-    return (
-      <Block style={containerStyles}>
-        <Animated.Text
-          style={[
-            styles.menuTitle,
-            { color: textColor }
-          ]}
-          onPress={() => this.selectMenu(item.id)}>
-          {item.title}
-        </Animated.Text>
-      </Block>
-    )
-  }
-
+ 
+  
 
 
   render() {
@@ -142,7 +155,7 @@ class Repay extends React.Component {
 
              You Owe</Text>
              <Text size={16} color="green" style={{ marginTop: 10 }}>
-                NGN 300,000
+                NGN {this.state.outstanding_balance}
              </Text>
 
 
@@ -178,7 +191,7 @@ class Repay extends React.Component {
                        <Button
                          medium
                          style={{ backgroundColor: argonTheme.COLORS.DEFAULT }}
-
+                         onPress={() => alert('Implementation of this feature has been paused')}
                        >
                       Pay Now
                        </Button>
