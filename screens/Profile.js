@@ -8,10 +8,12 @@ import {
   Platform
 } from "react-native";
 import { Block, Text, theme , Button as GaButton} from "galio-framework";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
 import { Button } from "../components";
 import { Images, argonTheme } from "../constants";
 import { HeaderHeight } from "../constants/utils";
+import axios from 'axios';
 
 const { width, height } = Dimensions.get("screen");
 
@@ -23,6 +25,9 @@ class Profile extends React.Component {
     this.state = {
       isLoading:false,
       setUserInfo:"",
+      wallet_balance:"",
+      outstanding_balance:"",
+      loan_limit:"",
 
 
     }
@@ -47,27 +52,18 @@ class Profile extends React.Component {
   componentDidMount(){
     this.getUserData();
 
-
-
-              let data = SecureStore.getItemAsync("isProfileSaved").then(userString => {
-
+          let data = SecureStore.getItemAsync("isProfileSaved").then(userString => {
 
 
           if(userString !=='YES'  )
           {
-            alert('Please fill your profile to continue');
+
             navigation.navigate("BioData")
           }
               })
 
 
-
-                        let data2 = SecureStore.getItemAsync("CurrentLoanOffer").then(userString => {
-
-
-
-               this.setState({current_limit:userString})
-                        })
+//get saved data
 
 
 
@@ -75,22 +71,58 @@ class Profile extends React.Component {
 
 
 
-
-                        let data3 = SecureStore.getItemAsync("CurrentLoaned").then(userString => {
-
+      let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
 
 
-                        if(userString == '' || typeof userString === 'undefined' )
-                        {
+  if(dtstr)
+  {
+     var dat = JSON.parse(dtstr);
 
-                        this.setState({current_loaned:0})
-                        }
-                        else{
-                         var the_amt = userString;
 
-                           this.setState({current_loaned:the_amt})
-                        }
-                        })
+
+     const config = {
+         headers: { Authorization: 'Bearer '+dat.token }
+     };
+
+
+
+     axios.post(
+          '/api/me',{
+          foo:''
+
+         },
+       config
+        )
+
+
+            .then(response => {
+
+
+
+     const user_info = response.data.user;
+     const token_info = response.data.token;
+
+
+
+
+         this.setState({loan_limit:user_info.loan_limit});
+          this.setState({outstanding_balance:user_info.outstanding_balance});
+           this.setState({wallet_balance:user_info.wallet_balance});
+
+          })
+          .catch(error => {
+
+       alert('sorry, there was an error loading your information');
+
+          })
+
+
+
+  }
+      })
+
+
+
 
 
 
@@ -229,7 +261,7 @@ determineLoan()
                 <Block row space="around"   style={{ marginTop: 35,marginBottom: 35, backgroundColor:'#f1f1f1' }}>
                 <Block middle style={{ paddingBottom: 30, paddingTop: 30,}} >
                   <Text bold size={14} color="#333">
-                    Wallet Balance: {'	\u20A6'} {this.state.current_loaned ? this.state.current_loaned :0}
+                    Wallet Balance: {'	\u20A6'} {this.state.wallet_balance}
                   </Text>
 
 

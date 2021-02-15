@@ -36,11 +36,6 @@ const DATA = [
 ];
 
 
-var loan_amounts={
-  first_time:10000,
-  second_time: 30000,
-  third_time:70000
-}
 
 
 
@@ -84,38 +79,35 @@ validateVBorrow()
 {
 var amt = this.state.amount * 1;
 
-if(amt <1000){alert('Sorry, you cannot borrow less that NGN 1000')
+
+
+
+if(amt <1000){alert('Please enter a value between N1000 and N1,000,000')
 
 return;
 
 }
-var borrowable = 0;
+
 
 
 
 //CurrentLoanOffer is the amount borrowable by user currently
-let data = SecureStore.getItemAsync("CurrentLoanOffer").then(dataItem => {
+let data = SecureStore.getItemAsync("is_loggedin").then(dataItem => {
+
+  const borrow_load = {
+    amount:amt,
+    reason:this.state.reason,
+    token:JSON.parse(dataItem).token,
+  }
 
 
 
-if(dataItem == '' || typeof dataItem === 'undefined' || dataItem == null )
-{
- SecureStore.setItemAsync('CurrentLoanOffer', loan_amounts.first_time);
- borrowable = loan_amounts.first_time;
+      SecureStore.setItemAsync('borrow_payload', JSON.stringify(borrow_load));
 
-this.props.navigation.navigate("DummyLoading");
 
-}
-else{
 
- borrowable = dataItem;
-alert(dataItem) 
- if(amt > borrowable*1){
-   alert("Sorry, you can only borrrow "+ borrowable*1 + " at this time. Please adjust the amount");
-   return;
- }
 
- else{
+
 //attempt to give the loan
 
 
@@ -137,14 +129,6 @@ Alert.alert(
 
 
 
-
-
-
-
- }
-
-
-}
 })
 
 

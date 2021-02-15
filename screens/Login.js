@@ -10,6 +10,7 @@ import {
   Image,
 } from "react-native";
 import { Block, Checkbox, Text, theme } from "galio-framework";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import * as SecureStore from 'expo-secure-store';
 import { Button, Icon, Input } from "../components";
@@ -21,7 +22,18 @@ import { TextInput } from 'react-native-paper';
 
 const { width, height } = Dimensions.get("screen");
 
-axios.defaults.baseURL = 'https://gopaysapi.plus27.tech';
+
+
+
+
+
+
+
+
+
+
+
+axios.defaults.baseURL = 'http://3.21.215.190';
 class Login extends React.Component {
   constructor(props){
     super(props);
@@ -37,6 +49,35 @@ class Login extends React.Component {
   }
 
 
+
+
+
+  componentDidMount() {
+
+
+
+
+
+    let islog = SecureStore.getItemAsync("is_loggedin").then(userString => {
+
+
+
+if(userString)
+{
+
+  this.props.navigation.navigate("Profile")
+}
+    })
+
+
+
+
+
+  }
+
+
+
+
   loginState(event){
 
     this.setState({
@@ -49,12 +90,27 @@ class Login extends React.Component {
   };
 
   login() {
-    this.setState({isLoading:true})
-    axios.post('/api/login',{
-      email:this.state.email,
-      password:this.state.password,
 
-  })
+if(!this.state.email || !this.state.password )
+{
+  alert('Sorry. Please fill all fields');
+
+  return;
+}
+
+const options = {
+  method: 'post',
+  url: '/api/login',
+ data:{
+   email:this.state.email,
+   password:this.state.password,
+
+}
+};
+  this.setState({isLoading:true})
+axios(options)
+
+
   .then(response => {
 
     let userResponse =  {
@@ -64,6 +120,13 @@ class Login extends React.Component {
     }
 
     SecureStore.setItemAsync('userInfo', JSON.stringify(userResponse));
+    SecureStore.setItemAsync('is_loggedin', JSON.stringify(response.data));
+
+
+
+
+
+
     const { navigation } = this.props;
      this.setState({isLoading:false})
 
@@ -74,7 +137,7 @@ class Login extends React.Component {
 
            if(userString !=='YES'  )
            {
-             alert('Please fill your profile to continue');
+             alert('Please fill your profile to continue.');
              navigation.navigate("BioData")
            }
                })
@@ -88,9 +151,9 @@ class Login extends React.Component {
 
   const key = Object.keys(error.response.data)[0];
 
-  alert(JSON.stringify(error.response))
 
-  return
+
+
 
    this.setState({
      setError:error.response.data[key][0]
@@ -141,8 +204,8 @@ else{
 
 
 
-                <Block flex center style={styles.registerContainer}>
-                  <KeyboardAvoidingView
+                <Block flex center style={styles.registerContainer} >
+                  <KeyboardAvoidingView keyboardShouldPersistTaps={'handled'}
                     style={{ flex: 1 }}
                     behavior="padding"
                     enabled

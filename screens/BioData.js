@@ -21,7 +21,7 @@ import {Picker} from '@react-native-picker/picker';
 import { TextInput  , Paragraph, Dialog, Portal } from 'react-native-paper';
 const thumbMeasure = (width - 48 - 32) / 3;
 
-axios.defaults.baseURL = 'https://gopaysapi.plus27.tech';
+axios.defaults.baseURL = 'http://3.21.215.190';
 const BioData = ({ navigation }) => {
   const [text, setText] = React.useState('');
   const [first_name, setFirstName] = React.useState('');

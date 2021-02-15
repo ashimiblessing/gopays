@@ -14,7 +14,7 @@ import { Button, Icon, Input } from "../components";
 import { Images, argonTheme } from "../constants";
 import axios from 'axios'; 
 const { width, height } = Dimensions.get("screen");
-axios.defaults.baseURL = 'https://gopaysapi.plus27.tech';
+axios.defaults.baseURL = 'http://3.21.215.190';
 class Register extends React.Component {
   constructor(props){
     super(props);

@@ -15,12 +15,15 @@ import * as SecureStore from 'expo-secure-store';
 import { Button, Icon, Input } from "../components";
 import { Images, argonTheme } from "../constants";
 import * as Permissions from 'expo-permissions';
+import axios from 'axios';
 
 
 import { TextInput } from 'react-native-paper';
 
 const { width, height } = Dimensions.get("screen");
 
+
+axios.defaults.baseURL = 'http://3.21.215.190';
 
 class DummyLoading extends React.Component {
 
@@ -36,85 +39,61 @@ class DummyLoading extends React.Component {
 
 
 
+ componentDidMount(){
 
-  getLoanAmount(){
-var loan_amounts={
-  first_time:10000,
-  second_time: 30000,
-  third_time:70000
-}
+   let data = SecureStore.getItemAsync("borrow_payload").then(pload => {
 
 
+var payload= JSON.parse(pload)
 
-
-
-
-  }
+const config = {
+    headers: { Authorization: 'Bearer '+payload.token }
+};
 
 
 
+axios.post(
+     '/api/calculate_loan',{
+       amount:payload.amount,
+       reason:payload.reason
+
+    },
+  config
+   )
+
+
+       .then(response => {
+
+  alert(JSON.stringify(response.data))
+
+
+const user_info = response.data.user;
+const token_info = response.data.token;
+
+
+alert(response.data.info);
 
 
 
+this.props.navigation.navigate('Profile');
+
+     })
+     .catch(error => {
 
 
 
-  determineLoan()
-  {
-  }
+      this.setState({isLoading:false})
+
+     })
 
 
+  })
 
-  giveLoan(){
-
-  }
-
-
-
-
-
-
-
-
-
-
-
-
+ }
 
 
   render() {
         const { navigation } = this.props;
-
-
-setTimeout(function(){
-
-
-      let data = SecureStore.getItemAsync("CurrentLoanOffer").then(userString => {
-
-
-
-      if(userString == '' || typeof userString === 'undefined' )
-      {
-        alert('Please check back in a few minutes. If this takes beyond 72 hours kindly contact us')
-        SecureStore.setItemAsync('CurrentLoanOffer', '10000');
-
-        navigation.navigate('Profile');
-      }
-      else{
-
-  //attempt to give loan
-  SecureStore.setItemAsync('CurrentLoaned', '10000');
-  alert("Loan request has been placed. We will notify you as soon as it is approved. ");
-
-  navigation.navigate('Profile');
-
-        //  this.props.navigation.navigate("Borrow")
-      }
-      })
-
-
-}, 10000);
-
 
 
     return (
