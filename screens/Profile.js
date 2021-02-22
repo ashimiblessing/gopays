@@ -35,6 +35,32 @@ class Profile extends React.Component {
 
     global.errors = "";
   }
+
+
+
+
+determineRepay(){
+
+if(this.state.outstanding_balance*1 < 1)
+{
+  alert('Looks like your outstanding balance is empty');
+
+  return;
+}
+
+
+  this.props.navigation.navigate("Repay")
+
+}
+
+
+
+
+
+
+
+
+
   getUserData(){
     let data = SecureStore.getItemAsync("userInfo").then(userString => {
       let userInfo = JSON.parse(userString);
@@ -49,28 +75,101 @@ class Profile extends React.Component {
 
 
   }
+
+
+
+  componentWillUnmount() {
+    this._unsubscribe();
+  }
+
+
+
+
+
+
+
+
   componentDidMount(){
+
+
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+    
+     
+
+      let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
+
+
+        if(dtstr)
+        {
+           var dat = JSON.parse(dtstr);
+      
+      
+      
+           const config = {
+               headers: { Authorization: 'Bearer '+dat.token }
+           };
+      
+      
+      
+           axios.post(
+                '/api/me',{
+                foo:''
+      
+               },
+             config
+              )
+      
+      
+                  .then(response => {
+      
+      
+      
+           const user_info = response.data.user;
+           const token_info = response.data.token;
+      
+      
+      
+      
+               this.setState({loan_limit:user_info.loan_limit});
+                this.setState({outstanding_balance:user_info.outstanding_balance});
+                 this.setState({wallet_balance:user_info.wallet_balance});
+      
+                })
+                .catch(error => {
+      
+             alert('sorry, there was an error loading your information');
+      
+                })
+      
+      
+      
+        }
+            })
+      
+      
+      
+      
+      
+      
+
+    });
+
+
+
     this.getUserData();
 
-          let data = SecureStore.getItemAsync("isProfileSaved").then(userString => {
+       
+ 
 
 
-          if(userString !=='YES'  )
-          {
-            this.props.navigation.navigate("BioData")
-          }
-              })
 
-
+              
 //get saved data
 
 
 
 
-
-
-
-      let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
+let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
 
 
   if(dtstr)
@@ -119,7 +218,6 @@ class Profile extends React.Component {
 
   }
       })
-
 
 
 
@@ -284,11 +382,11 @@ YOUR WALLET
 
                 <Block style={{ flex:1, paddingBottom: 30, paddingTop: 30,alignSelf:'center'}} >
                   <Text bold size={12} color="#333">
-                    Wallet Balance: 
+                    You Owe: 
                   </Text>
 
                   <Text bold size={22} color="#333" style={{marginTop:10, fontWeight:'bold'}}>
-                   {'	\u20A6'}{this.state.wallet_balance}
+                   {'	\u20A6'}{this.state.outstanding_balance}
                   </Text>
 
 
@@ -334,9 +432,9 @@ YOUR WALLET
                     iconSize={theme.SIZES.BASE *   1.725}
                      color={'transparent'}
                     style={[styles.social, styles.shadow]}
-                      onPress={() => navigation.navigate("Repay")}
+                    onPress={() => this.determineRepay()}
                   />
-                    <Text style={styles.but} color={argonTheme.COLORS.TEXT}>Repay</Text>
+                    <Text style={styles.but} color={argonTheme.COLORS.TEXT}>Repayments</Text>
                   </Block>
                   <Block middle>
                   <GaButton

@@ -64,9 +64,7 @@ axios.post(
 
        .then(response => {
 
-  alert(JSON.stringify(response.data))
-
-
+ 
 const user_info = response.data.user;
 const token_info = response.data.token;
 

@@ -1,13 +1,19 @@
-import React from "react";
+import React, { createRef } from "react";
 import {
   StyleSheet,
   Dimensions,
   ScrollView,
-  Image,
+  Image,View,
   ImageBackground,
   Platform,FlatList, Animated,SafeAreaView,
 } from "react-native";
 import { Block, Text, theme , Button as GaButton} from "galio-framework";
+
+
+import PaystackWebView from 'react-native-paystack-webview';
+
+
+
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
 
@@ -42,11 +48,21 @@ const DATA = [
   },
 ];
 
-
+var general_token ='';
 
 
 
 class Repay extends React.Component {
+
+
+
+  constructor() {
+    super()
+    this.paystackWebViewRef = createRef();
+  }
+
+
+
 
   static defaultProps = {
     data: DATA,
@@ -56,6 +72,88 @@ class Repay extends React.Component {
   state = {
     active: null,
   }
+
+
+
+
+handle_pay_success(res){
+
+ 
+ 
+
+  if(res)
+  {
+   
+     const config = {
+         headers: { Authorization: 'Bearer '+this.state.token }
+     };
+
+
+
+     axios.post(
+          '/api/update_paid',{
+          amount_paid:this.state.outstanding_balance
+
+         },
+       config
+        )
+
+
+            .then(response => {
+
+
+
+     const user_info = response.data.user;
+     const token_info = response.data.token;
+
+
+
+
+         this.setState({loan_limit:user_info.loan_limit});
+          this.setState({outstanding_balance:user_info.outstanding_balance});
+           this.setState({wallet_balance:user_info.wallet_balance});
+
+
+
+
+
+
+           let userResponse =  {
+            user: response.data.user,
+            message: 'success',
+            token: response.data.token
+          }
+      
+          SecureStore.setItemAsync('userInfo', JSON.stringify(userResponse));
+          SecureStore.setItemAsync('is_loggedin', JSON.stringify(response.data));
+
+
+ 
+alert('Your repayment was successful');
+
+
+
+          })
+          .catch(error => {
+
+      // alert('sorry, there was an error loading your information');
+     // alert(error)
+
+          })
+
+
+
+  }
+
+
+
+}
+
+
+
+
+
+ 
 
   componentDidMount() {
   
@@ -70,9 +168,9 @@ class Repay extends React.Component {
       if(dtstr)
       {
          var dat = JSON.parse(dtstr);
+    general_token = dat.token
     
-    
-    
+    this.setState({token:dat.token});
          const config = {
              headers: { Authorization: 'Bearer '+dat.token }
          };
@@ -170,37 +268,7 @@ class Repay extends React.Component {
 
 
 
-
-
-  <Block flex >
-
-
-
-
-
-
-                   <Block style={styles.info}>
-
-                     <Block
-                       middle
-                       row
-                       space="evenly"
-                       style={{ marginTop: 20 }}
-                     >
-
-                       <Button
-                         medium
-                         style={{ backgroundColor: argonTheme.COLORS.DEFAULT }}
-                         onPress={() => alert('Implementation of this feature has been paused')}
-                       >
-                      Pay Now
-                       </Button>
-                     </Block>
-
-
-                   </Block>
-
-
+ 
 
 
 
@@ -212,22 +280,68 @@ class Repay extends React.Component {
 
                 </Block>
 
-
-                <Block  middle style={{marginTop:20}}>
-                <Text size={18}  style={{ marginTop: 10 }}>
-                  Your previous loans
-                </Text>
-
-                <Text size={10}  style={{ marginTop: 10 }}>
-                  No loans available
-                </Text>
-
-                                   </Block>
+ 
 
 
 
 
-              </Block>
+
+
+
+       
+
+              <View style={{flex: 1}}>
+      <PaystackWebView
+        showPayButton={false}
+        paystackKey="pk_test_dc8effc26e39ed2447d5b4da5748c5795f2f2d0a"
+        amount={this.state.outstanding_balance}
+        billingEmail="joe@getnada.com"
+        billingMobile="09787377462"
+        billingName="Gopays User"
+        ActivityIndicatorColor="green"
+        SafeAreaViewContainer={{marginTop: 5}}
+        SafeAreaViewContainerModal={{marginTop: 5}}
+        onCancel={(e) => {
+          alert('your payment was cancelled')
+        }}
+        onSuccess={(res) => {
+         this.handle_pay_success(res)
+        }}
+        ref={this.paystackWebViewRef}
+
+        refNumber={Math.random()+'GPa'+Math.random()}
+
+
+      />
+
+         
+ 
+<Block
+  middle
+  row
+  space="evenly"
+  style={{ marginTop: 20 }}
+>
+
+  <Button
+    medium
+    style={{ backgroundColor: argonTheme.COLORS.DEFAULT }}
+    onPress={()=> this.paystackWebViewRef.current.StartTransaction()}
+  >
+ Pay Now
+  </Button>
+</Block>
+
+ 
+
+
+
+
+
+      </View>
+
+
+
 
 
 

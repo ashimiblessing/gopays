@@ -6,7 +6,7 @@ import {
   ActivityIndicator,
   Image,
   ImageBackground,
-  Platform,FlatList, Animated,SafeAreaView,KeyboardAvoidingView,
+  Platform,FlatList, Animated,SafeAreaView,KeyboardAvoidingView,TouchableOpacity,
 } from "react-native";
 import { Block, Text,Icon,  theme, Button as GaButton} from "galio-framework";
 import * as SecureStore from 'expo-secure-store';
@@ -19,6 +19,7 @@ const { width, height } = Dimensions.get("screen");
 import {Picker} from '@react-native-picker/picker';
 
 import { TextInput  , Paragraph, Dialog, Portal } from 'react-native-paper';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 const thumbMeasure = (width - 48 - 32) / 3;
 
 axios.defaults.baseURL = 'http://3.21.215.190';
@@ -37,6 +38,45 @@ const BioData = ({ navigation }) => {
   const [userDetails, setUserDetails] = useState('');
   const [posts, setPosts] = useState([]);
  
+ 
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+ 
+
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+   
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date) => {
+     
+
+    const dt = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
+
+  
+    setDob(dt);
+
+
+
+
+
+    hideDatePicker();
+  };
+ 
+
+
+
+
+
+
+
+
+
+
 
   function biodata() {
     setLoading(true)
@@ -53,7 +93,7 @@ const dat = JSON.parse(dtstr);
       headers: { Authorization: 'Bearer '+dat.token }
   };
 
-
+  
 
   axios.post('/api/update_profile',{
     first_name:first_name,
@@ -71,7 +111,7 @@ config
 
 )
 .then(response => {
-  alert(response.data.success);
+
   //const { navigation } = this.props;
  
   SecureStore.deleteItemAsync('bioInfo');
@@ -83,7 +123,7 @@ config
   navigation.navigate('Profile');
 
 
-
+  alert(response.data.success);
   
 })
 .catch(error => {
@@ -118,10 +158,63 @@ config
 
 
     useEffect(() => {
-     // biodata()
-      // check if the user is logged in or not
+   
+
 
       setLoading(true)
+
+
+
+
+      let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
+    
+    
+    const dat = JSON.parse(dtstr);
+      
+        const config = {
+          headers: { Authorization: 'Bearer '+dat.token }
+      };
+    
+    
+    
+      axios.post('/api/mybio',{},
+    config
+     
+    )
+    .then(response => {
+      
+      //const { navigation } = this.props;
+     //alert(response.data.bio);
+     setLoading(false)
+   if(response.data.bio)
+   {
+    SecureStore.deleteItemAsync('bioInfo');
+    SecureStore.setItemAsync('bioInfo', JSON.stringify(response.data.bio));
+ 
+   }
+    
+ 
+   
+      
+    })
+    .catch(error => {
+      setLoading(false)
+     
+        const key = Object.keys(error.response.data)[0];
+   
+    
+      //  alert(error.response.data[key][0])
+    })
+    
+    
+    
+    })
+    
+
+
+
+
+
 
 
 
@@ -130,20 +223,33 @@ config
 
     SecureStore.getItemAsync("bioInfo")
     .then(userString => {
-      let user = JSON.parse(userString);
    
-      setUserDetails(user)
-      setFirstName(user.first_name)
-      setMiddleName(user.middle_name)
-      setEmail(user.email)
-      setLastName(user.last_name)
-      setPhone(user.phone)
-      setTypeOfResidence(user.type_of_residence)
-      setEmploymentStatus(user.employement_status)
-      setMonthlyIncome(user.monthly_income)
 
-      //  console.log(user.email)
-      setLoading(false)
+
+      if(userString){
+
+        setLoading(true)
+        let user = JSON.parse(userString);
+   
+        setUserDetails(user)
+        setFirstName(user.first_name)
+        setMiddleName(user.middle_name)
+        setEmail(user.email)
+        setLastName(user.last_name)
+        setPhone(user.phone)
+        setTypeOfResidence(user.type_of_residence)
+        setEmploymentStatus(user.employment_status)
+        setMonthlyIncome(user.monthly_income)
+        setDob(user.date_of_birth)
+  
+        //  console.log(user.email)
+        setLoading(false)
+  
+  
+      }
+ 
+
+     
     });
 
     }, []);
@@ -159,7 +265,11 @@ config
                        behavior="padding"
                        enabled
                      >
- <ScrollView>
+ <ScrollView   
+ 
+ showsVerticalScrollIndicator={false}
+ 
+ >
  <Block  style={{ marginBottom: 15 }}>
 
 <Text center>
@@ -169,7 +279,7 @@ config
 
 
    </Block>
-                       <Block  style={{ marginBottom: 15 }}>
+                       <Block  style={{ marginBottom: 10 }}>
                         
                          <TextInput    label="First Name" mode="flat" underlineColor="blue"
 
@@ -181,11 +291,15 @@ config
                            onChangeText={text => setFirstName(text)}
                          />
 
+<Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
+                                          Your first name as it appears on your bank account
+                                           </Text>
+
                        </Block>
 
 
 
-              <Block  style={{ marginBottom: 15 }}>
+              <Block  style={{ marginBottom: 10 }}>
              
                          <TextInput  mode="flat" underlineColor="blue"
 label="Middle Name" 
@@ -196,11 +310,15 @@ value={middle_name}
                            onChangeText={text => setMiddleName(text)}
                          />
 
+<Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
+                                          Your middle name as it appears on your bank account
+                                           </Text>
+
                        </Block>
 
 
 
-    <Block  style={{ marginBottom: 15 }}>
+    <Block  style={{ marginBottom: 10 }}>
    
                          <TextInput  mode="flat" underlineColor="blue"
 label="Last Name" 
@@ -209,7 +327,9 @@ label="Last Name"
                             value={last_name}
                            onChangeText={text => setLastName(text)}
                          />
-
+<Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
+                                          Your last name as it appears on your bank account
+                                           </Text>
 
 
                        </Block>
@@ -219,14 +339,54 @@ label="Last Name"
 
 
 
-              <Block  style={{ marginBottom: 15 }}>
+              <Block  style={{ marginBottom: 10 }}>
               
-                         <TextInput  mode="flat" underlineColor="blue"
-label="Date of Birth" 
-value={date_of_birth}
-                        style={styles.formi}
-                           onChangeText={text => setDob(text)}
-                         />
+          
+
+
+
+
+
+
+
+<TouchableOpacity
+                                         activeOpaticy={1}
+                                         onPress={() => showDatePicker()}
+
+                                           >
+
+
+                                         <TextInput
+                                         editable={false} // optional
+                                         value={date_of_birth}
+                                             label="Date of birth"
+                                             mode="flat"
+                                             underlineColor="blue" style={styles.formi}
+                                             onChangeText={text => setDob(text)}
+                                           />
+
+<Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
+                                        Please ensure that the date provided is the same captured on your bank account
+                                           </Text>
+                                       </TouchableOpacity>
+
+
+                                       <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
+      />
+
+
+
+
+
+
+
+
+
+
 
                        </Block>
 
@@ -242,10 +402,10 @@ value={date_of_birth}
 
 
 
-                       <Block  style={{ marginBottom: 15 }}>
+                       <Block  style={{ marginBottom: 10 }}>
                        
                          <TextInput  mode="flat" underlineColor="blue"
-
+editable={false}
 label="Email" 
 
 
@@ -253,6 +413,12 @@ label="Email"
                             value={email}
                            onChangeText={text => setEmail(text)}
                          />
+
+<Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
+                              You chose this when you registered
+                                           </Text>
+
+
                        </Block>
 
 
@@ -266,6 +432,10 @@ value={phone}
                           style={styles.formi}
                            onChangeText={text => setPhone(text)}
                          />
+
+<Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
+                                       We recommend using the phone number used by your bank for verification purposes.
+                                           </Text>
 
                        </Block>
 
@@ -308,6 +478,7 @@ value={phone}
 
     </Picker>
 
+   
 
                        </Block>
 
@@ -345,7 +516,7 @@ value={phone}
      <Picker.Item label="Student" value="student"   />
 
     </Picker>
-
+ 
 
                        </Block>
 
@@ -362,6 +533,8 @@ selectedValue={monthly_income}
 
                            onChangeText={text => setMonthlyIncome(text)}
                          />
+ 
+
 
                        </Block>
 
@@ -387,7 +560,7 @@ selectedValue={monthly_income}
                            medium
                            color="primary"
 
-                      onPress={() => biodata(first_name,middle_name,last_name,date_of_birth,email,phone,type_of_residence,employement_status,monthly_income)}
+                      onPress={() => biodata(first_name,middle_name,last_name,date_of_birth,email,phone,type_of_residence,employment_status,monthly_income)}
                          >
                          {
                            loading ?
@@ -417,6 +590,18 @@ const styles = StyleSheet.create({
     // marginBottom: -HeaderHeight * 2,
     flex: 1
   },
+
+
+  formtext: {
+    fontSize:12,
+    marginTop:2,
+    marginLeft:2,
+    textAlign:'left',
+    alignSelf:'flex-start',
+  } ,
+
+
+
   profileContainer: {
     width: width,
     height: height,

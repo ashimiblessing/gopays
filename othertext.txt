@@ -1,0 +1,68 @@
+
+                                       <Block center style={styles.formContain}>
+
+
+
+                                       <TouchableOpacity
+                                         activeOpaticy={1}
+                                         onPress={() => this.showDatePicker()}
+
+                                           >
+
+
+                                         <TextInput
+                                         editable={false} // optional
+                                         value={this.state.date}
+                                             label="Date of birth"
+                                             mode="flat"
+                                             underlineColor="blue" style={styles.formi}
+                                           />
+
+
+                                       </TouchableOpacity>
+
+
+                                         <DateTimePickerModal
+                                           isVisible={this.state.isDatePickerVisible}
+                                           onConfirm={(date) => {
+                                             this.hideDatePicker(); // <- first thing
+                                             this.handleConfirm(date);
+                                           }}
+                                           onCancel={() => this.hideDatePicker()}
+                                         />
+
+
+
+
+                                         <Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
+                                            Please ensure that the date provided is the same
+                                            captured by your bank.
+                                           </Text>
+               </Block>
+
+
+
+
+
+
+
+
+
+               <Block center style={styles.formContain}>
+               <TextInput
+               KeyboardType="number"
+                   label="Phone number"
+                   mode="flat"
+                   underlineColor="blue" style={styles.formi}
+
+                     onChangeText={(text) => this.setState({ phone:text })}
+
+                 />
+
+                 <Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
+                We recommend using the phone number used by your bank for verification purposes
+                   </Text>
+</Block>
+
+
+

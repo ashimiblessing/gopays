@@ -87,33 +87,42 @@ isDatePickerVisible:false,
 
   // console.log(event.target.value);
   
-    
+     
   };
 
   register() {
     this.setState({isLoading:true})
-    axios.post('/api/register',{
+    axios.post('/api/create-user',{
       firstname:this.state.first_name,
       lastname:this.state.last_name,
       email:this.state.email,
       password:this.state.password,
-      dob:this.state.dob,
-      phone:this.state.phone,
-      
-  })
+    },
+    
+    {
+      headers: {
+          
+           'content-type': 'application/json'
+           } 
+
+
+    }
+    
+    )
   .then(response => {
     const { navigation } = this.props;
      navigation.navigate("Login")
     
 })
 .catch(error => { 
+  alert(error)
   const key = Object.keys(error.response.data)[0]; 
   
   this.setState({
     setError:error.response.data[key][0]
   })
  this.setState({isLoading:false})
-  alert(error.response.data[key])
+  //alert(error.response.data[key])
 })
 
   
@@ -204,64 +213,10 @@ isDatePickerVisible:false,
                                        </Block>
 
 
-                                       <Block center style={styles.formContain}>
 
 
 
-                                       <TouchableOpacity
-                                         activeOpaticy={1}
-                                         onPress={() => this.showDatePicker()}
-
-                                           >
-
-
-                                         <TextInput
-                                         editable={false} // optional
-                                         value={this.state.date}
-                                             label="Date of birth"
-                                             mode="flat"
-                                             underlineColor="blue" style={styles.formi}
-                                           />
-
-
-                                       </TouchableOpacity>
-
-
-                                         <DateTimePickerModal
-                                           isVisible={this.state.isDatePickerVisible}
-                                           onConfirm={(date) => {
-                                             this.hideDatePicker(); // <- first thing
-                                             this.handleConfirm(date);
-                                           }}
-                                           onCancel={() => this.hideDatePicker()}
-                                         />
-
-
-
-
-                                         <Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
-                                            Please ensure that the date provided is the same
-                                            captured by your bank.
-                                           </Text>
-               </Block>
-
-
-
-               <Block center style={styles.formContain}>
-               <TextInput
-               KeyboardType="number"
-                   label="Phone number"
-                   mode="flat"
-                   underlineColor="blue" style={styles.formi}
-
-                     onChangeText={(text) => this.setState({ phone:text })}
-
-                 />
-
-                 <Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
-                We recommend using the phone number used by your bank for verification purposes
-                   </Text>
-</Block>
+    
 
 
 
@@ -269,6 +224,7 @@ isDatePickerVisible:false,
                            <Block center style={styles.formContain}>
                <TextInput
                KeyboardType="password"
+               maxLength={6}
                    label="Pin"
                    mode="flat"
                    underlineColor="blue" style={styles.formi}

@@ -20,20 +20,8 @@ import * as SecureStore from 'expo-secure-store';
 const { width, height } = Dimensions.get("screen");
 
 const thumbMeasure = (width - 48 - 32) / 3;
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: '3 Days',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: '7 Days',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: '15 Days',
-  },
-];
+ 
+var tenure_step =1;
 
 
 
@@ -43,12 +31,7 @@ const DATA = [
 
 class Borrow extends React.Component {
 
-  static defaultProps = {
-    data: DATA,
-    initialIndex: null,
-  }
-
-
+  
 
 
 
@@ -61,6 +44,8 @@ class Borrow extends React.Component {
       setError:"",
       active:null,
       tenue:'',
+      tenureData:'',
+      tenureStep:'',
     }
 
 
@@ -72,7 +57,89 @@ class Borrow extends React.Component {
   componentDidMount() {
     const { initialIndex } = this.props;
     initialIndex && this.selectMenu(initialIndex);
+
+
+
+ 
+
+let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
+
+
+  if(dtstr)
+  {
+     var dat = JSON.parse(dtstr);
+      this.setState({tenureStep:dat.user.user_tenure_step});
+     var loan_limit = dat.user.loan_limit;
+
+var tenure_step = dat.user.user_tenure_step;
+ 
+ 
+
+     if(tenure_step ==1)
+     {
+    this.setState({tenureData:[3,7,14]});
+     }
+   
+   
+   
+   
+     
+     if(tenure_step ==2)
+     {
+       this.setState({tenureData:[3,7,14]});
+     }
+     
+     if(tenure_step ==3)
+     {
+    
+       this.setState({tenureData:[3,7,14]});
+   
+     }
+     
+     if(tenure_step ==4)
+     {
+     
+   
+       this.setState({tenureData: [3,7,14,21,28]});
+     }
+     
+   
+
+
+
+
+
+
+
+
+
+
+
+
   }
+      })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  }
+
+ 
+
 
 
 
@@ -185,41 +252,53 @@ Alert.alert(
 
 
 
+ 
 
-  renderItem = (item) => {
-    const isActive = this.state.active === item.id;
 
-    const textColor = this.animatedValue.interpolate({
-      inputRange: [0, 1],
-      outputRange: [argonTheme.COLORS.BLACK, isActive ? argonTheme.COLORS.WHITE : argonTheme.COLORS.BLACK],
-      extrapolate: 'clamp',
-    });
 
-    const containerStyles = [
-      styles.titleContainer,
-      !isActive && { backgroundColor: argonTheme.COLORS.SECONDARY },
-      isActive && styles.containerShadow
-    ];
 
-    return (
-      <Block style={containerStyles}>
-        <Animated.Text
-          style={[
-            styles.menuTitle,
-            { color: textColor }
-          ]}
-          onPress={() => this.selectMenu(item.id)}>
-          {item.title}
-        </Animated.Text>
-      </Block>
-    )
-  }
+ 
+
+
 
 
 
   render() {
+
+ if(this.state.tenureData){
+  var myList = this.state.tenureData.map((myValue,myIndex)=>{
+      
+    return(<Picker.Item label={myValue + ' Days '} value={myIndex} key={myIndex}/>)
+  
+  
+  
+  }); 
+
+ }
+ 
+ else{
+
+
+  var myList =  [3,7,14].map((myValue,myIndex)=>{
+      
+    return(<Picker.Item label={myValue.name + ' - ' + myValue.username} value={myIndex} key={myIndex}/>)
+  
+  
+  
+  });
+
+
+
+   
+ }
+  
+
+
+
+ 
+
         const { navigation } = this.props;
-          const { data, ...props } = this.props;
+     
     return (
       <Block style={styles.profile}>
         <Block>
@@ -316,17 +395,16 @@ keyboardType="numeric"
                        this.setState({tenure: itemValue})
                        }
 
-
+ 
                  >
 
                    <Picker.Item label="Select one" value="" />
-                   <Picker.Item label="3 Days" value="7 Days" />
-                   <Picker.Item label="7 Days" value="7 Days" />
-                   <Picker.Item label="14 Days" value="14 Days" />
-                  
+                 
+             
+                  {myList}
 
                   </Picker>
-
+ 
 </Block>
 
 
