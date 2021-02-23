@@ -21,6 +21,12 @@ import { Button,Header, } from "../components";
 import { Images, argonTheme,Tabs } from "../constants";
 import { HeaderHeight } from "../constants/utils";
 
+
+import repay_image from '../assets/repay.jpg'; 
+
+
+
+
 const { width, height } = Dimensions.get("screen");
 
 const thumbMeasure = (width - 48 - 32) / 3;
@@ -242,17 +248,32 @@ alert('Your repayment was successful');
               style={{ width, marginTop: '5%' }}
             >
 
+
+<Block flex middle style={{marginTop:80}}>
+
+
+<Image
+        style={{width:width,height:300}}
+        source={repay_image}
+      />
+
+</Block>
+
+
+
+
+
             <Block flex style={styles.profileCard}>
               <Block middle>
             <Text
               bold
               color="#525F7F"
-              size={28}
+              size={14}
               style={{ marginBottom: 4 }}
             >
 
-             You Owe</Text>
-             <Text size={16} color="green" style={{ marginTop: 10 }}>
+             Your outstanding balance is:</Text>
+             <Text size={28}  style={{ marginTop: 10 }}>
                 NGN {this.state.outstanding_balance}
              </Text>
 
@@ -267,28 +288,6 @@ alert('Your repayment was successful');
 
 
 
-
- 
-
-
-
-                <Block flex>
-
-                  <Block middle style={{ marginTop: 30, marginBottom: 16 }}>
-                    <Block style={styles.divider} />
-                  </Block>
-
-                </Block>
-
- 
-
-
-
-
-
-
-
-       
 
               <View style={{flex: 1}}>
       <PaystackWebView
@@ -325,7 +324,7 @@ alert('Your repayment was successful');
 
   <Button
     medium
-    style={{ backgroundColor: argonTheme.COLORS.DEFAULT }}
+    style={{ backgroundColor: argonTheme.COLORS.PRIMARY }}
     onPress={()=> this.paystackWebViewRef.current.StartTransaction()}
   >
  Pay Now
@@ -377,7 +376,7 @@ const styles = StyleSheet.create({
     // position: "relative",
     padding: theme.SIZES.BASE,
     marginHorizontal: theme.SIZES.BASE,
-    marginTop: 65,
+    marginTop: 15,
     borderTopLeftRadius: 6,
     borderTopRightRadius: 6,
     backgroundColor: theme.COLORS.WHITE,

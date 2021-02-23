@@ -19,6 +19,22 @@ const { width, height } = Dimensions.get("screen");
 
 const thumbMeasure = (width - 48 - 32) / 3;
 
+
+
+const image = { uri: "https://reactjs.org/logo-og.png" };
+
+
+
+import blue_image from '../assets/blue2.png'; 
+
+
+
+
+
+
+
+
+
 class Profile extends React.Component {
   constructor(props){
     super(props);
@@ -359,19 +375,26 @@ determineLoan()
 
 
                 </Block>
+ 
 
 
 
 
-                <Block   style={{ marginTop: 5,marginBottom: 35, backgroundColor:'#87eeee', paddingTop:20,paddingLeft:20,paddingRight:20,paddingBottom:10 }}>
+                <ImageBackground source={blue_image} style={{width:width,height:200,flex:1,flexDirection:'column', 
+              
+              marginTop: 5,marginBottom: 35, paddingTop:20,paddingLeft:20,paddingRight:20,paddingBottom:15 
+              
+              }}>
 
+
+          
                   <Block style={{flex:1, justifyContent:'space-between',flexDirection:'row'}}> 
                   
-                  <Text size={13}>
+                  <Text size={13} color="#fff">
 YOUR WALLET
                   </Text>
 
-                  <Text size={13}>
+                  <Text size={13} color="#fff">
 {today}
                   </Text>
                   
@@ -380,18 +403,69 @@ YOUR WALLET
 
 
 
-                <Block style={{ flex:1, paddingBottom: 30, paddingTop: 30,alignSelf:'center'}} >
-                  <Text bold size={12} color="#333">
-                    You Owe: 
+                <Block style={{ flex:1, paddingBottom: 30, paddingTop: 0,alignSelf:'center', justifyContent:'center'}} >
+                  <Text bold size={12} color="#fff">
+                    YOU CURRENTLY OWE
                   </Text>
 
-                  <Text bold size={22} color="#333" style={{marginTop:10, fontWeight:'bold'}}>
-                   {'	\u20A6'}{this.state.outstanding_balance}
+                  <Text bold size={32} color="#fff" style={{marginTop:10, fontWeight:'bold'}}>
+                   {'	\u20A6'} {this.state.outstanding_balance}
                   </Text>
 
 
                     </Block>
-                      </Block>
+                     
+
+
+ </ImageBackground>
+
+
+                      <Block row space="around">
+
+
+
+
+
+<Block middle>
+<Button    onPress={() => this.determineLoan()} onlyIcon icon="credit"
+
+iconFamily="Entypo" iconSize={20} color="" 
+iconColor="#fff" style={{ width: 50, height: 50 }}>warning</Button>
+
+
+  <Text style={styles.but} color={argonTheme.COLORS.TEXT}>Borrow</Text>
+</Block>
+
+
+
+
+<Block middle>
+<Button    onPress={() => this.determineRepay()} onlyIcon icon="calculator"
+
+iconFamily="Entypo" iconSize={20} 
+iconColor="#fff" style={{ width: 50, height: 50 }}></Button>
+
+
+  <Text style={styles.but} color={argonTheme.COLORS.TEXT}>Repayments</Text>
+</Block>
+
+
+
+<Block middle>
+<Button      onPress={() => navigation.navigate('AddCard')} onlyIcon icon="credit-card"
+
+iconFamily="Entypo" iconSize={20} color=""  
+iconColor="#fff" style={{ width: 50, height: 50 }}></Button>
+
+
+  <Text style={styles.but} color={argonTheme.COLORS.TEXT}>Add Card</Text>
+</Block>
+
+
+
+
+
+</Block>
 
 
 
@@ -405,112 +479,76 @@ YOUR WALLET
 
 
 
-                <Block row space="around">
-                  <Block middle>
-                  <GaButton
-
-                    onlyIcon
-                    shadowless
-                    icon="dollar"
-                    iconFamily="Font-Awesome"
-                    iconColor={icoColor}
-                    iconSize={theme.SIZES.BASE *   1.725}
-                     color={'transparent'}
-                    style={[styles.social, styles.shadow]}
-                    onPress={() => this.determineLoan()}
-                  />
-                    <Text style={styles.but} color={argonTheme.COLORS.TEXT}>Borrow</Text>
-                  </Block>
-                  <Block middle>
-                  <GaButton
-
-                    onlyIcon
-                    shadowless
-                    icon="calculator"
-                    iconFamily="Font-Awesome"
-                    iconColor={icoColor}
-                    iconSize={theme.SIZES.BASE *   1.725}
-                     color={'transparent'}
-                    style={[styles.social, styles.shadow]}
-                    onPress={() => this.determineRepay()}
-                  />
-                    <Text style={styles.but} color={argonTheme.COLORS.TEXT}>Repayments</Text>
-                  </Block>
-                  <Block middle>
-                  <GaButton
-
-                    onlyIcon
-                    shadowless
-                    icon="credit-card"
-                    iconFamily="Font-Awesome"
-                    iconColor={icoColor}
-                    iconSize={theme.SIZES.BASE *   1.725}
-                       color={'transparent'}
-                    style={[styles.social, styles.shadow]}
-                    onPress={() => navigation.navigate('AddCard')}
-                  />
-                    <Text style={styles.but} color={argonTheme.COLORS.TEXT}>Cards</Text>
-                  </Block>
-
-
-                </Block>
+ 
 
 
 
 
 
-                <Block row space="around"   style={{ marginTop: 20, paddingBottom: 24 }}>
-                  <Block middle>
-                  <GaButton
-
-                    onlyIcon
-                    shadowless
-                    icon="history"
-                    iconFamily="Font-Awesome"
-                    iconColor={icoColor}
-                    iconSize={theme.SIZES.BASE *   1.725}
-                     color={'transparent'}
-                    style={[styles.social, styles.shadow]}
-
-                        onPress={() => navigation.navigate("LoanHistory")}
-
-                  />
-                    <Text style={styles.but} color={argonTheme.COLORS.TEXT}>History</Text>
-                  </Block>
-                  <Block middle>
-                  <GaButton
-
-                    onlyIcon
-                    shadowless
-                    icon="user"
-                    iconFamily="Font-Awesome"
-                    iconColor={icoColor}
-                    iconSize={theme.SIZES.BASE *   1.725}
-                       color={'transparent'}
-                    style={[styles.social, styles.shadow]}
-                      onPress={() => navigation.navigate("BioData")}
-                  />
-                    <Text style={styles.but} color={argonTheme.COLORS.TEXT}>Info</Text>
-                  </Block>
-                  <Block middle>
-                  <GaButton
-
-                    onlyIcon
-                    shadowless
-                    icon="gift"
-                    iconFamily="Font-Awesome"
-                    iconColor={icoColor}
-                    iconSize={theme.SIZES.BASE *   1.725}
-                    color={'transparent'}
-                    style={[styles.social, styles.shadow]}
-                  />
-                    <Text style={styles.but} color={argonTheme.COLORS.TEXT}>Invite</Text>
-                  </Block>
 
 
-                </Block>
 
 
+
+
+
+
+                <Block row space="around"   style={{ marginTop: 40, paddingBottom: 14 }}>
+
+
+
+
+
+
+ 
+
+
+<Block middle>
+<Button   onPress={() => navigation.navigate("LoanHistory")}  onlyIcon icon="credit"
+
+iconFamily="Entypo" iconSize={20} color=""  
+iconColor="#fff" style={{ width: 50, height: 50 }}>warning</Button>
+
+
+  <Text style={styles.but} color={argonTheme.COLORS.TEXT}>Loan History</Text>
+</Block>
+
+
+
+
+<Block middle>
+<Button    onPress={() => navigation.navigate("BioData")} onlyIcon icon="user"
+
+iconFamily="Entypo" iconSize={20} color=""  
+iconColor="#fff" style={{ width: 50, height: 50 }}></Button>
+
+
+  <Text style={styles.but} color={argonTheme.COLORS.TEXT}>My Info</Text>
+</Block>
+
+
+
+<Block middle>
+<Button      onPress={() => navigation.navigate('AddCard')} onlyIcon icon="credit-card"
+
+iconFamily="Entypo" iconSize={20} color=""  
+iconColor="#fff" style={{ width: 50, height: 50 }}></Button>
+
+
+  <Text style={styles.but} color={argonTheme.COLORS.TEXT}>Invite</Text>
+</Block>
+
+
+
+
+
+</Block>
+
+
+
+
+
+ 
 
 
 
@@ -530,6 +568,10 @@ YOUR WALLET
 const icoColor = '#333';
 
 const styles = StyleSheet.create({
+
+ 
+
+
   profile: {
     marginTop: Platform.OS === "android" ? -HeaderHeight : 0,
     // marginBottom: -HeaderHeight * 2,

@@ -231,6 +231,7 @@ else{
                  />
 
                  <TextInput
+                   maxLength={6}
                      label="Enter PIN"
                      mode="flat"
                      underlineColor="blue" style={styles.formi}

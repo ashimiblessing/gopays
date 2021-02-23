@@ -5,7 +5,7 @@ import {
   Dimensions,
   StatusBar,
   ActivityIndicator,
-
+  Alert,
   ScrollView,
   Image,
 } from "react-native";
@@ -39,6 +39,75 @@ class DummyLoading extends React.Component {
 
 
 
+
+
+
+
+
+loanOfferContinue(loan_amt){
+  let data = SecureStore.getItemAsync("borrow_payload").then(offerItem => {
+
+    let payload= JSON.parse(offerItem)
+
+    let config = {
+        headers: { Authorization: 'Bearer '+payload.token }
+    };
+
+    
+
+
+    axios.post(
+      '/api/calculate_loan',{
+        amount:loan_amt,
+        reason:payload.reason,
+        tenure:payload.tenure,
+    
+     },
+    config
+    )
+    
+    
+        .then(response => {
+    
+    
+    const user_info2 = response.data.user;
+    const token_info2 = response.data.token;
+    
+    //process response
+    
+    
+    this.props.navigation.navigate('Profile');
+  
+    alert(response.data.info);
+   
+      })
+      .catch(error => {
+    
+    alert(error)
+    
+       this.setState({isLoading:false})
+    
+      })
+    
+  
+
+
+
+  
+ 
+  })
+  
+  
+}
+
+
+
+
+
+
+
+
+
  componentDidMount(){
 
    let data = SecureStore.getItemAsync("borrow_payload").then(pload => {
@@ -55,7 +124,8 @@ const config = {
 axios.post(
      '/api/calculate_loan',{
        amount:payload.amount,
-       reason:payload.reason
+       reason:payload.reason,
+       tenure:payload.tenure,
 
     },
   config
@@ -68,12 +138,45 @@ axios.post(
 const user_info = response.data.user;
 const token_info = response.data.token;
 
+//process response
 
-alert(response.data.info);
+if(response.data.info == 'loan_offer'){
+
+
+
+
+Alert.alert(
+  "Your Loan offer",
+  "We can currently offer you a loan of NGN "+ response.data.loan_amt+ " . The loan process will be initiated if you click proceed",
+  [
+    {
+      text: "CANCEL",
+      onPress: () => {this.props.navigation.navigate('Profile')},
+       style: "cancel"
+    },
+
+
+    { text: "PROCEED", onPress: () => {this.loanOfferContinue(response.data.loan_amt);} }
+  ],
+  { cancelable: false }
+);
+
+
+return;
+
+
+ 
+
+}
+
 
 
 
 this.props.navigation.navigate('Profile');
+
+
+alert(response.data.info)
+
 
      })
      .catch(error => {

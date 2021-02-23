@@ -43,7 +43,7 @@ class Borrow extends React.Component {
       amount:"",
       setError:"",
       active:null,
-      tenue:'',
+      tenure:'',
       tenureData:'',
       tenureStep:'',
     }
@@ -163,7 +163,13 @@ return;
 }
 
 
-if(!this.state.tenure){alert('Please select a loan tenure')
+ 
+
+if(!this.state.tenure)
+
+{
+
+  alert('Please select a loan tenure')
 
 return;
 
@@ -177,6 +183,7 @@ let data = SecureStore.getItemAsync("is_loggedin").then(dataItem => {
   const borrow_load = {
     amount:amt,
     reason:this.state.reason,
+    tenure:this.state.tenure,
     token:JSON.parse(dataItem).token,
   }
 
@@ -193,7 +200,7 @@ let data = SecureStore.getItemAsync("is_loggedin").then(dataItem => {
 
 Alert.alert(
    "Loan confirmation",
-   "You are about to request for  loan of NGN "+ amt+ " . The loan will process willbe initiated if you click proceed",
+   "You are about to request for  loan of NGN "+ amt+ " . The loan process will be initiated if you click proceed",
    [
      {
        text: "CANCEL",
@@ -268,7 +275,7 @@ Alert.alert(
  if(this.state.tenureData){
   var myList = this.state.tenureData.map((myValue,myIndex)=>{
       
-    return(<Picker.Item label={myValue + ' Days '} value={myIndex} key={myIndex}/>)
+    return(<Picker.Item label={myValue + ' Days '} value={myValue} key={myIndex}/>)
   
   
   
@@ -281,8 +288,8 @@ Alert.alert(
 
   var myList =  [3,7,14].map((myValue,myIndex)=>{
       
-    return(<Picker.Item label={myValue.name + ' - ' + myValue.username} value={myIndex} key={myIndex}/>)
-  
+ 
+    return(<Picker.Item label={myValue + ' Days '} value={myValue} key={myIndex}/>)
   
   
   });

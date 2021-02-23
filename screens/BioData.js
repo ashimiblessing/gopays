@@ -55,7 +55,7 @@ const BioData = ({ navigation }) => {
   const handleConfirm = (date) => {
      
 
-    const dt = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
+    const dt =  date.getDate() + "/" + (date.getMonth() + 1)  + "/" + date.getFullYear() ;
 
   
     setDob(dt);

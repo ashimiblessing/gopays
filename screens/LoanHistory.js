@@ -13,6 +13,12 @@ import { Button,Header, } from "../components";
 import { Images, argonTheme,Tabs } from "../constants";
 import { HeaderHeight } from "../constants/utils";
 
+
+
+import history_image from '../assets/history.jpg'; 
+
+
+
 const { width, height } = Dimensions.get("screen");
 
 const thumbMeasure = (width - 48 - 32) / 3;
@@ -131,6 +137,36 @@ class LoanHistory extends React.Component {
               style={{ width, marginTop: '5%' }}
             >
 
+
+
+
+
+<Block flex middle style={{marginTop:50}}>
+
+
+<Image
+        style={{width:width,height:300}}
+        source={history_image}
+      />
+
+</Block>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             <Block flex style={styles.profileCard}>
               <Block middle>
             <Text
@@ -204,7 +240,7 @@ const styles = StyleSheet.create({
     // position: "relative",
     padding: theme.SIZES.BASE,
     marginHorizontal: theme.SIZES.BASE,
-    marginTop: 65,
+    marginTop: 15,
     borderTopLeftRadius: 6,
     borderTopRightRadius: 6,
     backgroundColor: theme.COLORS.WHITE,
