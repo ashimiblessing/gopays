@@ -1,7 +1,7 @@
 export default {
   COLORS: {
-    DEFAULT: '#172B4D',
-    PRIMARY: '#5E72E4',
+    DEFAULT: '#015CE1',
+    PRIMARY: '#015CE1',
     SECONDARY: '#F7FAFC',
     LABEL: '#FE2472',
     INFO: '#11CDEF',
@@ -28,6 +28,6 @@ export default {
     BORDER: '#CAD1D7',
     WHITE: '#FFFFFF',
     BLACK: '#000000',
-     CARBON: '#4404c4',
+     CARBON: '#015CE1',
   }
 };

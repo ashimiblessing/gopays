@@ -29,6 +29,7 @@ const BioData = ({ navigation }) => {
   const [middle_name, setMiddleName] = React.useState('');
   const [last_name, setLastName] = React.useState('');
   const [date_of_birth, setDob] = React.useState('');
+   const [date_obj, setDateOBJ] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [phone, setPhone] = React.useState('');
   const [type_of_residence, setTypeOfResidence] = React.useState('');
@@ -36,6 +37,7 @@ const BioData = ({ navigation }) => {
   const [monthly_income, setMonthlyIncome] = React.useState('');
   const [loading, setLoading] = useState(false);
   const [userDetails, setUserDetails] = useState('');
+  const [BVN, setBVN] = useState('');
   const [posts, setPosts] = useState([]);
  
  
@@ -57,9 +59,11 @@ const BioData = ({ navigation }) => {
 
     const dt =  date.getDate() + "/" + (date.getMonth() + 1)  + "/" + date.getFullYear() ;
 
+   
+
   
     setDob(dt);
-
+  setDateOBJ(date);
 
 
 
@@ -79,6 +83,22 @@ const BioData = ({ navigation }) => {
 
 
   function biodata() {
+
+let the_date = date_of_birth.split('/');
+ 
+let new_dateobj = new Date(date_obj);
+
+ 
+ if(date_obj.getFullYear()*1 > 2013)
+ {
+  alert('Please pick a bigger year of birth');
+
+  return;
+ }
+
+
+
+
     setLoading(true)
 
 
@@ -92,7 +112,7 @@ const dat = JSON.parse(dtstr);
     const config = {
       headers: { Authorization: 'Bearer '+dat.token }
   };
-
+//alert(BVN);return;
   
 
   axios.post('/api/update_profile',{
@@ -100,11 +120,12 @@ const dat = JSON.parse(dtstr);
     middle_name:middle_name,
     last_name:last_name,
     dob:date_of_birth,
-    email:email,
+   
     phone:phone,
     type_of_residence:type_of_residence,
     employment_status:employment_status,
-    monthly_income:monthly_income
+    monthly_income:monthly_income,
+    bvn:BVN,
 
 },
 config
@@ -121,7 +142,7 @@ config
 
  
   navigation.navigate('Profile');
-
+//alert(JSON.stringify(response.data))
 
   alert(response.data.success);
   
@@ -133,8 +154,17 @@ config
 // const key = Object.keys(error.response.data)[0];
 //  errors = error.response.data[key][0];
 
+if(error.response.data[key][0].length > 1) {
+  alert(error.response.data[key][0])
+}
 
-   alert(error.response.data[key][0])
+else{
+  alert(error.response.data[key])
+}
+
+
+//
+
 })
 
 
@@ -240,6 +270,7 @@ config
         setTypeOfResidence(user.type_of_residence)
         setEmploymentStatus(user.employment_status)
         setMonthlyIncome(user.monthly_income)
+         setBVN(user.BVN)
         setDob(user.date_of_birth)
   
         //  console.log(user.email)
@@ -541,26 +572,43 @@ selectedValue={monthly_income}
 
 
 
+
+
+              <Block  style={{ marginBottom: 15 }}>
+          
+                         <TextInput  mode="flat" underlineColor="blue"
+label="BVN" 
+selectedValue={BVN}
+                          style={styles.formi}
+
+                           onChangeText={text => setBVN(text)}
+                         />
+ 
+
+
+                       </Block>
+
+
+
+
+
+
+
+
+
                        <Block
                          middle
                          row
                          space="evenly"
                          style={{ marginTop: 20 }}
                        >
-{/*
-                         <Button
-                           medium
-                           style={{ backgroundColor: argonTheme.COLORS.DEFAULT }}
-                      onPress={() => navigation.navigate("Profile")}
-                         >
-                           Save
-                         </Button> */}
+ 
 
                          <Button
                            medium
                            color="primary"
 
-                      onPress={() => biodata(first_name,middle_name,last_name,date_of_birth,email,phone,type_of_residence,employment_status,monthly_income)}
+                      onPress={() => biodata(first_name,middle_name,last_name,date_of_birth,email,phone,type_of_residence,employment_status,monthly_income,BVN)}
                          >
                          {
                            loading ?

@@ -4,16 +4,14 @@ import {
   Dimensions,
   ScrollView,
   Image,
-  ImageBackground,
-  Platform,FlatList, Animated,SafeAreaView,
+  ImageBackground,View,  Platform,FlatList, Animated,SafeAreaView,
 } from "react-native";
 import { Block, Text, theme , Button as GaButton} from "galio-framework";
 
 import { Button,Header, } from "../components";
 import { Images, argonTheme,Tabs } from "../constants";
 import { HeaderHeight } from "../constants/utils";
-
-
+import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 
 import history_image from '../assets/history.jpg'; 
 
@@ -22,110 +20,90 @@ import history_image from '../assets/history.jpg';
 const { width, height } = Dimensions.get("screen");
 
 const thumbMeasure = (width - 48 - 32) / 3;
-const DATA = [
-  {
-    id: 'bd7acbea1',
-    title: 'NGN 50000 at 12/2/2020 (Paid)',
-  },
-  {
-    id: '3ac68af2',
-    title: 'NGN 40000 at 12/2/2020 (Paid)',
-  },
-  {
-    id: '58694a03',
-    title: 'NGN 600000 at 12/2/2020 (Paid)',
-  },
-  {
-    id: '58694a04',
-    title: 'NGN 7000 at 12/2/2020 (Paid)',
-  },
+ 
+import * as SecureStore from 'expo-secure-store';
 
-  {
-    id: '58694a05',
-    title: 'NGN 500 at 12/2/2020 (Paid)',
-  },
-];
-
-
-
+import axios from 'axios';
 
 
 class LoanHistory extends React.Component {
 
-  static defaultProps = {
-    data: DATA,
-    initialIndex: null,
-  }
+ 
 
   state = {
     active: null,
+    loading:false,
+    user:'',
+     myArray: [],
+      tableHead: ['ID','Date','Amount','Payback'],
+     
   }
 
   componentDidMount() {
-    const { initialIndex } = this.props;
-    initialIndex && this.selectMenu(initialIndex);
+
+ 
+      let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
+
+
+        if(dtstr)
+        {
+           var dat = JSON.parse(dtstr);
+      this.setState({user:dat.first_name})
+      
+      
+           const config = {
+               headers: { Authorization: 'Bearer '+dat.token }
+           };
+      
+      
+      
+           axios.post(
+                '/api/loan_history',{
+                foo:''
+      
+               },
+             config
+              )
+      
+      
+                  .then(response => {
+      
+      var loan_hist =[];
+      var lh = response.data.success;
+      lh.forEach(function(item){
+var it= [item.id,item.amount,item.date,item.payback_date];
+loan_hist.push(it);
+ 
+      })
+
+     // alert(loan_hist);return;
+   
+
+           this.setState({myArray:loan_hist})
+         
+      
+                })
+                .catch(error => {
+      
+             alert(JSON.stringify(error.response));
+      
+                })
+      
+      
+      
+        }
+            })
   }
 
-  animatedValue = new Animated.Value(1);
+   
+  
 
-  animate() {
-    this.animatedValue.setValue(0);
-
-    Animated.timing(this.animatedValue, {
-      toValue: 1,
-      duration: 300,
-      // useNativeDriver: true, // color not supported
-    }).start()
-  }
-
-  menuRef = React.createRef();
-
-  onScrollToIndexFailed = () => {
-    this.menuRef.current.scrollToIndex({
-      index: 0,
-      viewPosition: 0.5
-    });
-  }
-
-  selectMenu = (id) => {
-    this.setState({ active: id });
-
-    //this.props.navigation.navigate(id)
-  }
-
-
-  renderItem = (item) => {
-    const isActive = this.state.active === item.id;
-
-    const textColor = this.animatedValue.interpolate({
-      inputRange: [0, 1],
-      outputRange: [argonTheme.COLORS.BLACK, isActive ? argonTheme.COLORS.WHITE : argonTheme.COLORS.BLACK],
-      extrapolate: 'clamp',
-    });
-
-    const containerStyles = [
-      styles.titleContainer,
-      !isActive && { backgroundColor: argonTheme.COLORS.SECONDARY },
-      isActive && styles.containerShadow
-    ];
-
-    return (
-      <Block style={containerStyles}>
-        <Animated.Text
-          style={[
-            styles.menuTitle,
-            { color: textColor }
-          ]}
-          onPress={() => this.selectMenu(item.id)}>
-          {item.title}
-        </Animated.Text>
-      </Block>
-    )
-  }
-
-
+ 
+ 
 
   render() {
+
+    
         const { navigation } = this.props;
           const { data, ...props } = this.props;
     return (
@@ -176,39 +154,19 @@ class LoanHistory extends React.Component {
               style={{ marginBottom: 4 }}
             >
 
-             Hi, Blessing</Text>
+             Your Loans</Text>
 
               </Block>
               </Block>
 
 
 
-  <Block flex >
-
-
-
-
-                   </Block>
-
-
-
-
-
-                <Block  middle style={{marginTop:20}}>
-
-                <Text size={12}>
-                  No loans available
-                </Text>
-
-                                   </Block>
-
-
-
-
-
-
-
-
+   <View style={styles.container}>
+        <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}} style={{backgroundColor:'#fff'}}>
+          <Row data={this.state.tableHead} />
+          <Rows data={this.state.myArray}  />
+        </Table>
+      </View>
 
 
             </ScrollView>
@@ -321,5 +279,11 @@ const styles = StyleSheet.create({
 
 
 });
+
+
+
+
+
+
 
 export default LoanHistory;

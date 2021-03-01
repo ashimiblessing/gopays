@@ -125,17 +125,7 @@ axios(options)
     const { navigation } = this.props;
      this.setState({isLoading:false})
 
-
-               let data = SecureStore.getItemAsync("isProfileSaved").then(userString => {
-
-
-
-           if(userString !=='YES'  )
-           {
-             alert('Please fill your profile to continue.');
-             navigation.navigate("BioData")
-           }
-               })
+ 
 
  navigation.navigate("Profile")
 
@@ -161,6 +151,8 @@ if(error.response.data[key] == 'Unauthorized'){
 }
 else{
    alert(error.response.data[key])
+
+  // alert(JSON.stringify(error.response.data))
 }
 
 

@@ -5,7 +5,7 @@ import {
   ScrollView,
   Image,
   ImageBackground,
-  Platform
+  Platform,View
 } from "react-native";
 import { Block, Text, theme , Button as GaButton} from "galio-framework";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -20,10 +20,7 @@ const { width, height } = Dimensions.get("screen");
 const thumbMeasure = (width - 48 - 32) / 3;
 
 
-
-const image = { uri: "https://reactjs.org/logo-og.png" };
-
-
+ 
 
 import blue_image from '../assets/blue2.png'; 
 
@@ -263,7 +260,34 @@ let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
 determineLoan()
 {
 
-  let data = SecureStore.getItemAsync("CurrentLoanOffer").then(userString => {
+
+
+
+  
+
+
+//                let data = SecureStore.getItemAsync("is_loggedin").then(userString => {
+// let userx = JSON.parse(userString);
+
+//   if(!userx.first_name )
+//            {
+//              alert('Please fill your profile to continue.');
+//              this.props.navigation.navigate("BioData")
+//            }
+         
+//                })
+
+
+
+
+
+
+
+
+
+
+
+  let data2 = SecureStore.getItemAsync("CurrentLoanOffer").then(userString => {
 
 
 
@@ -293,7 +317,7 @@ determineLoan()
     
     var yyyy = today.getFullYear();
     
-    today = mm + '/' + dd + '/' + yyyy;
+    today = dd + '/' + mm + '/' + yyyy;
    
      
 
@@ -380,9 +404,9 @@ determineLoan()
 
 
 
-                <ImageBackground source={blue_image} style={{width:width,height:200,flex:1,flexDirection:'column', 
+                <View source={blue_image} style={{width:width,height:200,flex:1,flexDirection:'column', 
               
-              marginTop: 5,marginBottom: 35, paddingTop:20,paddingLeft:20,paddingRight:20,paddingBottom:15 
+              marginTop: 5,marginBottom: 35, paddingTop:20,paddingLeft:20,paddingRight:20,paddingBottom:15 , backgroundColor:'#015CE1',
               
               }}>
 
@@ -391,7 +415,7 @@ determineLoan()
                   <Block style={{flex:1, justifyContent:'space-between',flexDirection:'row'}}> 
                   
                   <Text size={13} color="#fff">
-YOUR WALLET
+LOAN DETAILS
                   </Text>
 
                   <Text size={13} color="#fff">
@@ -409,7 +433,7 @@ YOUR WALLET
                   </Text>
 
                   <Text bold size={32} color="#fff" style={{marginTop:10, fontWeight:'bold'}}>
-                   {'	\u20A6'} {this.state.outstanding_balance}
+                   {'\u20A6'} {this.state.outstanding_balance}
                   </Text>
 
 
@@ -417,7 +441,7 @@ YOUR WALLET
                      
 
 
- </ImageBackground>
+ </View>
 
 
                       <Block row space="around">
@@ -529,7 +553,7 @@ iconColor="#fff" style={{ width: 50, height: 50 }}></Button>
 
 
 <Block middle>
-<Button      onPress={() => navigation.navigate('AddCard')} onlyIcon icon="credit-card"
+<Button      onPress={() => alert('coming soon')} onlyIcon icon="credit-card"
 
 iconFamily="Entypo" iconSize={20} color=""  
 iconColor="#fff" style={{ width: 50, height: 50 }}></Button>

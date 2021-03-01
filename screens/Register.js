@@ -97,6 +97,7 @@ isDatePickerVisible:false,
       lastname:this.state.last_name,
       email:this.state.email,
       password:this.state.password,
+      phone:this.state.phone,
     },
     
     {
@@ -211,6 +212,55 @@ isDatePickerVisible:false,
                         </Text>
 
                                        </Block>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <Block  center style={styles.formContain}>
+                    <TextInput
+                        label="Phone"
+                        mode="flat"
+                        underlineColor="blue" style={styles.formi}
+
+ 
+                        onChangeText={(text) => this.setState({ phone:text })}
+
+                      />
+
+                      <Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
+                   Your phone number
+                        </Text>
+
+                                       </Block>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

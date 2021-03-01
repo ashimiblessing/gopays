@@ -40,7 +40,7 @@ class DummyLoading extends React.Component {
 
 
 
-
+ 
 
 
 
@@ -83,7 +83,7 @@ loanOfferContinue(loan_amt){
       })
       .catch(error => {
     
-    alert(error)
+    alert(JSON.stringify(error.response.data))
     
        this.setState({isLoading:false})
     
@@ -181,7 +181,7 @@ alert(response.data.info)
      })
      .catch(error => {
 
-
+alert(JSON.stringify(error.response.data) )
 
       this.setState({isLoading:false})
 
