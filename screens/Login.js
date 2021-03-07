@@ -10,7 +10,7 @@ import {
   Image,
 } from "react-native";
 import { Block, Checkbox, Text, theme } from "galio-framework";
- 
+
  
 
 import * as SecureStore from 'expo-secure-store';
@@ -104,7 +104,7 @@ const options = {
 };
   this.setState({isLoading:true})
 axios(options)
- 
+
 
   .then(response => {
 
@@ -125,7 +125,7 @@ axios(options)
     const { navigation } = this.props;
      this.setState({isLoading:false})
 
- 
+
 
  navigation.navigate("Profile")
 
@@ -177,7 +177,7 @@ else{
       <Block flex>
       <StatusBar hidden />
 
-     
+
       <ScrollView style={{backgroundColor:"white"}}>
 
       <Block center>

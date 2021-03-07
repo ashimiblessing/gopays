@@ -7,6 +7,8 @@ import {
   Dimensions
 } from "react-native";
 import { Block, Button, Text, theme } from "galio-framework";
+import * as Network from 'expo-network';
+
 
 const { height, width } = Dimensions.get("screen");
 
@@ -15,6 +17,29 @@ import Images from "../constants/Images";
 
 
 class Onboarding extends React.Component {
+
+
+async componentDidMount(){
+
+  var net =     await Network.getNetworkStateAsync();
+
+  if(!net.isConnected)
+{
+  alert('Network unavailable. Most functions will not work properly');
+}
+
+
+}
+
+
+
+
+
+
+
+
+
+
   render() {
     const { navigation } = this.props;
 

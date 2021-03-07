@@ -20,9 +20,9 @@ const { width, height } = Dimensions.get("screen");
 const thumbMeasure = (width - 48 - 32) / 3;
 
 
- 
 
-import blue_image from '../assets/blue2.png'; 
+
+import blue_image from '../assets/blue2.png';
 
 
 
@@ -106,8 +106,8 @@ if(this.state.outstanding_balance*1 < 1)
 
 
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
-    
-     
+
+
 
       let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
 
@@ -115,55 +115,55 @@ if(this.state.outstanding_balance*1 < 1)
         if(dtstr)
         {
            var dat = JSON.parse(dtstr);
-      
-      
-      
+
+
+
            const config = {
                headers: { Authorization: 'Bearer '+dat.token }
            };
-      
-      
-      
+
+
+
            axios.post(
                 '/api/me',{
                 foo:''
-      
+
                },
              config
               )
-      
-      
+
+
                   .then(response => {
-      
-      
-      
+
+
+
            const user_info = response.data.user;
            const token_info = response.data.token;
-      
-      
-      
-      
+
+
+
+
                this.setState({loan_limit:user_info.loan_limit});
                 this.setState({outstanding_balance:user_info.outstanding_balance});
                  this.setState({wallet_balance:user_info.wallet_balance});
-      
+
                 })
                 .catch(error => {
-      
-             alert('sorry, there was an error loading your information');
-      
+
+             alert('There was an error loading your information. Please check your network connection');
+
                 })
-      
-      
-      
+
+
+
         }
             })
-      
-      
-      
-      
-      
-      
+
+
+
+
+
+
 
     });
 
@@ -171,12 +171,12 @@ if(this.state.outstanding_balance*1 < 1)
 
     this.getUserData();
 
-       
- 
 
 
 
-              
+
+
+
 //get saved data
 
 
@@ -223,7 +223,7 @@ let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
           })
           .catch(error => {
 
-       alert('sorry, there was an error loading your information');
+              // alert('There was an error loading your information. Please check your network connection');
 
           })
 
@@ -263,7 +263,7 @@ determineLoan()
 
 
 
-  
+
 
 
 //                let data = SecureStore.getItemAsync("is_loggedin").then(userString => {
@@ -274,7 +274,7 @@ determineLoan()
 //              alert('Please fill your profile to continue.');
 //              this.props.navigation.navigate("BioData")
 //            }
-         
+
 //                })
 
 
@@ -314,12 +314,12 @@ determineLoan()
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    
+
     var yyyy = today.getFullYear();
-    
+
     today = dd + '/' + mm + '/' + yyyy;
-   
-     
+
+
 
 
 
@@ -399,21 +399,21 @@ determineLoan()
 
 
                 </Block>
- 
 
 
 
 
-                <View source={blue_image} style={{width:width,height:200,flex:1,flexDirection:'column', 
-              
+
+                <View source={blue_image} style={{width:width,height:200,flex:1,flexDirection:'column',
+
               marginTop: 5,marginBottom: 35, paddingTop:20,paddingLeft:20,paddingRight:20,paddingBottom:15 , backgroundColor:'#015CE1',
-              
+
               }}>
 
 
-          
-                  <Block style={{flex:1, justifyContent:'space-between',flexDirection:'row'}}> 
-                  
+
+                  <Block style={{flex:1, justifyContent:'space-between',flexDirection:'row'}}>
+
                   <Text size={13} color="#fff">
 LOAN DETAILS
                   </Text>
@@ -421,7 +421,7 @@ LOAN DETAILS
                   <Text size={13} color="#fff">
 {today}
                   </Text>
-                  
+
                   </Block>
 
 
@@ -438,7 +438,7 @@ LOAN DETAILS
 
 
                     </Block>
-                     
+
 
 
  </View>
@@ -453,7 +453,7 @@ LOAN DETAILS
 <Block middle>
 <Button    onPress={() => this.determineLoan()} onlyIcon icon="credit"
 
-iconFamily="Entypo" iconSize={20} color="" 
+iconFamily="Entypo" iconSize={20} color=""
 iconColor="#fff" style={{ width: 50, height: 50 }}>warning</Button>
 
 
@@ -466,7 +466,7 @@ iconColor="#fff" style={{ width: 50, height: 50 }}>warning</Button>
 <Block middle>
 <Button    onPress={() => this.determineRepay()} onlyIcon icon="calculator"
 
-iconFamily="Entypo" iconSize={20} 
+iconFamily="Entypo" iconSize={20}
 iconColor="#fff" style={{ width: 50, height: 50 }}></Button>
 
 
@@ -478,7 +478,7 @@ iconColor="#fff" style={{ width: 50, height: 50 }}></Button>
 <Block middle>
 <Button      onPress={() => navigation.navigate('AddCard')} onlyIcon icon="credit-card"
 
-iconFamily="Entypo" iconSize={20} color=""  
+iconFamily="Entypo" iconSize={20} color=""
 iconColor="#fff" style={{ width: 50, height: 50 }}></Button>
 
 
@@ -503,7 +503,7 @@ iconColor="#fff" style={{ width: 50, height: 50 }}></Button>
 
 
 
- 
+
 
 
 
@@ -524,13 +524,13 @@ iconColor="#fff" style={{ width: 50, height: 50 }}></Button>
 
 
 
- 
+
 
 
 <Block middle>
 <Button   onPress={() => navigation.navigate("LoanHistory")}  onlyIcon icon="credit"
 
-iconFamily="Entypo" iconSize={20} color=""  
+iconFamily="Entypo" iconSize={20} color=""
 iconColor="#fff" style={{ width: 50, height: 50 }}>warning</Button>
 
 
@@ -543,7 +543,7 @@ iconColor="#fff" style={{ width: 50, height: 50 }}>warning</Button>
 <Block middle>
 <Button    onPress={() => navigation.navigate("BioData")} onlyIcon icon="user"
 
-iconFamily="Entypo" iconSize={20} color=""  
+iconFamily="Entypo" iconSize={20} color=""
 iconColor="#fff" style={{ width: 50, height: 50 }}></Button>
 
 
@@ -555,7 +555,7 @@ iconColor="#fff" style={{ width: 50, height: 50 }}></Button>
 <Block middle>
 <Button      onPress={() => alert('coming soon')} onlyIcon icon="credit-card"
 
-iconFamily="Entypo" iconSize={20} color=""  
+iconFamily="Entypo" iconSize={20} color=""
 iconColor="#fff" style={{ width: 50, height: 50 }}></Button>
 
 
@@ -572,7 +572,7 @@ iconColor="#fff" style={{ width: 50, height: 50 }}></Button>
 
 
 
- 
+
 
 
 
@@ -593,7 +593,7 @@ const icoColor = '#333';
 
 const styles = StyleSheet.create({
 
- 
+
 
 
   profile: {
@@ -630,7 +630,7 @@ fontSize:13
   },
   profileCard: {
     // position: "relative",
-  
+
     marginTop: 75,
     marginBottom:4,
     borderTopLeftRadius: 6,
@@ -642,7 +642,7 @@ fontSize:13
     shadowOpacity: 0.2,
     zIndex: 2
   },
- 
+
   avatarContainer: {
     position: "relative",
     marginTop: -80

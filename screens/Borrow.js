@@ -16,11 +16,13 @@ import {Picker} from '@react-native-picker/picker';
 
 import { TextInput, Paragraph, Dialog, Portal } from 'react-native-paper';
 import * as SecureStore from 'expo-secure-store';
+import * as Network from 'expo-network';
+
 
 const { width, height } = Dimensions.get("screen");
 
 const thumbMeasure = (width - 48 - 32) / 3;
- 
+
 var tenure_step =1;
 
 
@@ -31,7 +33,7 @@ var tenure_step =1;
 
 class Borrow extends React.Component {
 
-  
+
 
 
 
@@ -60,7 +62,7 @@ class Borrow extends React.Component {
 
 
 
- 
+
 
 let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
 
@@ -72,38 +74,38 @@ let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
      var loan_limit = dat.user.loan_limit;
 
 var tenure_step = dat.user.user_tenure_step;
- 
- 
+
+
 
      if(tenure_step ==1)
      {
     this.setState({tenureData:[3,7,14]});
      }
-   
-   
-   
-   
-     
+
+
+
+
+
      if(tenure_step ==2)
      {
        this.setState({tenureData:[3,7,14]});
      }
-     
+
      if(tenure_step ==3)
      {
-    
+
        this.setState({tenureData:[3,7,14]});
-   
+
      }
-     
+
      if(tenure_step ==4)
      {
-     
-   
+
+
        this.setState({tenureData: [3,7,14,21,28]});
      }
-     
-   
+
+
 
 
 
@@ -138,13 +140,37 @@ var tenure_step = dat.user.user_tenure_step;
 
   }
 
- 
 
 
 
 
-validateVBorrow()
+
+async validateVBorrow()
 {
+
+  var net =     await Network.getNetworkStateAsync();
+
+
+  if(!net.isConnected)
+{
+  alert('Network unavailable. Please try with a better internet connection');
+
+  return;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var amt = this.state.amount * 1;
 
 
@@ -163,7 +189,7 @@ return;
 }
 
 
- 
+
 
 if(!this.state.tenure)
 
@@ -259,12 +285,12 @@ Alert.alert(
 
 
 
- 
 
 
 
 
- 
+
+
 
 
 
@@ -274,38 +300,38 @@ Alert.alert(
 
  if(this.state.tenureData){
   var myList = this.state.tenureData.map((myValue,myIndex)=>{
-      
+
     return(<Picker.Item label={myValue + ' Days '} value={myValue} key={myIndex}/>)
-  
-  
-  
-  }); 
+
+
+
+  });
 
  }
- 
+
  else{
 
 
   var myList =  [3,7,14].map((myValue,myIndex)=>{
-      
- 
+
+
     return(<Picker.Item label={myValue + ' Days '} value={myValue} key={myIndex}/>)
-  
-  
+
+
   });
 
 
 
-   
+
  }
-  
 
 
 
- 
+
+
 
         const { navigation } = this.props;
-     
+
     return (
       <Block style={styles.profile}>
         <Block>
@@ -402,16 +428,16 @@ keyboardType="numeric"
                        this.setState({tenure: itemValue})
                        }
 
- 
+
                  >
 
                    <Picker.Item label="Select one" value="" />
-                 
-             
+
+
                   {myList}
 
                   </Picker>
- 
+
 </Block>
 
 
@@ -442,7 +468,7 @@ keyboardType="numeric"
   <Block flex >
 
 
- 
+
 
 
                    <Block style={styles.info}>

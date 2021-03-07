@@ -39,15 +39,15 @@ const BioData = ({ navigation }) => {
   const [userDetails, setUserDetails] = useState('');
   const [BVN, setBVN] = useState('');
   const [posts, setPosts] = useState([]);
- 
- 
+
+
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
- 
+
 
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
-   
+
   };
 
   const hideDatePicker = () => {
@@ -55,13 +55,13 @@ const BioData = ({ navigation }) => {
   };
 
   const handleConfirm = (date) => {
-     
+
 
     const dt =  date.getDate() + "/" + (date.getMonth() + 1)  + "/" + date.getFullYear() ;
 
-   
 
-  
+
+
     setDob(dt);
   setDateOBJ(date);
 
@@ -70,7 +70,7 @@ const BioData = ({ navigation }) => {
 
     hideDatePicker();
   };
- 
+
 
 
 
@@ -85,11 +85,11 @@ const BioData = ({ navigation }) => {
   function biodata() {
 
 let the_date = date_of_birth.split('/');
- 
-let new_dateobj = new Date(date_obj);
 
- 
- if(date_obj.getFullYear()*1 > 2013)
+let new_dateobj = new Date(the_date[2],the_date[1],the_date[0]);
+
+
+ if(new_dateobj.getFullYear()*1 > 2013)
  {
   alert('Please pick a bigger year of birth');
 
@@ -108,19 +108,19 @@ let new_dateobj = new Date(date_obj);
 
 
 const dat = JSON.parse(dtstr);
-  
+
     const config = {
       headers: { Authorization: 'Bearer '+dat.token }
   };
 //alert(BVN);return;
-  
+
 
   axios.post('/api/update_profile',{
     first_name:first_name,
     middle_name:middle_name,
     last_name:last_name,
     dob:date_of_birth,
-   
+
     phone:phone,
     type_of_residence:type_of_residence,
     employment_status:employment_status,
@@ -134,22 +134,22 @@ config
 .then(response => {
 
   //const { navigation } = this.props;
- 
+
   SecureStore.deleteItemAsync('bioInfo');
   SecureStore.setItemAsync('bioInfo', JSON.stringify(response.data.data));
   SecureStore.setItemAsync('isProfileSaved', 'YES');
 //alert(JSON.stringify(response.data.information));
 
- 
+
   navigation.navigate('Profile');
 //alert(JSON.stringify(response.data))
 
   alert(response.data.success);
-  
+
 })
 .catch(error => {
   setLoading(false)
- 
+
     const key = Object.keys(error.response.data)[0];
 // const key = Object.keys(error.response.data)[0];
 //  errors = error.response.data[key][0];
@@ -188,7 +188,7 @@ else{
 
 
     useEffect(() => {
-   
+
 
 
       setLoading(true)
@@ -197,22 +197,22 @@ else{
 
 
       let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
-    
-    
+
+
     const dat = JSON.parse(dtstr);
-      
+
         const config = {
           headers: { Authorization: 'Bearer '+dat.token }
       };
-    
-    
-    
+
+
+
       axios.post('/api/mybio',{},
     config
-     
+
     )
     .then(response => {
-      
+
       //const { navigation } = this.props;
      //alert(response.data.bio);
      setLoading(false)
@@ -220,26 +220,26 @@ else{
    {
     SecureStore.deleteItemAsync('bioInfo');
     SecureStore.setItemAsync('bioInfo', JSON.stringify(response.data.bio));
- 
+
    }
-    
- 
-   
-      
+
+
+
+
     })
     .catch(error => {
       setLoading(false)
-     
+
         const key = Object.keys(error.response.data)[0];
-   
-    
+
+
       //  alert(error.response.data[key][0])
     })
-    
-    
-    
+
+
+
     })
-    
+
 
 
 
@@ -253,14 +253,14 @@ else{
 
     SecureStore.getItemAsync("bioInfo")
     .then(userString => {
-   
+
 
 
       if(userString){
 
         setLoading(true)
         let user = JSON.parse(userString);
-   
+
         setUserDetails(user)
         setFirstName(user.first_name)
         setMiddleName(user.middle_name)
@@ -272,15 +272,15 @@ else{
         setMonthlyIncome(user.monthly_income)
          setBVN(user.BVN)
         setDob(user.date_of_birth)
-  
+
         //  console.log(user.email)
         setLoading(false)
-  
-  
-      }
- 
 
-     
+
+      }
+
+
+
     });
 
     }, []);
@@ -296,10 +296,10 @@ else{
                        behavior="padding"
                        enabled
                      >
- <ScrollView   
- 
+ <ScrollView
+
  showsVerticalScrollIndicator={false}
- 
+
  >
  <Block  style={{ marginBottom: 15 }}>
 
@@ -311,7 +311,7 @@ else{
 
    </Block>
                        <Block  style={{ marginBottom: 10 }}>
-                        
+
                          <TextInput    label="First Name" mode="flat" underlineColor="blue"
 
 
@@ -331,9 +331,9 @@ else{
 
 
               <Block  style={{ marginBottom: 10 }}>
-             
+
                          <TextInput  mode="flat" underlineColor="blue"
-label="Middle Name" 
+label="Middle Name"
 
 value={middle_name}
 
@@ -350,9 +350,9 @@ value={middle_name}
 
 
     <Block  style={{ marginBottom: 10 }}>
-   
+
                          <TextInput  mode="flat" underlineColor="blue"
-label="Last Name" 
+label="Last Name"
 
                         style={styles.formi}
                             value={last_name}
@@ -371,8 +371,8 @@ label="Last Name"
 
 
               <Block  style={{ marginBottom: 10 }}>
-              
-          
+
+
 
 
 
@@ -434,10 +434,10 @@ label="Last Name"
 
 
                        <Block  style={{ marginBottom: 10 }}>
-                       
+
                          <TextInput  mode="flat" underlineColor="blue"
 editable={false}
-label="Email" 
+label="Email"
 
 
                         style={styles.formi}
@@ -456,9 +456,9 @@ label="Email"
 
 
               <Block  style={{ marginBottom: 35 }}>
-             
+
                          <TextInput  mode="flat" underlineColor="blue"
-label="Phone Number" 
+label="Phone Number"
 value={phone}
                           style={styles.formi}
                            onChangeText={text => setPhone(text)}
@@ -509,7 +509,7 @@ value={phone}
 
     </Picker>
 
-   
+
 
                        </Block>
 
@@ -547,7 +547,7 @@ value={phone}
      <Picker.Item label="Student" value="student"   />
 
     </Picker>
- 
+
 
                        </Block>
 
@@ -556,15 +556,15 @@ value={phone}
 
 
               <Block  style={{ marginBottom: 15 }}>
-          
+
                          <TextInput  mode="flat" underlineColor="blue"
-label="Monthly Income" 
-selectedValue={monthly_income}
+label="Monthly Income"
+value={monthly_income}
                           style={styles.formi}
 
                            onChangeText={text => setMonthlyIncome(text)}
                          />
- 
+
 
 
                        </Block>
@@ -575,15 +575,15 @@ selectedValue={monthly_income}
 
 
               <Block  style={{ marginBottom: 15 }}>
-          
+
                          <TextInput  mode="flat" underlineColor="blue"
-label="BVN" 
-selectedValue={BVN}
+label="BVN"
+value={BVN}
                           style={styles.formi}
 
                            onChangeText={text => setBVN(text)}
                          />
- 
+
 
 
                        </Block>
@@ -602,7 +602,7 @@ selectedValue={BVN}
                          space="evenly"
                          style={{ marginTop: 20 }}
                        >
- 
+
 
                          <Button
                            medium
