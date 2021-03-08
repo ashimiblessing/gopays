@@ -19,7 +19,7 @@ const { width, height } = Dimensions.get("screen");
 
 const thumbMeasure = (width - 48 - 32) / 3;
 
-
+ 
 
 
 import blue_image from '../assets/blue2.png';

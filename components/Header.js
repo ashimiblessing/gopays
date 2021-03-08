@@ -12,7 +12,7 @@ const { height, width } = Dimensions.get('window');
 const iPhoneX = () => Platform.OS === 'ios' && (height === 812 || width === 812 || height === 896 || width === 896);
 
 const BellButton = ({isWhite, style, navigation}) => (
-  <TouchableOpacity style={[styles.button, style]} onPress={() => navigation.navigate('Pro')}>
+  <TouchableOpacity style={[styles.button, style]} onPress={() => navigation.navigate('Proxx')}>
     <Icon
       family="ArgonExtra"
       size={16}
@@ -24,7 +24,7 @@ const BellButton = ({isWhite, style, navigation}) => (
 );
 
 const BasketButton = ({isWhite, style, navigation}) => (
-  <TouchableOpacity style={[styles.button, style]} onPress={() => navigation.navigate('Pro')}>
+  <TouchableOpacity style={[styles.button, style]} onPress={() => navigation.navigate('Proxx')}>
     <Icon
       family="ArgonExtra"
       size={16}
@@ -35,7 +35,7 @@ const BasketButton = ({isWhite, style, navigation}) => (
 );
 
 const SearchButton = ({isWhite, style, navigation}) => (
-  <TouchableOpacity style={[styles.button, style]} onPress={() => navigation.navigate('Pro')}>
+  <TouchableOpacity style={[styles.button, style]} onPress={() => navigation.navigate('Proxx')}>
     <Icon
       size={16}
       family="Galio"
@@ -48,6 +48,9 @@ const SearchButton = ({isWhite, style, navigation}) => (
 class Header extends React.Component {
   handleLeftPress = () => {
     const { back, navigation } = this.props;
+
+
+
     return (back ? navigation.goBack() : navigation.openDrawer());
   }
   renderRight = () => {
@@ -142,7 +145,7 @@ class Header extends React.Component {
   renderTabs = () => {
     const { tabs, tabIndex, navigation } = this.props;
     const defaultTab = tabs && tabs[0] && tabs[0].id;
-    
+
     if (!tabs) return null;
 
     return (
@@ -188,13 +191,13 @@ class Header extends React.Component {
           right={this.renderRight()}
           rightStyle={{ alignItems: 'center' }}
           left={
-            <Icon 
-              name={back ? 'chevron-left' : "menu"} family="entypo" 
-              size={20} onPress={this.handleLeftPress} 
+            <Icon
+              name={back ? 'chevron-left' : "menu"} family="entypo"
+              size={20} onPress={this.handleLeftPress}
               color={iconColor || (white ? argonTheme.COLORS.WHITE : argonTheme.COLORS.ICON)}
               style={{ marginTop: 2 }}
             />
-              
+
           }
           leftStyle={{ paddingVertical: 12, flex: 0.2 }}
           titleStyle={[

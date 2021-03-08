@@ -10,7 +10,7 @@ class DrawerItem extends React.Component {
     const { title, focused } = this.props;
 
     switch (title) {
-      case "Home":
+      case "Dashboard":
         return (
           <Icon
             name="shop"
@@ -81,9 +81,9 @@ class DrawerItem extends React.Component {
       <TouchableOpacity
         style={{ height: 60 }}
         onPress={() =>
-          title == "Getting Started"
+          title == "About Gopays"
             ? Linking.openURL(
-                "https://demos.creative-tim.com/argon-pro-react-native/docs/"
+                "https://google.com"
               ).catch(err => console.error("An error occurred", err))
             : navigation.navigate(title)
         }

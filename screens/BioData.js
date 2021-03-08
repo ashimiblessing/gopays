@@ -30,7 +30,7 @@ const BioData = ({ navigation }) => {
   const [last_name, setLastName] = React.useState('');
   const [date_of_birth, setDob] = React.useState('');
    const [date_obj, setDateOBJ] = React.useState('');
-  const [email, setEmail] = React.useState('');
+//  const [email, setEmail] = React.useState('');
   const [phone, setPhone] = React.useState('');
   const [type_of_residence, setTypeOfResidence] = React.useState('');
   const [employment_status, setEmploymentStatus] = React.useState('');
@@ -254,8 +254,7 @@ else{
     SecureStore.getItemAsync("bioInfo")
     .then(userString => {
 
-
-
+ 
       if(userString){
 
         setLoading(true)
@@ -264,13 +263,13 @@ else{
         setUserDetails(user)
         setFirstName(user.first_name)
         setMiddleName(user.middle_name)
-        setEmail(user.email)
+        // setEmail(user.email)
         setLastName(user.last_name)
         setPhone(user.phone)
         setTypeOfResidence(user.type_of_residence)
         setEmploymentStatus(user.employment_status)
         setMonthlyIncome(user.monthly_income)
-         setBVN(user.BVN)
+         setBVN(user.bvn)
         setDob(user.date_of_birth)
 
         //  console.log(user.email)
@@ -433,24 +432,6 @@ label="Last Name"
 
 
 
-                       <Block  style={{ marginBottom: 10 }}>
-
-                         <TextInput  mode="flat" underlineColor="blue"
-editable={false}
-label="Email"
-
-
-                        style={styles.formi}
-                            value={email}
-                           onChangeText={text => setEmail(text)}
-                         />
-
-<Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
-                              You chose this when you registered
-                                           </Text>
-
-
-                       </Block>
 
 
 
@@ -608,7 +589,7 @@ value={BVN}
                            medium
                            color="primary"
 
-                      onPress={() => biodata(first_name,middle_name,last_name,date_of_birth,email,phone,type_of_residence,employment_status,monthly_income,BVN)}
+                      onPress={() => biodata(first_name,middle_name,last_name,date_of_birth,phone,type_of_residence,employment_status,monthly_income,BVN)}
                          >
                          {
                            loading ?

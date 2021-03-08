@@ -50,7 +50,8 @@
     "react-native-svg": "12.1.0",
     "react-native-table-component": "^1.2.1",
     "react-native-web-swiper": "^2.1.7",
-    "react-native-webview": "10.7.0"
+    "react-native-webview": "10.7.0",
+    "react-navigation": "^4.4.4"
   },
   "devDependencies": {
     "babel-preset-expo": "^8.3.0"

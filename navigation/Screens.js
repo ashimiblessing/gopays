@@ -108,13 +108,13 @@ function ProfileStack(props) {
       <Stack.Screen
 
 
-      
+
         name="Profile"
         component={Profile}
         options={{
 
 
- 
+
 
           header: ({ navigation, scene }) => (
             <Header
@@ -175,7 +175,8 @@ function HomeStack(props) {
   );
 }
 
-export default function OnboardingStack(props) {
+function OnboardingStack(props) {
+
   return (
     <Stack.Navigator mode="card" headerMode="none">
       <Stack.Screen
@@ -185,10 +186,10 @@ export default function OnboardingStack(props) {
           headerTransparent: true
         }}
       />
-
-      <Stack.Screen name="App" component={AppStack} />
       <Stack.Screen name="Register" component={RegisterStack} />
        <Stack.Screen name="Login" component={LoginStack} />
+
+
     </Stack.Navigator>
   );
 }
@@ -223,7 +224,7 @@ function AddCardStack(props) {
 
      />
 
-      
+
         </Stack.Navigator>
       );
      }
@@ -504,7 +505,7 @@ function LoanHistoryStack(props) {
 
 
 
-function AppStack(props) {
+export default function AppStack(props) {
   return (
     <Drawer.Navigator
       style={{ flex: 1 }}
@@ -536,9 +537,15 @@ function AppStack(props) {
       initialRouteName="Profile"
     >
 
-      <Drawer.Screen name="Home" component={ProfileStack} />
-      <Drawer.Screen name="Info" component={BioDataStack} />
-        <Drawer.Screen name="Loan" component={BorrowStack} />
+
+
+          <Drawer.Screen name="Onboarding" component={OnboardingStack} />
+          <Drawer.Screen name="Dashboard" component={ProfileStack} />
+        <Drawer.Screen name="Edit Info" component={BioDataStack} />
+        <Drawer.Screen name="Borrow" component={BorrowStack} />
+        <Drawer.Screen name="Loan History" component={LoanHistoryStack} />
+
+
 
 
 
