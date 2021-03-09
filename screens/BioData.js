@@ -4,7 +4,7 @@ import {
   Dimensions,
   ScrollView,
   ActivityIndicator,
-  Image,
+  Image,View,
   ImageBackground,
   Platform,FlatList, Animated,SafeAreaView,KeyboardAvoidingView,TouchableOpacity,
 } from "react-native";
@@ -23,7 +23,142 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 const thumbMeasure = (width - 48 - 32) / 3;
 
 axios.defaults.baseURL = 'http://3.21.215.190';
-const BioData = ({ navigation }) => {
+import { NavigationContainer } from '@react-navigation/native';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+
+
+ 
+
+
+function SettingsScreen() {
+  const [text, setText] = React.useState('');
+  const [first_name, setFirstName] = React.useState('');
+  const [middle_name, setMiddleName] = React.useState('');
+  const [last_name, setLastName] = React.useState('');
+  return (
+    <View style={{ flex: 1,  alignItems: 'center' }}>
+     
+
+
+
+
+
+
+
+
+
+
+<Block  style={{ marginBottom: 10 }}>
+
+<TextInput    label="First Name" mode="flat" underlineColor="blue"
+
+
+ style={styles.formi}
+
+
+  value={first_name}
+  onChangeText={text => setFirstName(text)}
+/>
+
+<Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
+                 Your first name as it appears on your bank account
+                  </Text>
+
+</Block>
+
+
+
+
+<Block  style={{ marginBottom: 10 }}>
+
+<TextInput  mode="flat" underlineColor="blue"
+label="Last Name"
+
+style={styles.formi}
+   value={last_name}
+  onChangeText={text => setLastName(text)}
+/>
+<Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
+                 Your last name as it appears on your bank account
+                  </Text>
+
+
+</Block>
+
+
+
+
+
+
+
+
+<Block  style={{ marginBottom: 10 }}>
+
+<TextInput  mode="flat" underlineColor="blue"
+label="Phone"
+
+value={middle_name}
+
+style={styles.formi}
+  onChangeText={text => setMiddleName(text)}
+/>
+
+<Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
+                 Your middle name as it appears on your bank account
+                  </Text>
+
+</Block>
+
+
+
+
+
+
+
+
+
+
+<Block
+                         middle
+                         row
+                         space="evenly"
+                         style={{ marginTop: 20 }}
+                       >
+
+
+                         <Button
+                           medium
+                           color="primary" 
+                         >
+                       
+                           <Text bold size={14} color={argonTheme.COLORS.WHITE}>
+                      Coming soon!
+                        </Text>
+                    
+
+                         </Button>
+                       </Block>
+
+
+
+
+
+</View>
+
+
+
+
+
+
+  );
+}
+
+
+
+
+
+
+function BioData1 ({ navigation }) {
   const [text, setText] = React.useState('');
   const [first_name, setFirstName] = React.useState('');
   const [middle_name, setMiddleName] = React.useState('');
@@ -300,11 +435,18 @@ else{
  showsVerticalScrollIndicator={false}
 
  >
- <Block  style={{ marginBottom: 15 }}>
+ <Block  style={{ marginBottom: 5 }}>
 
 <Text center>
 
-  Fill your details
+{
+                           loading ?
+                           <ActivityIndicator  size="large" color="blue" />
+                           :
+                           <Text bold   >
+                     Type in your details
+                        </Text>
+                         }
 </Text>
 
 
@@ -608,7 +750,29 @@ value={BVN}
 
 
   );
+
+  
 };
+
+
+
+const Tab = createMaterialTopTabNavigator();
+
+
+
+export default function BioData() {
+  return (
+     
+      <Tab.Navigator>
+        <Tab.Screen name="Your Details" component={BioData1} />
+        <Tab.Screen name="Friend's Details" component={SettingsScreen} />
+      </Tab.Navigator>
+     
+  );
+}
+
+
+
 
 
 
@@ -747,4 +911,4 @@ const styles = StyleSheet.create({
 
 
 
-export default BioData;
+// export default BioData;

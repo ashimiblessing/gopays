@@ -35,7 +35,7 @@ class LoanHistory extends React.Component {
     loading:false,
     user:'',
      myArray: [],
-      tableHead: ['ID','Date','Amount','Payback'],
+      tableHead: ['ID','Amount (NGN) ','Loan Date','Payback Date'],
      
   }
 
@@ -163,8 +163,8 @@ loan_hist.push(it);
 
    <View style={styles.container}>
         <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}} style={{backgroundColor:'#fff'}}>
-          <Row data={this.state.tableHead} />
-          <Rows data={this.state.myArray}  />
+          <Row data={this.state.tableHead} style={styles.head} textStyle={styles.text} />
+          <Rows data={this.state.myArray} style={styles.row} textStyle={styles.text} />
         </Table>
       </View>
 
@@ -237,12 +237,7 @@ const styles = StyleSheet.create({
     height: thumbMeasure
   },
 
-
-  container: {
-    width: width,
-    backgroundColor: theme.COLORS.BLACK,
-    zIndex: 2,
-  },
+  container: { flex: 1, padding: 5, paddingTop: 30, backgroundColor: '#fff' },
   shadow: {
     shadowColor: theme.COLORS.BLACK,
     shadowOffset: { width: 0, height: 2 },
@@ -276,6 +271,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     color: argonTheme.COLORS.MUTED
   },
+
+  head: {  height: 40,  backgroundColor: '#f1f8ff'  },
+  wrapper: { flexDirection: 'row' },
+  title: { flex: 1, backgroundColor: '#f6f8fa' },
+  row: {  height: 28  },
+  text: { textAlign: 'center' }
 
 
 });

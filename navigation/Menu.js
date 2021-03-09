@@ -14,9 +14,10 @@ function CustomDrawerContent({ drawerPosition, navigation, profile, focused, sta
   const insets = useSafeArea();
   const screens = [
     "Dashboard",
-    "Edit Info",
-    "Borrow",
+    "Manage Cards",
+    "View Profile",
     "Loan History",
+ 
 
   ];
   return (
@@ -44,6 +45,7 @@ function CustomDrawerContent({ drawerPosition, navigation, profile, focused, sta
               <Text color="#8898AA" style={{ marginTop: 16, marginLeft: 8 }}>More</Text>
             </Block>
             <DrawerCustomItem title="About Gopays" navigation={navigation} />
+             
         </ScrollView>
       </Block>
     </Block>

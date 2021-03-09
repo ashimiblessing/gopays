@@ -184,7 +184,7 @@ class Header extends React.Component {
     return (
       <Block style={headerStyles}>
         <NavBar
-          back={false}
+          back={true}
           title={title}
           style={navbarStyles}
           transparent={transparent}

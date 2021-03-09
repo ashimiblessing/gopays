@@ -534,16 +534,55 @@ export default function AppStack(props) {
           fontWeight: "normal"
         }
       }}
+
+      
+
       initialRouteName="Profile"
     >
 
 
 
-          <Drawer.Screen name="Onboarding" component={OnboardingStack} />
+          <Drawer.Screen name="Onboarding" component={OnboardingStack} 
+          
+
+          
+          />
           <Drawer.Screen name="Dashboard" component={ProfileStack} />
-        <Drawer.Screen name="Edit Info" component={BioDataStack} />
+          <Drawer.Screen name="View Profile" component={BioDataStack}
+      
+        
+      options={({ navigation }) => ({
+        headerShown:'true',
+  title: 'Awesome app', 
+ 
+})}
+        
+        
+        />
         <Drawer.Screen name="Borrow" component={BorrowStack} />
-        <Drawer.Screen name="Loan History" component={LoanHistoryStack} />
+        <Drawer.Screen name="Manage Cards" component={AddCardStack} />
+        <Drawer.Screen name="Loan History" component={LoanHistoryStack} 
+        
+        
+        
+        options={{
+
+          header: ({ navigation, scene }) => (
+            <Header
+ 
+              title="Your previous loans"
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          cardStyle: { backgroundColor: "#FFFFFF" },
+ 
+        }}
+        
+        
+        
+        
+        />
 
 
 

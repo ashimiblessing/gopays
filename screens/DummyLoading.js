@@ -40,7 +40,82 @@ class DummyLoading extends React.Component {
 
 
 
- 
+
+
+
+
+  giveLoanNow(loan_amt){
+    let data = SecureStore.getItemAsync("borrow_payload").then(offerItem => {
+  
+      let payload= JSON.parse(offerItem)
+  
+      let config = {
+          headers: { Authorization: 'Bearer '+payload.token }
+      };
+  
+      
+  
+  
+      axios.post(
+        '/api/calculate_loan?give_loan=yes',{
+          amount:loan_amt,
+          reason:payload.reason,
+          tenure:payload.tenure,
+      
+       },
+      config
+      )
+      
+      
+          .then(response => {
+      
+      
+      const user_info2 = response.data.user;
+      const token_info2 = response.data.token;
+      
+      //process response
+      
+      
+      this.props.navigation.navigate('Profile');
+    
+      alert(response.data.info);
+     
+        })
+        .catch(error => {
+      
+      alert(error)
+      
+         this.setState({isLoading:false})
+      
+        })
+      
+    
+  
+  
+  
+    
+   
+    })
+    
+    
+  }
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -76,14 +151,51 @@ loanOfferContinue(loan_amt){
     //process response
     
     
-    this.props.navigation.navigate('Profile');
   
+if(response.data.info == 'loan_processing')
+{
+  Alert.alert(
+    "Confirm Loan",
+    "A loan of NGN "+response.data.loan_amt+ " will be processed with an interest of "+response.data.loan_interest+"%. Your total repayment is NGN "+response.data.total_loan+" with a tenure of "+payload.tenure+" days. Click confirm to continue",
+   
+ 
+    [
+      {
+        text: "CANCEL",
+        onPress: () => {this.props.navigation.navigate('Profile')},
+         style: "cancel"
+      },
+  
+  
+      { text: "CONFIRM", onPress: () => {this.giveLoanNow(loan_amt);} }
+    ],
+    { cancelable: false }
+  );
+  
+}
+
+else{
+
+
+  if(response.data.server_response =='customer_owes' )
+  
+  {
+    this.props.navigation.navigate('Profile');
     alert(response.data.info);
+    return;
+  }
+  
+  
+   
+this.props.navigation.navigate('Profile');
+ 
+ alert('There was an error processing your loan. Please try later');
+}
    
       })
       .catch(error => {
     
-    alert(JSON.stringify(error.response.data))
+    alert(error)
     
        this.setState({isLoading:false})
     
@@ -147,7 +259,7 @@ if(response.data.info == 'loan_offer'){
 
 Alert.alert(
   "Your Loan offer",
-  "We can currently offer you a loan of NGN "+ response.data.loan_amt+ " . The loan process will be initiated if you click proceed",
+  "We can currently offer you a loan of NGN "+ response.data.loan_amt+ ". The loan process will be initiated if you click proceed",
   [
     {
       text: "CANCEL",
@@ -156,7 +268,7 @@ Alert.alert(
     },
 
 
-    { text: "PROCEED", onPress: () => {this.loanOfferContinue(response.data.loan_amt);} }
+    { text: "PROCEED", onPress: () => {this.loanOfferContinue(response.data.loan_amt)} }
   ],
   { cancelable: false }
 );
@@ -171,17 +283,77 @@ return;
 
 
 
+if(response.data.info == 'loan_processing')
+{
 
+
+
+
+
+
+
+  Alert.alert(
+    "Confirm Loan",
+    "A loan of NGN "+response.data.loan_amt+ " will be processed with an interest of "+response.data.loan_interest+"%. Your total repayment is NGN "+response.data.total_loan+" with a tenure of "+payload.tenure+" days. Click confirm to continue",
+   
+    [
+      {
+        text: "CANCEL",
+        onPress: () => {this.props.navigation.navigate('Profile')},
+         style: "cancel"
+      },
+  
+  
+      { text: "CONFIRM", onPress: () => {this.giveLoanNow(response.data.loan_amt);} }
+    ],
+    { cancelable: false }
+  );
+  
+
+
+
+
+
+
+
+
+
+}
+
+else{
+
+
+  if(response.data.server_response =='customer_owes' )
+  
+  {
+    this.props.navigation.navigate('Profile');
+    alert(response.data.info);
+    return;
+  }
+  
+  
+   
 this.props.navigation.navigate('Profile');
+ 
+ alert('There was an error processing your loan. Please try later');
+}
 
 
-alert(response.data.info)
+
+
+
+
+
+
+//this.props.navigation.navigate('Profile');
+ 
+// alert(response.data.info)
 
 
      })
      .catch(error => {
 
-alert(JSON.stringify(error.response.data) )
+
 
       this.setState({isLoading:false})
 
