@@ -19,6 +19,7 @@ import BioData from "../screens/BioData";
 import UserPerms from "../screens/UserPerms";
 import DummyLoading from "../screens/DummyLoading";
 import AddCard from "../screens/AddCard";
+import OtpInput from "../screens/OtpInput";
 
 
 
@@ -426,6 +427,7 @@ function LoanHistoryStack(props) {
           headerTransparent: true
         }}
       />
+       <Stack.Screen name="OtpInput" component={OtpInputStack} />
        <Stack.Screen name="Login" component={LoginStack} />
     </Stack.Navigator>
   );
@@ -479,6 +481,44 @@ function LoanHistoryStack(props) {
     </Stack.Navigator>
   );
 }
+
+
+
+
+
+
+
+function OtpInputStack(props) {
+  return (
+    <Stack.Navigator mode="card" headerMode="none">
+      <Stack.Screen
+        name="OtpInput"
+        component={OtpInput}
+        option={{
+          headerTransparent: true
+        }}
+      />
+     
+     <Stack.Screen name="Login" component={LoginStack} />
+    </Stack.Navigator>
+  );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

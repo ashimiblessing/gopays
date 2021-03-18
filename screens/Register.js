@@ -22,6 +22,7 @@ import { TextInput } from 'react-native-paper';
 const { width, height } = Dimensions.get("screen");
 
 axios.defaults.baseURL = 'http://3.21.215.190';
+import * as SecureStore from 'expo-secure-store';
 
 class Register extends React.Component {
   
@@ -39,7 +40,8 @@ isDatePickerVisible:false,
       phone:"",
       email:"",
       password:"",
-      setError:""
+      setError:"",
+      bvn:"",
     }
     this.regState = this.regState.bind(this);
     this.register = this.register.bind(this);
@@ -112,18 +114,29 @@ isDatePickerVisible:false,
     )
   .then(response => {
     const { navigation } = this.props;
-     navigation.navigate("Login")
+
+ 
+
+
+    const uid = response.data.data.id + '';
+
+    SecureStore.setItemAsync('current_user_id', uid);
+
+     navigation.navigate("OtpInput");
+
+
     
 })
 .catch(error => { 
-  alert(error)
+  alert(error);
+  
   const key = Object.keys(error.response.data)[0]; 
   
   this.setState({
     setError:error.response.data[key][0]
   })
  this.setState({isLoading:false})
-  //alert(error.response.data[key])
+  alert(error.response.data[key])
 })
 
   
@@ -232,14 +245,14 @@ isDatePickerVisible:false,
                         label="Phone"
                         mode="flat"
                         underlineColor="blue" style={styles.formi}
-
- 
+                        maxLength={11}
+                        keyboardType="numeric"
                         onChangeText={(text) => this.setState({ phone:text })}
 
                       />
 
                       <Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
-                   Your phone number
+                   Your phone number, linked to your bank account
                         </Text>
 
                                        </Block>
@@ -248,24 +261,7 @@ isDatePickerVisible:false,
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ 
     
 
 
@@ -273,12 +269,12 @@ isDatePickerVisible:false,
 
                            <Block center style={styles.formContain}>
                <TextInput
-               KeyboardType="password"
+             
                maxLength={6}
                    label="Pin"
                    mode="flat"
                    underlineColor="blue" style={styles.formi}
-
+                   keyboardType="numeric"
                      onChangeText={(text) => this.setState({ password:text })}
 
                  />
