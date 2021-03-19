@@ -1,10 +1,13 @@
 import React from "react";
 import { Easing, Animated, Dimensions } from "react-native";
-
+import { Appbar } from 'react-native-paper';
+import { NavigationActions } from 'react-navigation';
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { HeaderBackButton } from '@react-navigation/stack';
 
+ 
 import { Block } from "galio-framework";
 
 // screens
@@ -105,7 +108,13 @@ function ArticlesStack(props) {
 
 function ProfileStack(props) {
   return (
-    <Stack.Navigator initialRouteName="Profile" mode="card" headerMode="screen">
+    <Stack.Navigator initialRouteName="Profile" mode="card" headerMode="screen"
+
+    screenOptions={{
+       headerShown: false
+     }}
+
+    >
       <Stack.Screen
 
 
@@ -114,7 +123,7 @@ function ProfileStack(props) {
         component={Profile}
         options={{
 
-
+headerShown: true,
 
 
           header: ({ navigation, scene }) => (
@@ -439,23 +448,41 @@ function LoanHistoryStack(props) {
 
  function BioDataStack(props) {
   return (
-    <Stack.Navigator mode="card" headerMode="none">
+    <Stack.Navigator mode="card" headerMode="screen"
+
+
+    >
       <Stack.Screen
         name="BioData"
         component={BioData}
+
+
+
         options={{
 
-          header: ({ navigation, scene }) => (
-            <Header
+title: 'Edit Details',
 
-              title="Edit BioData"
-              navigation={navigation}
-              scene={scene}
-            />
-          ),
-          cardStyle: { backgroundColor: "#FFF" },
 
+        headerLeft: ({props}) => (
+           <HeaderBackButton
+             {...props}
+             onPress={() => {
+
+             }}
+           />
+         ),
         }}
+
+
+
+
+
+
+
+
+
+
+
       />
 
     </Stack.Navigator>
@@ -498,7 +525,7 @@ function OtpInputStack(props) {
           headerTransparent: true
         }}
       />
-     
+
      <Stack.Screen name="Login" component={LoginStack} />
     </Stack.Navigator>
   );
@@ -532,6 +559,7 @@ function OtpInputStack(props) {
         option={{
           headerTransparent: false
         }}
+
       />
         <Stack.Screen name="BioData" component={BioDataStack} />
     </Stack.Navigator>
@@ -540,6 +568,14 @@ function OtpInputStack(props) {
 
 
 
+
+function CustomNavigationBar() {
+  return (
+    <Appbar.Header>
+      <Appbar.Content title="My awesome app" />
+    </Appbar.Header>
+  );
+}
 
 
 
@@ -575,53 +611,54 @@ export default function AppStack(props) {
         }
       }}
 
-      
+
+
 
       initialRouteName="Profile"
     >
 
 
 
-          <Drawer.Screen name="Onboarding" component={OnboardingStack} 
-          
+          <Drawer.Screen name="Onboarding" component={OnboardingStack}
 
-          
+
+
           />
           <Drawer.Screen name="Dashboard" component={ProfileStack} />
           <Drawer.Screen name="View Profile" component={BioDataStack}
-      
-        
+
+
       options={({ navigation }) => ({
         headerShown:'true',
-  title: 'Awesome app', 
- 
+  title: 'Awesome app',
+
 })}
-        
-        
+
+
         />
         <Drawer.Screen name="Borrow" component={BorrowStack} />
         <Drawer.Screen name="Manage Cards" component={AddCardStack} />
-        <Drawer.Screen name="Loan History" component={LoanHistoryStack} 
-        
-        
-        
+        <Drawer.Screen name="Loan History" component={LoanHistoryStack}
+
+
+
         options={{
 
           header: ({ navigation, scene }) => (
             <Header
- 
+
               title="Your previous loans"
               navigation={navigation}
               scene={scene}
             />
           ),
           cardStyle: { backgroundColor: "#FFFFFF" },
- 
+
         }}
-        
-        
-        
-        
+
+
+
+
         />
 
 

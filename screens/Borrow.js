@@ -17,6 +17,7 @@ import {Picker} from '@react-native-picker/picker';
 import { TextInput, Paragraph, Dialog, Portal } from 'react-native-paper';
 import * as SecureStore from 'expo-secure-store';
 import * as Network from 'expo-network';
+import { HeaderBackButton } from 'react-navigation';
 
 
 const { width, height } = Dimensions.get("screen");
@@ -34,7 +35,16 @@ var tenure_step =1;
 class Borrow extends React.Component {
 
 
-
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerLeft: (
+        <HeaderBackButton
+          title='test'
+          onPress={() => navigation.goBack()}
+        />
+      )
+    };
+  }
 
 
   constructor(props){
