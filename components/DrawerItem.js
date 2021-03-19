@@ -16,7 +16,7 @@ class DrawerItem extends React.Component {
             name="shop"
             family="ArgonExtra"
             size={14}
-            color={focused ? "white" : argonTheme.COLORS.PRIMARY}
+            color={focused ? "white" : '#015CE1'}
           />
         );
       case "Elements":
@@ -34,7 +34,7 @@ class DrawerItem extends React.Component {
             name="spaceship"
             family="ArgonExtra"
             size={14}
-            color={focused ? "white" : argonTheme.COLORS.PRIMARY}
+            color={focused ? "white" : '#015CE1'}
           />
         );
       case "Profile":

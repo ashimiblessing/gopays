@@ -845,24 +845,41 @@ options={{
 
         />
         <Drawer.Screen name="Borrow" component={BorrowStack} />
-        <Drawer.Screen name="Manage Cards" component={AddCardStack} />
+        <Drawer.Screen name="Bank Details" component={AddBankStack} 
+        
+        
+ 
+options={{
+  headerShown:true,
+                  title: 'Add Bank',
+                   
+                          headerLeft: ({navigation, screenProps}) => (
+                             <HeaderBackButton
+                               {...props}
+                               onPress={(navigation) => { console.log(props) }}
+                             />
+                           ),
+                  
+                          }}
+        
+        
+        />
         <Drawer.Screen name="Loan History" component={LoanHistoryStack}
 
 
-
-        options={{
-
-          header: ({ navigation, scene }) => (
-            <Header
-
-              title="Your previous loans"
-              navigation={navigation}
-              scene={scene}
-            />
-          ),
-          cardStyle: { backgroundColor: "#FFFFFF" },
-
-        }}
+ 
+options={{
+  headerShown:true,
+                  title: 'Loan History',
+                   
+                          headerLeft: ({navigation, screenProps}) => (
+                             <HeaderBackButton
+                               {...props}
+                               onPress={(navigation) => { console.log(NavigationActions.back()) }}
+                             />
+                           ),
+                  
+                          }}
 
 
 

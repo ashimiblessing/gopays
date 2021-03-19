@@ -14,7 +14,7 @@ function CustomDrawerContent({ drawerPosition, navigation, profile, focused, sta
   const insets = useSafeArea();
   const screens = [
     "Dashboard",
-    "Manage Cards",
+    "Bank Details",
     "View Profile",
     "Loan History",
  
