@@ -52,6 +52,40 @@ class Profile extends React.Component {
 
 
 
+
+
+
+
+
+
+
+  checkBack(){
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
 determineRepay(){
 
 if(this.state.outstanding_balance*1 < 1)
@@ -476,13 +510,13 @@ iconColor="#fff" style={{ width: 50, height: 50 }}></Button>
 
 
 <Block middle>
-<Button      onPress={() => navigation.navigate('AddCard')} onlyIcon icon="credit-card"
+<Button      onPress={() => navigation.navigate('AddBank')} onlyIcon icon="credit-card"
 
 iconFamily="Entypo" iconSize={20} color=""
 iconColor="#fff" style={{ width: 50, height: 50 }}></Button>
 
 
-  <Text style={styles.but} color={argonTheme.COLORS.TEXT}>Add Card</Text>
+  <Text style={styles.but} color={argonTheme.COLORS.TEXT}>Bank Details</Text>
 </Block>
 
 
@@ -553,13 +587,13 @@ iconColor="#fff" style={{ width: 50, height: 50 }}></Button>
 
 
 <Block middle>
-<Button      onPress={() => alert('coming soon')} onlyIcon icon="credit-card"
+<Button      onPress={() => {this.props.navigation.replace('Onboarding');   SecureStore.deleteItemAsync('is_loggedin');}} onlyIcon icon="home"
 
 iconFamily="Entypo" iconSize={20} color=""
 iconColor="#fff" style={{ width: 50, height: 50 }}></Button>
 
 
-  <Text style={styles.but} color={argonTheme.COLORS.TEXT}>Invite</Text>
+  <Text style={styles.but} color={argonTheme.COLORS.TEXT}>Logout</Text>
 </Block>
 
 

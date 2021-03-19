@@ -10,7 +10,8 @@ import {
   Image,
 } from "react-native";
 import { Block, Checkbox, Text, theme } from "galio-framework";
-
+import { StackActions, NavigationActions } from 'react-navigation';
+import { CommonActions } from '@react-navigation/native';
  
 
 import * as SecureStore from 'expo-secure-store';
@@ -43,32 +44,9 @@ class Login extends React.Component {
 
   }
 
+ 
 
 
-
-
-  componentDidMount() {
-
-
-
-
-
-    let islog = SecureStore.getItemAsync("is_loggedin").then(userString => {
-
-
-
-if(userString)
-{
-
-  this.props.navigation.navigate("Profile")
-}
-    })
-
-
-
-
-
-  }
 
 
 
@@ -117,6 +95,8 @@ axios(options)
     SecureStore.setItemAsync('userInfo', JSON.stringify(userResponse));
     SecureStore.setItemAsync('is_loggedin', JSON.stringify(response.data));
 
+    SecureStore.setItemAsync('lastLogin', JSON.stringify(new Date()));
+
 
 
 
@@ -126,8 +106,8 @@ axios(options)
      this.setState({isLoading:false})
 
 
-
- navigation.navigate("Profile")
+     this.props.navigation.replace('Profile')
+//  navigation.navigate("Profile")
 
 })
 .catch(error => {
@@ -245,13 +225,7 @@ else{
                     <Block middle>
 
 
-   {/* <Button color="primary" style={styles.createButton}
-                       onPress={() => navigation.navigate("Profile")}
-                      >
-                        <Text bold size={14} color={argonTheme.COLORS.WHITE}>
-                          Login
-                        </Text>
-                      </Button> */}
+ 
 
 
 
@@ -280,7 +254,7 @@ else{
                     <Text
  onPress={() => navigation.navigate("Register")}
 
-                     bold size={12} style={{marginTop:30}} color='#4404c4'>
+                     bold size={12} style={{marginTop:30}} color='#015CE1'>
                      Not registered? Sign up now
                     </Text>
     </Block>
@@ -372,7 +346,7 @@ const styles = StyleSheet.create({
   createButton: {
     width: width * 0.5,
     marginTop: 25,
-    backgroundColor:'#4404c4'
+    backgroundColor:'#015CE1'
   }
 });
 

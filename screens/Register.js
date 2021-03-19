@@ -53,6 +53,23 @@ isDatePickerVisible:false,
 
 
 
+   
+componentDidMount(){
+
+
+  SecureStore.deleteItemAsync('bioInfo');
+ 
+  SecureStore.setItemAsync('isProfileSaved', 'YES');
+
+
+
+}
+
+
+
+
+
+
     showDatePicker()  {
     this.setDatePickerVisibility(true);
   };
@@ -115,8 +132,8 @@ isDatePickerVisible:false,
   .then(response => {
     const { navigation } = this.props;
 
- 
-
+  
+  
 
     const uid = response.data.data.id + '';
 
@@ -128,7 +145,7 @@ isDatePickerVisible:false,
     
 })
 .catch(error => { 
-  alert(error);
+  //alert(error);
   
   const key = Object.keys(error.response.data)[0]; 
   

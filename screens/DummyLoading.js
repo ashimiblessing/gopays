@@ -340,7 +340,7 @@ this.props.navigation.navigate('Profile');
 
 
 
-
+ 
 
 
 
@@ -352,8 +352,12 @@ this.props.navigation.navigate('Profile');
 
      })
      .catch(error => {
-
-
+ 
+      const key = Object.keys(error.response.data)[0]; 
+  
+      
+      alert(error.response.data[key])
+ this.props.navigation.replace('Profile')
 
       this.setState({isLoading:false})
 

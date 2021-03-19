@@ -7,6 +7,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { HeaderBackButton } from '@react-navigation/stack';
 
+
  
 import { Block } from "galio-framework";
 
@@ -23,6 +24,7 @@ import UserPerms from "../screens/UserPerms";
 import DummyLoading from "../screens/DummyLoading";
 import AddCard from "../screens/AddCard";
 import OtpInput from "../screens/OtpInput";
+import AddBank from "../screens/AddBank";
 
 
 
@@ -142,13 +144,186 @@ headerShown: true,
 
 
                  <Stack.Screen name="UserPerms" component={UserPermsStack} />
-              <Stack.Screen name="Borrow" component={BorrowStack} />
-                <Stack.Screen name="Repay" component={RepayStack} />
-                <Stack.Screen name="LoanHistory" component={LoanHistoryStack} />
-                  <Stack.Screen name="BioData" component={BioDataStack} />
+
+
+
+
+
+              <Stack.Screen name="Borrow" component={BorrowStack} 
+              
+              
+              
+              
+              options={{
+headerShown:true,
+                title: 'Get a Loan',
+                 
+                        headerLeft: ({navigation, screenProps}) => (
+                           <HeaderBackButton
+                             {...props}
+                             onPress={(navigation) => {  props.navigation.goBack() }}
+                           />
+                         ),
+                
+                        }}
+              
+              
+              
+              
+              
+              />
+              
+                <Stack.Screen name="Repay" component={RepayStack} 
+                
+                
+                
+                
+                options={{
+                  headerShown:true,
+                                  title: 'Repay a Loan',
+                                   
+                                          headerLeft: ({navigation, screenProps}) => (
+                                             <HeaderBackButton
+                                               {...props}
+                                               onPress={(navigation) => {  props.navigation.goBack() }}
+                                             />
+                                           ),
+                                  
+                                          }}
+                
+                
+                
+                
+                
+                />
+                <Stack.Screen name="LoanHistory" component={LoanHistoryStack} 
+                
+                
+                
+                
+                
+                
+                options={{
+                  headerShown:true,
+                                  title: 'Loan History',
+                                   
+                                          headerLeft: ({navigation, screenProps}) => (
+                                             <HeaderBackButton
+                                               {...props}
+                                               onPress={(navigation) => {  props.navigation.goBack() }}
+                                             />
+                                           ),
+                                  
+                                          }}
+                
+                
+                
+                
+                
+                />
+                  <Stack.Screen name="BioData" component={BioDataStack} 
+                  
+                  
+                  
+                  
+                  options={{
+                    headerShown:true,
+                                    title: 'Edit Profile',
+                                     
+                                            headerLeft: ({navigation, screenProps}) => (
+                                               <HeaderBackButton
+                                                 {...props}
+                                                 onPress={(navigation) => {  props.navigation.goBack() }}
+                                               />
+                                             ),
+                                    
+                                            }}
+                  
+                  
+                  
+                  
+                  />
+
+
+
+
+
+
+
+
+
+
+
+
+<Stack.Screen name="AddBank" component={AddBankStack} 
+                
+                
+                
+                
+                
+                
+                options={{
+                  headerShown:true,
+                                  title: 'Add Bank Details',
+                                   
+                                          headerLeft: ({navigation, screenProps}) => (
+                                             <HeaderBackButton
+                                               {...props}
+                                               onPress={(navigation) => {  props.navigation.goBack() }}
+                                             />
+                                           ),
+                                  
+                                          }}
+                
+                
+                
+                
+                
+                />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                  <Stack.Screen name="DummyLoading" component={DummyLoadingStack} />
-                  <Stack.Screen name="AddCard" component={AddCardStack} />
+                  <Stack.Screen name="AddCard" component={AddCardStack} 
+                  
+                  
+                  
+                  
+                  options={{
+                    headerShown:true,
+                                    title: 'Add Card',
+                                     
+                                            headerLeft: ({navigation, screenProps}) => (
+                                               <HeaderBackButton
+                                                 {...props}
+                                                 onPress={(navigation) => {  props.navigation.goBack() }}
+                                               />
+                                             ),
+                                    
+                                            }}
+                  
+                  
+                  
+                  
+                  
+                  />
 
 
 
@@ -198,7 +373,7 @@ function OnboardingStack(props) {
       />
       <Stack.Screen name="Register" component={RegisterStack} />
        <Stack.Screen name="Login" component={LoginStack} />
-
+       <Stack.Screen name="Profile" component={ProfileStack} />
 
     </Stack.Navigator>
   );
@@ -238,6 +413,54 @@ function AddCardStack(props) {
         </Stack.Navigator>
       );
      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     function AddBankStack(props) {
+      return (
+        <Stack.Navigator mode="card" headerMode="none">
+          <Stack.Screen
+            name="AddBank"
+            component={AddBank}
+            options={{
+     
+              header: ({ navigation, scene }) => (
+                <Header
+     
+                  title="Bank Details"
+                  navigation={navigation}
+                  scene={scene}
+                />
+              ),
+              cardStyle: { backgroundColor: "#FFFFFF" },
+     
+            }}
+          />
+      
+        </Stack.Navigator>
+      );
+     }
+     
+
+
+
+
+
+
+
+
+
 
 
 
@@ -448,40 +671,14 @@ function LoanHistoryStack(props) {
 
  function BioDataStack(props) {
   return (
-    <Stack.Navigator mode="card" headerMode="screen"
+    <Stack.Navigator mode="card" headerMode="none"
 
 
     >
       <Stack.Screen
         name="BioData"
         component={BioData}
-
-
-
-        options={{
-
-title: 'Edit Details',
-
-
-        headerLeft: ({props}) => (
-           <HeaderBackButton
-             {...props}
-             onPress={() => {
-
-             }}
-           />
-         ),
-        }}
-
-
-
-
-
-
-
-
-
-
+ 
 
       />
 
@@ -578,6 +775,10 @@ function CustomNavigationBar() {
 }
 
 
+const navigateAction = NavigationActions.navigate({
+  routeName: 'SettingsScreen',
+  params: {},
+})
 
 
 
@@ -611,7 +812,7 @@ export default function AppStack(props) {
         }
       }}
 
-
+     
 
 
       initialRouteName="Profile"
@@ -627,12 +828,19 @@ export default function AppStack(props) {
           <Drawer.Screen name="Dashboard" component={ProfileStack} />
           <Drawer.Screen name="View Profile" component={BioDataStack}
 
-
-      options={({ navigation }) => ({
-        headerShown:'true',
-  title: 'Awesome app',
-
-})}
+ 
+options={{
+  headerShown:true,
+                  title: 'Edit Profile',
+                   
+                          headerLeft: ({navigation, screenProps}) => (
+                             <HeaderBackButton
+                               {...props}
+                               onPress={(navigation) => { console.log(props) }}
+                             />
+                           ),
+                  
+                          }}
 
 
         />

@@ -35,7 +35,7 @@ class LoanHistory extends React.Component {
     loading:false,
     user:'',
      myArray: [],
-      tableHead: ['ID','Amount (NGN) ','Loan Date','Payback Date'],
+      tableHead: ['Amount (NGN) ','Status','Loan Date','Payback Date'],
      
   }
 
@@ -71,7 +71,7 @@ class LoanHistory extends React.Component {
       var loan_hist =[];
       var lh = response.data.success;
       lh.forEach(function(item){
-var it= [item.id,item.amount,item.date,item.payback_date];
+var it= [item.amount,item.loan_status,item.date,item.payback_date];
 loan_hist.push(it);
  
       })
@@ -150,7 +150,7 @@ loan_hist.push(it);
             <Text
               bold
               color="#525F7F"
-              size={28}
+              size={24}
               style={{ marginBottom: 4 }}
             >
 
@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
   wrapper: { flexDirection: 'row' },
   title: { flex: 1, backgroundColor: '#f6f8fa' },
   row: {  height: 28  },
-  text: { textAlign: 'center' }
+  text: { textAlign: 'center', fontSize:12 }
 
 
 });

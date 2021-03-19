@@ -37,6 +37,7 @@ class Borrow extends React.Component {
 
   static navigationOptions = ({ navigation }) => {
     return {
+      headerShown: true,
       headerLeft: (
         <HeaderBackButton
           title='test'

@@ -30,11 +30,170 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
  
 
 
-function SettingsScreen() {
+function SettingsScreen({ navigation }) {
   const [text, setText] = React.useState('');
-  const [first_name, setFirstName] = React.useState('');
-  const [middle_name, setMiddleName] = React.useState('');
-  const [last_name, setLastName] = React.useState('');
+  const [friend_first_name, setFriendFirstName] = React.useState('');
+  const [friend_last_name, setFriendLastName] = React.useState('');
+  const [friend_phone, setFriendPhone] = React.useState('');
+  const [loading, setLoading] = useState(false);
+
+
+
+ 
+
+
+  function friend_biodata() {
+
+ 
+    
+    
+        setLoading(true)
+    
+    
+    
+    
+      let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
+    
+    
+    const dat = JSON.parse(dtstr);
+    
+        const config = {
+          headers: { Authorization: 'Bearer '+dat.token }
+      };
+    //alert(BVN);return;
+    
+    
+      axios.post('/api/update_friend_profile',{
+        friend_first_name:friend_first_name,
+        friend_last_name:friend_last_name,
+        friend_phone:friend_phone
+    
+    },
+    config
+    
+    )
+    .then(response => {
+    
+      //const { navigation } = this.props;
+    
+      SecureStore.deleteItemAsync('bioInfo');
+      SecureStore.setItemAsync('bioInfo', JSON.stringify(response.data.data));
+      SecureStore.setItemAsync('isProfileSaved', 'YES');
+    //alert(JSON.stringify(response.data.information));
+    
+    
+      navigation.navigate('Profile');
+    //alert(JSON.stringify(response.data))
+    
+      alert(response.data.success);
+    
+    })
+    .catch(error => {
+      setLoading(false)
+    alert(error.response.data[key]);
+    return;
+        const key = Object.keys(error.response.data)[0];
+    // const key = Object.keys(error.response.data)[0];
+    //  errors = error.response.data[key][0];
+    
+    if(error.response.data[key][0].length > 1) {
+      alert(error.response.data[key][0])
+    }
+    
+    else{
+      alert(error.response.data[key])
+    }
+    
+    
+    //
+    
+    })
+    
+    
+    
+    })
+    
+    
+    
+    
+    
+      }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        useEffect(() => {
+    
+    
+    
+          setLoading(true)
+    
+    
+     
+    
+    
+    
+    
+    
+    
+        SecureStore.getItemAsync("bioInfo")
+        .then(userString => {
+    
+     
+          if(userString){
+    
+            setLoading(true)
+            let user = JSON.parse(userString);
+    
+   
+            setFriendFirstName(user.friend_first_name)
+        
+            // setEmail(user.email)
+            setFriendLastName(user.friend_last_name)
+            setFriendPhone(user.friend_phone)
+ 
+            setLoading(false)
+    
+    
+          }
+    
+    
+    
+        });
+    
+        }, []);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   return (
     <View style={{ flex: 1,  alignItems: 'center' }}>
      
@@ -56,12 +215,12 @@ function SettingsScreen() {
  style={styles.formi}
 
 
-  value={first_name}
-  onChangeText={text => setFirstName(text)}
+  value={friend_first_name}
+  onChangeText={text => setFriendFirstName(text)}
 />
 
 <Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
-                 Your first name as it appears on your bank account
+                 Your friend's first name
                   </Text>
 
 </Block>
@@ -75,11 +234,11 @@ function SettingsScreen() {
 label="Last Name"
 
 style={styles.formi}
-   value={last_name}
-  onChangeText={text => setLastName(text)}
+   value={friend_last_name}
+  onChangeText={text => setFriendLastName(text)}
 />
 <Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
-                 Your last name as it appears on your bank account
+                 Your friend's last name  
                   </Text>
 
 
@@ -97,14 +256,14 @@ style={styles.formi}
 <TextInput  mode="flat" underlineColor="blue"
 label="Phone"
 
-value={middle_name}
+value={friend_phone}
 
 style={styles.formi}
-  onChangeText={text => setMiddleName(text)}
+  onChangeText={text => setFriendPhone(text)}
 />
 
 <Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
-                 Your middle name as it appears on your bank account
+                 Your friend's phone number
                   </Text>
 
 </Block>
@@ -115,10 +274,7 @@ style={styles.formi}
 
 
 
-
-
-
-<Block
+                       <Block
                          middle
                          row
                          space="evenly"
@@ -128,17 +284,21 @@ style={styles.formi}
 
                          <Button
                            medium
-                           color="primary" 
+                           color="primary"
+
+                      onPress={() => friend_biodata(friend_first_name,friend_last_name,friend_phone)}
                          >
-                       
+                         {
+                           loading ?
+                           <ActivityIndicator  size="large" color="#ffff" />
+                           :
                            <Text bold size={14} color={argonTheme.COLORS.WHITE}>
-                      Coming soon!
+                        Save
                         </Text>
-                    
+                         }
 
                          </Button>
                        </Block>
-
 
 
 

@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { Block, Button, Text, theme } from "galio-framework";
 import * as Network from 'expo-network';
-
+import * as SecureStore from 'expo-secure-store';
 
 const { height, width } = Dimensions.get("screen");
 
@@ -34,6 +34,89 @@ async componentDidMount(){
 
 
 
+
+
+componentDidMount(){
+
+
+  let logDate = SecureStore.getItemAsync("lastLogin").then(userString => {
+
+
+
+
+    if(userString)
+    {
+    
+      let mins_to_add = 30;
+      let last_date = new Date(JSON.parse(userString));
+      var lastDateObj = new Date(last_date.getTime() + mins_to_add*60000);
+      let curr_date = new Date();
+      
+      if(lastDateObj < curr_date){
+        SecureStore.deleteItemAsync('is_loggedin');
+      }
+
+     // this.props.navigation.navigate("Profile")
+    
+     SecureStore.deleteItemAsync('is_loggedin');
+      
+     
+    
+    }
+
+    else{
+      SecureStore.deleteItemAsync('is_loggedin');
+    }
+
+ 
+        })
+    
+    
+    
+
+
+}
+
+
+
+
+
+
+sendToDashboard()
+{
+
+
+ 
+
+  let islog = SecureStore.getItemAsync("is_loggedin").then(userString => {
+
+
+
+
+    if(userString)
+    {
+    
+     // this.props.navigation.navigate("Profile")
+    
+  
+    this.props.navigation.replace('Profile')
+     
+    
+    }
+
+    else{
+      this.props.navigation.navigate('Login')
+      
+    }
+        })
+    
+    
+    
+
+
+
+
+}
 
 
 
@@ -91,7 +174,7 @@ async componentDidMount(){
                 <Button
                   style={styles.button}
                   color={argonTheme.COLORS.INFO}
-                  onPress={() => navigation.navigate("Login")}
+                  onPress={() => this.sendToDashboard()}
                   textStyle={{ color: argonTheme.COLORS.WHITE }}
                 >
                   Login
@@ -134,7 +217,7 @@ const styles = StyleSheet.create({
     height: theme.SIZES.BASE * 3,
     shadowRadius: 0,
     shadowOpacity: 0,
-    backgroundColor:'#4404c4',
+    backgroundColor:'#015CE1',
     color:'white'
   },
 
@@ -145,7 +228,7 @@ const styles = StyleSheet.create({
     height: theme.SIZES.BASE * 3,
     shadowRadius: 0,
     shadowOpacity: 0,
-    backgroundColor: '#4404c4',
+    backgroundColor: '#015CE1',
     color:'white'
   },
 
@@ -167,14 +250,14 @@ const styles = StyleSheet.create({
 
 
   subTop: {
-  color:'#4404c4',
-  fontSize:23,
+  color:'#333',
+  fontSize:18,
   fontWeight:'bold'
 
   },
 
   subBottom: {
-  color:'#4404c4',
+  color:'#015CE1',
   fontSize:16,
 
 

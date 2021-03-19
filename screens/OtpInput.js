@@ -26,12 +26,37 @@ import axios from 'axios';
 
 
 
-export default class OtpInput extends React.Component {
-  state={otp:'',
-  isLoading:false,
+class OtpInput extends React.Component {
+  state={
 
 
 };
+
+
+
+
+constructor(props){
+  super(props);
+  this.state = {
+    otp:'',
+    isLoading:false,
+  }
+
+
+
+
+
+  this.verify_otp = this.verify_otp.bind(this);
+  
+}
+
+
+
+
+
+
+
+
    getOtp(otp) {
         console.log(otp);
         this.setState({ otp });
@@ -40,27 +65,36 @@ export default class OtpInput extends React.Component {
 
 
 
-
+componentDidMount(){
+  this.setState({isLoading:false})
+}
 
 
 
 
 verify_otp() {
 
+if(!this.state.otp)
+{
+alert('Please fill the otp');
 
+return;
+}
+ 
+if(this.state.otp.length <6)
+{
+alert('Please fill the fields completely');
 
-
-
-
-
-
+return;
+}
+ 
 
 
     let data2 = SecureStore.getItemAsync("current_user_id").then(userString => {
 
 
 
-        if(userString == '' || typeof userString === 'undefined' )
+        if(userString !== '' || typeof userString !== 'undefined' )
         {
       
          
@@ -96,12 +130,10 @@ alert('Your phone number was verified successfully. Please Login');
     
 })
 .catch(error => { 
-  alert(error)
-  //const key = Object.keys(error.response.data)[0]; 
+  //alert(error)
+  const key = Object.keys(error.response.data)[0]; 
   
-//   this.setState({
-//     setError:error.response.data[key][0]
-//   })
+ alert(error.response.data[key]);
  this.setState({isLoading:false})
  // alert(error.response.data[key])
 })
@@ -216,3 +248,6 @@ const styles = StyleSheet.create({
 
 
 });
+
+
+export default OtpInput;
