@@ -3,17 +3,18 @@ import {
   StyleSheet,
   ImageBackground,
   Dimensions,
-  StatusBar, ActivityIndicator, 
+  StatusBar, ActivityIndicator,
   KeyboardAvoidingView,TouchableOpacity,
   ScrollView,
   Image,
 } from "react-native";
 import { Block, Checkbox, Text, theme } from "galio-framework";
+import {Picker} from '@react-native-picker/picker';
 
 import { Button, Icon} from "../components";
 import {   argonTheme } from "../constants";
 import Images from "../constants/Images";
-import axios from 'axios'; 
+import axios from 'axios';
 
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
@@ -24,8 +25,18 @@ const { width, height } = Dimensions.get("screen");
 axios.defaults.baseURL = 'http://3.21.215.190';
 import * as SecureStore from 'expo-secure-store';
 
+const banksList = ['Abbey Mortgage Bank','Access Bank','Access Bank (Diamond)','ALAT by WEMA','ASO Savings and Loans','Bowen Microfinance Bank','CEMCS Microfinance Bank','Citibank Nigeria','Coronation Merchant Bank','Ecobank Nigeria','Ekondo Microfinance Bank','Eyowo','Fidelity Bank','First Bank of Nigeria','First City Monument Bank','FSDH Merchant Bank Limited','Globus Bank','Guaranty Trust Bank','Hackman Microfinance Bank','Hasal Microfinance Bank','Heritage Bank','Ibile Microfinance Bank','Infinity MFB','Jaiz Bank','Keystone Bank','Kuda Bank','Lagos Building Investment Company Plc.','Mayfair MFB','One Finance','PalmPay','Parallex Bank','Parkway - ReadyCash','Paycom','Petra Mircofinance Bank Plc','Polaris Bank','Providus Bank','Rand Merchant Bank','Rubies MFB','Sparkle Microfinance Bank','Stanbic IBTC Bank','Standard Chartered Bank','Sterling Bank','Suntrust Bank','TAJ Bank','TCF MFB','Titan Bank','Union Bank of Nigeria','United Bank For Africa','Unity Bank','VFD Microfinance Bank Limited','Wema Bank','Zenith Bank'];
+
+var banksPicker   = banksList.map((myValue,myIndex)=>{
+
+    return(<Picker.Item label={myValue} value={myValue} key={myIndex}/>)
+
+
+
+  });
+
 class AddBank extends React.Component {
-  
+
 
 
   constructor(props){
@@ -37,18 +48,18 @@ isDatePickerVisible:false,
       account_number:"",
       bank_name:"",
 
- 
+
     }
 
 
 
 
     this.save_bank = this.save_bank.bind(this);
-  
 
 
 
- 
+
+
   }
 
 
@@ -56,11 +67,11 @@ isDatePickerVisible:false,
 
 
 
-   
+
   componentDidMount(){
 
-    
-    
+
+
     let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
 
 
@@ -90,13 +101,13 @@ isDatePickerVisible:false,
 
 
            const bank_info =  response.data.data;
-          
- 
+
+
 
 
                this.setState({bank_name:bank_info.bank_name});
                this.setState({account_number:bank_info.account_number});
-                
+
 
                 })
                 .catch(error => {
@@ -120,84 +131,84 @@ alert(error)
 
 
 
- 
-
- 
-
- 
 
 
 
- 
+
+
+
+
+
+
 
   save_bank() {
- 
+
 
     if(!this.state.account_number || !this.state.bank_name)
     {
         alert('Please fill all fields');
         return;
     }
-    
+
 
     this.setState({isLoading:true})
 
 
     let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
-    
-    
+
+
         const dat = JSON.parse(dtstr);
-        
+
             const config = {
               headers: { Authorization: 'Bearer '+dat.token }
           };
         //alert(BVN);return;
-        
-        
+
+
           axios.post('/api/save_bank',{
             bank_name:this.state.bank_name,
             account_number:this.state.account_number,
-          
-        
+
+
         },
         config
-        
+
         )
         .then(response => {
-        
-        
-        
+
+
+
           this.props.navigation.navigate('Profile');
-       
+
           alert(response.data.success);
-        
+
         })
         .catch(error => {
             alert(error)
             return;
             const key = Object.keys(error.response.data)[0];
          this.setState({isLoading:false})
-   
+
         if(error.response.data) {
           alert(error.response.data)
         }
-        
+
         else{
           alert(error)
         }
-        
-        
+
+
         //
-        
+
         })
-        
-        
-        
+
+
+
         })
-        
-        
-        
-  
+
+
+
+
 
   }
 
@@ -238,9 +249,7 @@ alert(error)
 
    />
 
-   <Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
-     Your account number
-     </Text>
+   
                     </Block>
 
 
@@ -248,40 +257,74 @@ alert(error)
 
                     <Block center style={styles.formContain}>
 
-                      <TextInput
-                          label="Bank Name"
-                          mode="flat"
-                          underlineColor="blue" style={styles.formi}
 
-                            
-                        value={this.state.bank_name}
-                        onChangeText={(text) => this.setState({ bank_name:text })}
 
-                        />
-                      <Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
-                        Name of Bank
-                        </Text>
+
+
+
+
+
+
+                        <Block space="around" style={{marginLeft:'5%',width:'100%',   marginTop:35 }}>
+                        <Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
+                          Name of Bank
+                          </Text>
+
+                                                   <Picker
+
+                                           style={{ height: 50, }}
+
+                                           selectedValue={this.state.bank_name}
+                                               onValueChange={(itemValue, itemIndex) =>
+                                               this.setState({bank_name: itemValue})
+                                               }
+
+
+                                         >
+
+                                           <Picker.Item label="Select one" value="" />
+
+
+                                          {banksPicker}
+
+                                          </Picker>
+
+                        </Block>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                        </Block>
 
 
 
 
-  
-
-
-
-
- 
-    
-
-
- 
 
 
 
 
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
                     <Block middle>
