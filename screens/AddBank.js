@@ -103,10 +103,13 @@ isDatePickerVisible:false,
            const bank_info =  response.data.data;
 
 
+if(bank_info.bank_name)
+{
 
+  this.setState({bank_name:bank_info.bank_name});
+  this.setState({account_number:bank_info.account_number});
+}
 
-               this.setState({bank_name:bank_info.bank_name});
-               this.setState({account_number:bank_info.account_number});
 
 
                 })
@@ -279,6 +282,8 @@ alert(error)
                                                this.setState({bank_name: itemValue})
                                                }
 
+
+                                               selectedValue={this.state.bank_name}
 
                                          >
 

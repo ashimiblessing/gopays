@@ -25,6 +25,7 @@ import DummyLoading from "../screens/DummyLoading";
 import AddCard from "../screens/AddCard";
 import OtpInput from "../screens/OtpInput";
 import AddBank from "../screens/AddBank";
+import MyCards from "../screens/MyCards";
 
 
 
@@ -301,6 +302,46 @@ headerShown:true,
 
 
                  <Stack.Screen name="DummyLoading" component={DummyLoadingStack} />
+
+
+
+
+
+
+
+                 <Stack.Screen name="MyCards" component={MyCardsStack} 
+                  
+                  
+                  
+                  
+                  options={{
+                    headerShown:true,
+                                    title: 'My Cards',
+                                     
+                                            headerLeft: ({navigation, screenProps}) => (
+                                               <HeaderBackButton
+                                                 {...props}
+                                                 onPress={(navigation) => {  props.navigation.goBack() }}
+                                               />
+                                             ),
+                                    
+                                            }}
+                  
+                  
+                  
+                  
+                  
+                  />
+
+
+
+
+
+
+
+
+
+
                   <Stack.Screen name="AddCard" component={AddCardStack} 
                   
                   
@@ -418,6 +459,37 @@ function AddCardStack(props) {
 
 
 
+
+
+     function MyCardsStack(props) {
+      return (
+        <Stack.Navigator mode="card" headerMode="none">
+          <Stack.Screen
+            name="MyCards"
+            component={MyCards}
+            options={{
+     
+              header: ({ navigation, scene }) => (
+                <Header
+     
+                  title="Payment Methods"
+                  navigation={navigation}
+                  scene={scene}
+                />
+              ),
+              cardStyle: { backgroundColor: "#FFFFFF" },
+     
+            }}
+     
+          />
+          <Stack.Screen name="Profile" component={ProfileStack} />
+     
+             </Stack.Navigator>
+           );
+          }
+     
+     
+     
 
 
 

@@ -23,8 +23,7 @@ const thumbMeasure = (width - 48 - 32) / 3;
 
 
 import blue_image from '../assets/blue2.png';
-
-
+ 
 
 
 
@@ -345,6 +344,8 @@ determineLoan()
 
   render() {
 
+    var outstanding_balance = this.state.outstanding_balance*1;
+
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -467,7 +468,7 @@ LOAN DETAILS
                   </Text>
 
                   <Text bold size={32} color="#fff" style={{marginTop:10, fontWeight:'bold'}}>
-                   {'\u20A6'} {this.state.outstanding_balance}
+                   {'\u20A6'} {outstanding_balance.toFixed(2)}
                   </Text>
 
 
@@ -497,21 +498,21 @@ LOAN DETAILS
 
 
 
-
+ 
 <Block middle>
-<Button    onPress={() => this.determineRepay()} onlyIcon icon="calculator"
+<Button    onPress={() => navigation.navigate('MyCards')} onlyIcon icon="credit-card"
 
 iconFamily="Entypo" iconSize={20}
 iconColor="#fff" style={{ width: 50, height: 50 }}></Button>
 
 
-  <Text style={styles.but} color={argonTheme.COLORS.TEXT}>Repayments</Text>
+  <Text style={styles.but} color={argonTheme.COLORS.TEXT}>Cards</Text>
 </Block>
 
 
 
 <Block middle>
-<Button      onPress={() => navigation.navigate('AddBank')} onlyIcon icon="credit-card"
+<Button      onPress={() => navigation.navigate('AddBank')} onlyIcon icon="wallet"
 
 iconFamily="Entypo" iconSize={20} color=""
 iconColor="#fff" style={{ width: 50, height: 50 }}></Button>
@@ -588,9 +589,9 @@ iconColor="#fff" style={{ width: 50, height: 50 }}></Button>
 
 
 <Block middle>
-<Button      onPress={() => {this.props.navigation.replace('Onboarding');   SecureStore.deleteItemAsync('is_loggedin');}} onlyIcon icon="home"
+<Button      onPress={() => {this.props.navigation.replace('Onboarding');   SecureStore.deleteItemAsync('is_loggedin');}} onlyIcon icon="close"
 
-iconFamily="Entypo" iconSize={20} color=""
+iconFamily="FontAwesome" iconSize={20} color=""
 iconColor="#fff" style={{ width: 50, height: 50 }}></Button>
 
 

@@ -90,9 +90,10 @@ function SettingsScreen({ navigation }) {
     })
     .catch(error => {
       setLoading(false)
+      const key = Object.keys(error.response.data)[0];
     alert(error.response.data[key]);
     return;
-        const key = Object.keys(error.response.data)[0];
+   
     // const key = Object.keys(error.response.data)[0];
     //  errors = error.response.data[key][0];
     

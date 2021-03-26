@@ -83,7 +83,7 @@ class DrawerItem extends React.Component {
         onPress={() =>
           title == "About Gopays"
             ? Linking.openURL(
-                "https://google.com"
+                "https://gopays.ng/about"
               ).catch(err => console.error("An error occurred", err))
             : navigation.navigate(title)
         }
