@@ -8,6 +8,7 @@ import {
   Platform,FlatList, Animated,SafeAreaView, ActivityIndicator,
 } from "react-native";
 import { Block, Text, theme , Button as GaButton} from "galio-framework";
+import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 
 
 import PaystackWebView from 'react-native-paystack-webview';
@@ -79,6 +80,8 @@ class MyCards extends React.Component {
     active: null,
     name:'',
     email:'',
+    tableHead: ['CARD NUMBER','EXPIRY'],
+    user_cards:'',
   }
 
 
@@ -113,9 +116,18 @@ console.log(res)
 
 
  var card_data = response.data.data;
+var cards_screened =[]
+
+ card_data.forEach(function(item){
+    var it= [item.last4,item.expiry];
+    cards_screened.push(it);
+     
+          })
+
+
+ this.setState({user_cards:cards_screened});
  
- console.log(response.data)
- 
+ console.log(cards_screened)
 alert(response.data.information);
 this.setState({isLoading:false});
 
@@ -168,7 +180,7 @@ this.setState({isLoading:false});
     
     
          axios.post(
-              '/api/me',{
+              '/api/get_cards',{
               foo:''
     
              },
@@ -180,19 +192,17 @@ this.setState({isLoading:false});
     
     
     
-         var user_info = response.data.user;
-         var token_info = response.data.token;
-         
-    
+         var user_cards = response.data.data;
+   
      
-             this.setState({loan_limit:user_info.loan_limit});
-              this.setState({outstanding_balance:user_info.outstanding_balance});
-               this.setState({wallet_balance:user_info.wallet_balance});
+             this.setState({user_cards:user_cards});
+            
     
               })
               .catch(error => {
-    
-           alert('sorry, there was an error loading your information');
+                const key = Object.keys(error.response.data);
+           alert('sorry, there was an error loading cards. ');
+           alert(error.response.data[key])
     
               })
     
@@ -309,7 +319,12 @@ this.setState({isLoading:false});
 
 
 
-
+      <View middle style={{width:'95%', justifyContent:'center', alignSelf:'center',marginTop:20}}>
+        <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}} style={{backgroundColor:'#fff'}}>
+          <Row data={this.state.tableHead} style={styles.head} textStyle={styles.text} />
+          <Rows data={this.state.user_cards} style={styles.row} textStyle={styles.text} />
+        </Table>
+      </View>
 
 
 
