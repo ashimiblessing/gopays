@@ -19,7 +19,7 @@ const { width, height } = Dimensions.get("screen");
 
 const thumbMeasure = (width - 48 - 32) / 3;
 
- 
+
 
 
 import blue_image from '../assets/blue2.png';
@@ -75,7 +75,7 @@ class Profile extends React.Component {
 
 
 
- 
+
 
 
 
@@ -485,10 +485,11 @@ LOAN DETAILS
 
 
 <Block middle>
-<Button    onPress={() => this.determineLoan()} onlyIcon icon="credit"
+<Button    onPress={() => this.determineLoan()} style={{ width: 50, height: 50,borderRadius:25 }}>
 
-iconFamily="Entypo" iconSize={20} color=""
-iconColor="#fff" style={{ width: 50, height: 50 }}>warning</Button>
+<Text style={{color:'#fff',fontSize:20}}>{'\u20A6'}</Text>
+
+</Button>
 
 
   <Text style={styles.but} color={argonTheme.COLORS.TEXT}>Borrow</Text>
@@ -562,7 +563,7 @@ iconColor="#fff" style={{ width: 50, height: 50 }}></Button>
 
 
 <Block middle>
-<Button   onPress={() => navigation.navigate("LoanHistory")}  onlyIcon icon="credit"
+<Button   onPress={() => navigation.navigate("LoanHistory")}  onlyIcon icon="calendar"
 
 iconFamily="Entypo" iconSize={20} color=""
 iconColor="#fff" style={{ width: 50, height: 50 }}>warning</Button>
