@@ -5,13 +5,13 @@ import {
   ScrollView,
   Image,View,
   ImageBackground,
-  Platform,FlatList, Animated,SafeAreaView,
+  Platform,FlatList, Animated,SafeAreaView,Alert,
 } from "react-native";
 import { Block, Text, theme , Button as GaButton} from "galio-framework";
-
+import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 
 import PaystackWebView from 'react-native-paystack-webview';
-
+import Spinner from 'react-native-loading-spinner-overlay';
 
 
 import * as SecureStore from 'expo-secure-store';
@@ -22,7 +22,7 @@ import { Images, argonTheme,Tabs } from "../constants";
 import { HeaderHeight } from "../constants/utils";
 
 
-import repay_image from '../assets/repay.jpg'; 
+import repay_image from '../assets/repay.jpg';
 
 
 
@@ -30,29 +30,7 @@ import repay_image from '../assets/repay.jpg';
 const { width, height } = Dimensions.get("screen");
 
 const thumbMeasure = (width - 48 - 32) / 3;
-const DATA = [
-  {
-    id: 'bd7acbea1',
-    title: 'NGN 50000 at 12/2/2020 (Paid)',
-  },
-  {
-    id: '3ac68af2',
-    title: 'NGN 40000 at 12/2/2020 (Paid)',
-  },
-  {
-    id: '58694a03',
-    title: 'NGN 600000 at 12/2/2020 (Paid)',
-  },
-  {
-    id: '58694a04',
-    title: 'NGN 7000 at 12/2/2020 (Paid)',
-  },
 
-  {
-    id: '58694a05',
-    title: 'NGN 500 at 12/2/2020 (Paid)',
-  },
-];
 
 var general_token ='';
 
@@ -62,34 +40,37 @@ class Repay extends React.Component {
 
 
 
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.paystackWebViewRef = createRef();
+
+
+
   }
 
 
 
 
-  static defaultProps = {
-    data: DATA,
-    initialIndex: null,
-  }
 
   state = {
     active: null,
+    name:'',
+    email:'',
+    tableHead: ['CARD NUMBER','ACTION'],
+  user_cards:[],
+    spinner: false,
   }
-
 
 
 
 handle_pay_success(res){
 
- 
- 
+
+
 
   if(res)
   {
-   
+
      const config = {
          headers: { Authorization: 'Bearer '+this.state.token }
      };
@@ -123,18 +104,18 @@ handle_pay_success(res){
 
 
 
+          //
+          //  let userResponse =  {
+          //   user: response.data.user,
+          //   message: 'success',
+          //   token: response.data.token
+          // }
 
-           let userResponse =  {
-            user: response.data.user,
-            message: 'success',
-            token: response.data.token
-          }
-      
-          SecureStore.setItemAsync('userInfo', JSON.stringify(userResponse));
-          SecureStore.setItemAsync('is_loggedin', JSON.stringify(response.data));
+          // SecureStore.setItemAsync('userInfo', JSON.stringify(userResponse));
+          // SecureStore.setItemAsync('is_loggedin', JSON.stringify(response.data));
 
 
- 
+
 alert('Your repayment was successful');
 
 
@@ -158,14 +139,112 @@ alert('Your repayment was successful');
 
 
 
+payWithCard(last4,email)
+{
 
- 
+  this.setState({spinner:true});
+
+
+      let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
+
+
+        if(dtstr)
+        {
+           var dat = JSON.parse(dtstr);
+      general_token = dat.token
+
+      this.setState({token:dat.token});
+           const config = {
+               headers: { Authorization: 'Bearer '+dat.token }
+           };
+
+
+
+           axios.post(
+                '/api/charge_old_card',{
+                last4:last4,
+                amount:this.state.outstanding_balance,
+                card_email:email,
+
+               },
+             config
+              )
+
+
+                  .then(response => {
+
+
+
+                    this.setState({ spinner: false });
+
+
+
+console.log(response.data.success)
+
+var fresh_data = response.data.data;
+
+
+         this.setState({loan_limit:fresh_data.loan_limit});
+          this.setState({outstanding_balance:fresh_data.outstanding_balance});
+           this.setState({wallet_balance:fresh_data.wallet_balance});
+
+           setTimeout(() => {
+          alert(response.data.information);
+           }, 100);
+
+
+
+
+
+                })
+                .catch(error => {
+                  // const key = Object.keys(error.response.data);
+
+
+                                      this.setState({ spinner: false });
+
+                                      setTimeout(() => {
+                                   alert('sorry, there was an error loading cards');
+                                   alert(error)
+                                      }, 100);
+
+
+
+          //   alert(error.response.data[key])
+
+                })
+
+
+
+        }
+            })
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
 
   componentDidMount() {
-  
-
-
-
 
 
     let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
@@ -175,50 +254,73 @@ alert('Your repayment was successful');
       {
          var dat = JSON.parse(dtstr);
     general_token = dat.token
-    
+
     this.setState({token:dat.token});
          const config = {
              headers: { Authorization: 'Bearer '+dat.token }
          };
-    
-    
-    
+
+
+
          axios.post(
-              '/api/me',{
+              '/api/get_cards',{
               foo:''
-    
+
              },
            config
             )
-    
-    
+
+
                 .then(response => {
-    
-    
-    
-         const user_info = response.data.user;
-         const token_info = response.data.token;
-    
-    
-    
-    
-             this.setState({loan_limit:user_info.loan_limit});
-              this.setState({outstanding_balance:user_info.outstanding_balance});
-               this.setState({wallet_balance:user_info.wallet_balance});
-    
+
+
+
+                  var card_data = response.data.data.cards;
+                  var user_info = response.data.data.user;
+                 var cards_screened =[]
+
+                  card_data.forEach((item) => {
+
+
+
+                     var it= [" Card ending with "+ item.last4, <Button small style={{ backgroundColor: argonTheme.COLORS.PRIMARY,width:'90%'}} onPress={()=> this.payWithCard(item.last4,item.card_email)} > USE  </Button> ];
+                     cards_screened.push(it);
+
+                           })
+
+
+                  this.setState({user_cards:cards_screened});
+
+
+                  //user Details
+
+
+                               this.setState({loan_limit:user_info.loan_limit});
+                                this.setState({outstanding_balance:user_info.outstanding_balance});
+                                 this.setState({wallet_balance:user_info.wallet_balance});
+
+
+
+
+
+
+
+
+
               })
               .catch(error => {
-    
-           alert('sorry, there was an error loading your information');
-    
+                // const key = Object.keys(error.response.data);
+           alert('sorry, there was an error loading cards. ');
+        //   alert(error.response.data[key])
+
               })
-    
-    
-    
+
+
+
       }
           })
-    
-    
+
+
 
 
 
@@ -232,15 +334,35 @@ alert('Your repayment was successful');
 
 
   }
- 
-  
+
+
+
+
+
+
 
 
   render() {
         const { navigation } = this.props;
           const { data, ...props } = this.props;
     return (
+
+
+
+
+
+
+
       <Block flex style={styles.profile}>
+
+
+      <Spinner
+               visible={this.state.spinner}
+               textContent={'Hold tight...'}
+               textStyle={styles.spinnerTextStyle}
+             />
+
+
         <Block flex>
 
             <ScrollView
@@ -252,10 +374,20 @@ alert('Your repayment was successful');
 <Block flex middle style={{marginTop:80}}>
 
 
-<Image
-        style={{width:width,height:300}}
-        source={repay_image}
-      />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </Block>
 
@@ -313,8 +445,8 @@ alert('Your repayment was successful');
 
       />
 
-         
- 
+
+
 <Block
   middle
   row
@@ -323,17 +455,30 @@ alert('Your repayment was successful');
 >
 
   <Button
-    medium
-    style={{ backgroundColor: argonTheme.COLORS.PRIMARY }}
+
+    style={{ backgroundColor: argonTheme.COLORS.PRIMARY,width:'90%', }}
     onPress={()=> this.paystackWebViewRef.current.StartTransaction()}
   >
  Pay Now
   </Button>
+
+
+
+
 </Block>
 
- 
+<Block middle style={{marginTop:20}}>
 
+<Text style={{fontSize:16}}>Use Saved Cards</Text>
 
+</Block>
+
+<View middle style={{width:'95%', justifyContent:'center', alignSelf:'center',marginTop:20}}>
+      <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}} style={{backgroundColor:'#fff'}}>
+        <Row data={this.state.tableHead}   />
+        <Rows data={this.state.user_cards} style={styles.row} textStyle={styles.text}    />
+      </Table>
+    </View>
 
 
 

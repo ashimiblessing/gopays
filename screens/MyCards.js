@@ -23,7 +23,7 @@ import { Images, argonTheme,Tabs } from "../constants";
 import { HeaderHeight } from "../constants/utils";
 
 
-import repay_image from '../assets/cardimg.png'; 
+import repay_image from '../assets/cardimg.png';
 
 
 
@@ -74,6 +74,7 @@ class MyCards extends React.Component {
   static defaultProps = {
     data: DATA,
     initialIndex: null,
+
   }
 
   state = {
@@ -81,21 +82,21 @@ class MyCards extends React.Component {
     name:'',
     email:'',
     tableHead: ['CARD NUMBER','EXPIRY'],
-    user_cards:'',
+  user_cards:[],
   }
 
 
 
- 
 
-  
+
+
 
 handle_pay_success(res){
 
 console.log(res)
   if(res)
   {
-   
+
      const config = {
          headers: { Authorization: 'Bearer '+this.state.token }
      };
@@ -104,7 +105,7 @@ console.log(res)
 
      axios.post(
           '/api/attach_card',{
-            
+
             transaction_reference: res.data.transactionRef.reference,
 
          },
@@ -115,19 +116,19 @@ console.log(res)
             .then(response => {
 
 
- var card_data = response.data.data;
+ var card_data = response.data.data.cards;
 var cards_screened =[]
-
+ 
  card_data.forEach(function(item){
     var it= [item.last4,item.expiry];
     cards_screened.push(it);
-     
+
           })
 
 
  this.setState({user_cards:cards_screened});
- 
- console.log(cards_screened)
+
+
 alert(response.data.information);
 this.setState({isLoading:false});
 
@@ -155,10 +156,10 @@ this.setState({isLoading:false});
 
 
 
- 
+
 
   componentDidMount() {
-  
+
 
 
 
@@ -171,47 +172,54 @@ this.setState({isLoading:false});
       {
          var dat = JSON.parse(dtstr);
     general_token = dat.token
-    
+
     this.setState({token:dat.token});
          const config = {
              headers: { Authorization: 'Bearer '+dat.token }
          };
-    
-    
-    
+
+
+
          axios.post(
               '/api/get_cards',{
               foo:''
-    
+
              },
            config
             )
-    
-    
+
+
                 .then(response => {
-    
-    
-    
-         var user_cards = response.data.data;
-   
-     
-             this.setState({user_cards:user_cards});
-            
-    
+
+
+
+                  var card_data = response.data.data.cards;
+                 var cards_screened =[]
+console.log(card_data)
+                  card_data.forEach(function(item){
+                     var it= [item.last4,item.expiry];
+                     cards_screened.push(it);
+
+                           })
+
+
+                  this.setState({user_cards:cards_screened});
+
+
               })
               .catch(error => {
-                const key = Object.keys(error.response.data);
-           alert('sorry, there was an error loading cards. ');
-           alert(error.response.data[key])
-    
+              const key = Object.keys(error.response.data);
+          // alert('sorry, there was an error loading cards. ');
+         alert(error)
+
               })
-    
-    
-    
+
+
+
       }
           })
-    
-    
+
+
 
 
 
@@ -225,11 +233,15 @@ this.setState({isLoading:false});
 
 
   }
- 
-  
+
+
 
 
   render() {
+
+
+
+
         const { navigation } = this.props;
           const { data, ...props } = this.props;
     return (
@@ -238,7 +250,7 @@ this.setState({isLoading:false});
 
             <ScrollView
               showsVerticalScrollIndicator={false}
-              
+
             >
 
 
@@ -256,7 +268,7 @@ this.setState({isLoading:false});
 
 
 
-    
+
 
 
 
@@ -290,10 +302,10 @@ this.setState({isLoading:false});
 
       />
 
-         
-  
 
- 
+
+
+
 
 <Block middle>
                       <Button color="primary" style={styles.createButton}
@@ -321,8 +333,8 @@ this.setState({isLoading:false});
 
       <View middle style={{width:'95%', justifyContent:'center', alignSelf:'center',marginTop:20}}>
         <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}} style={{backgroundColor:'#fff'}}>
-          <Row data={this.state.tableHead} style={styles.head} textStyle={styles.text} />
-          <Rows data={this.state.user_cards} style={styles.row} textStyle={styles.text} />
+          <Row data={this.state.tableHead}   />
+          <Rows data={this.state.user_cards} style={styles.row} textStyle={styles.text}    />
         </Table>
       </View>
 

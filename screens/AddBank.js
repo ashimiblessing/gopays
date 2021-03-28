@@ -46,7 +46,8 @@ class AddBank extends React.Component {
 isDatePickerVisible:false,
       isLoading:false,
       account_number:"",
-      bank_name:"",
+      account_name:'',
+      bank_name:'',
 
 
     }
@@ -103,11 +104,12 @@ isDatePickerVisible:false,
            const bank_info =  response.data.data;
 
 
-if(bank_info.bank_name)
+if(bank_info && typeof bank_info.bank_name !== null)
 {
 
   this.setState({bank_name:bank_info.bank_name});
   this.setState({account_number:bank_info.account_number});
+    this.setState({account_name:bank_info.account_name});
 }
 
 
@@ -171,6 +173,7 @@ alert(error)
           axios.post('/api/save_bank',{
             bank_name:this.state.bank_name,
             account_number:this.state.account_number,
+            account_name:this.state.account_name,
 
 
         },
@@ -252,8 +255,25 @@ alert(error)
 
    />
 
-   
+
                     </Block>
+
+
+
+
+                    <Block center style={styles.formContain}>
+                    <TextInput
+
+                        label="Account Name"
+                        mode="flat"
+                        underlineColor="blue" style={styles.formi}
+                        value={this.state.account_name}
+                                           onChangeText={(text) => this.setState({ account_name:text })}
+
+                      />
+
+
+                                       </Block>
 
 
 
@@ -269,7 +289,7 @@ alert(error)
 
 
                         <Block space="around" style={{marginLeft:'5%',width:'100%',   marginTop:35 }}>
-                        <Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
+                        <Text color={argonTheme.COLORS.MUTED}>
                           Name of Bank
                           </Text>
 

@@ -4,7 +4,7 @@ import {
   Dimensions,
   ScrollView,
   Image,
-  ImageBackground,
+  ImageBackground,Alert,
   Platform,View
 } from "react-native";
 import { Block, Text, theme , Button as GaButton} from "galio-framework";
@@ -14,6 +14,8 @@ import { Button } from "../components";
 import { Images, argonTheme } from "../constants";
 import { HeaderHeight } from "../constants/utils";
 import axios from 'axios';
+import * as Permissions from 'expo-permissions';
+
 
 const { width, height } = Dimensions.get("screen");
 
@@ -23,7 +25,7 @@ const thumbMeasure = (width - 48 - 32) / 3;
 
 
 import blue_image from '../assets/blue2.png';
- 
+
 
 
 
@@ -34,6 +36,8 @@ import blue_image from '../assets/blue2.png';
 class Profile extends React.Component {
   constructor(props){
     super(props);
+    this.determineLoan = this.determineLoan.bind(this);
+
     this.state = {
       isLoading:false,
       setUserInfo:"",
@@ -44,6 +48,9 @@ class Profile extends React.Component {
 
     }
     this.getUserData = this.getUserData.bind(this);
+
+
+
 
     global.errors = "";
   }
@@ -286,6 +293,27 @@ let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
 
 
 
+    async handlePerms() {
+
+      const { status, expires, permissions } = await Permissions.askAsync(
+        Permissions.CONTACTS,
+        Permissions.CAMERA,
+        Permissions.LOCATION,
+     
+
+      );
+
+      if (status === 'granted') {
+        //return Location.getCurrentPositionAsync({enableHighAccuracy: true});
+
+  this.props.navigation.navigate("Borrow")
+
+      } else {
+         alert('Please grant permissions to continue');
+
+      }
+    }
+
 
 
 
@@ -297,43 +325,98 @@ determineLoan()
 
 
 
-
-
-//                let data = SecureStore.getItemAsync("is_loggedin").then(userString => {
-// let userx = JSON.parse(userString);
-
-//   if(!userx.first_name )
-//            {
-//              alert('Please fill your profile to continue.');
-//              this.props.navigation.navigate("BioData")
-//            }
-
-//                })
-
-
-
-
-
-
-
-
-
-
-
-  let data2 = SecureStore.getItemAsync("CurrentLoanOffer").then(userString => {
+  Alert.alert(
+     //title
+     'Permissions Required',
+     //body
+     "Gopays needs access to your location, contacts and SMS. These data are used to inform our loan decisions and not shared with anyone.",
+     [
+       {
+         text: 'Yes',
+         onPress: () => {this.handlePerms()}
+       },
+       {
+         text: 'No',
+         onPress: () => console.log('No Pressed'), style: 'cancel'
+       },
+     ],
+     {cancelable: false},
+     //clicking out side of alert will not cancel
+   );
 
 
 
-  if(userString == '' || typeof userString === 'undefined' )
-  {
 
-  this.props.navigation.navigate("UserPerms")
-  }
-  else{
-      this.props.navigation.navigate("Borrow")
-  }
-  })
+
 }
+
+
+
+
+
+
+  LoanButton()
+{
+  var outstanding_balance = this.state.outstanding_balance*1;
+
+
+if(outstanding_balance > 0)
+{
+  return(    <Block>
+
+        <Block
+          middle
+          row
+          space="evenly"
+          style={{ marginTop: 0 }}
+        >
+
+          <Button
+            medium
+             color="primary"
+             style={{width:'85%'}}
+
+
+             onPress={() => this.props.navigation.navigate("Repay")}
+          >
+          REPAY YOUR LOAN
+          </Button>
+        </Block>
+
+
+      </Block>)
+}
+else {
+  return(    <Block>
+
+        <Block
+          middle
+          row
+          space="evenly"
+          style={{ marginTop: 0 }}
+        >
+
+          <Button
+            medium
+             color="primary"
+             style={{width:'85%'}}
+
+
+             onPress={() => this.determineLoan()}
+          >
+            APPLY FOR LOAN
+          </Button>
+        </Block>
+
+
+      </Block>)
+}
+
+
+
+}
+
+
 
 
 
@@ -353,14 +436,6 @@ determineLoan()
     var yyyy = today.getFullYear();
 
     today = dd + '/' + mm + '/' + yyyy;
-
-
-
-
-
-
-
-
 
 
 
@@ -411,31 +486,9 @@ determineLoan()
 
 
   <Block flex >
-                <Block>
-
-                  <Block
-                    middle
-                    row
-                    space="evenly"
-                    style={{ marginTop: 0 }}
-                  >
-
-                    <Button
-                      medium
-                       color="primary"
-                       style={{width:'85%'}}
 
 
-                       onPress={() => this.determineLoan()}
-                    >
-                      APPLY FOR LOAN
-                    </Button>
-                  </Block>
-
-
-                </Block>
-
-
+ {this.LoanButton()}
 
 
 
@@ -498,7 +551,7 @@ LOAN DETAILS
 
 
 
- 
+
 <Block middle>
 <Button    onPress={() => navigation.navigate('MyCards')} onlyIcon icon="credit-card"
 

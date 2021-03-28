@@ -27,7 +27,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 
- 
+
 
 
 function SettingsScreen({ navigation }) {
@@ -39,136 +39,136 @@ function SettingsScreen({ navigation }) {
 
 
 
- 
+
 
 
   function friend_biodata() {
 
- 
-    
-    
+
+
+
         setLoading(true)
-    
-    
-    
-    
+
+
+
+
       let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
-    
-    
+
+
     const dat = JSON.parse(dtstr);
-    
+
         const config = {
           headers: { Authorization: 'Bearer '+dat.token }
       };
     //alert(BVN);return;
-    
-    
+
+
       axios.post('/api/update_friend_profile',{
         friend_first_name:friend_first_name,
         friend_last_name:friend_last_name,
         friend_phone:friend_phone
-    
+
     },
     config
-    
+
     )
     .then(response => {
-    
+
       //const { navigation } = this.props;
-    
+
       SecureStore.deleteItemAsync('bioInfo');
       SecureStore.setItemAsync('bioInfo', JSON.stringify(response.data.data));
       SecureStore.setItemAsync('isProfileSaved', 'YES');
     //alert(JSON.stringify(response.data.information));
-    
-    
+
+
       navigation.navigate('Profile');
     //alert(JSON.stringify(response.data))
-    
+
       alert(response.data.success);
-    
+
     })
     .catch(error => {
       setLoading(false)
       const key = Object.keys(error.response.data)[0];
     alert(error.response.data[key]);
     return;
-   
+
     // const key = Object.keys(error.response.data)[0];
     //  errors = error.response.data[key][0];
-    
+
     if(error.response.data[key][0].length > 1) {
       alert(error.response.data[key][0])
     }
-    
+
     else{
       alert(error.response.data[key])
     }
-    
-    
+
+
     //
-    
+
     })
-    
-    
-    
+
+
+
     })
-    
-    
-    
-    
-    
+
+
+
+
+
       }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
         useEffect(() => {
-    
-    
-    
+
+
+
           setLoading(true)
-    
-    
-     
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
         SecureStore.getItemAsync("bioInfo")
         .then(userString => {
-    
-     
+
+
           if(userString){
-    
+
             setLoading(true)
             let user = JSON.parse(userString);
-    
-   
+
+
             setFriendFirstName(user.friend_first_name)
-        
+
             // setEmail(user.email)
             setFriendLastName(user.friend_last_name)
             setFriendPhone(user.friend_phone)
- 
+
             setLoading(false)
-    
-    
+
+
           }
-    
-    
-    
+
+
+
         });
-    
+
         }, []);
 
 
@@ -197,7 +197,7 @@ function SettingsScreen({ navigation }) {
 
   return (
     <View style={{ flex: 1,  alignItems: 'center' }}>
-     
+
 
 
 
@@ -221,7 +221,7 @@ function SettingsScreen({ navigation }) {
 />
 
 <Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
-                 Your friend's first name
+                 Your friend{"'"}s first name
                   </Text>
 
 </Block>
@@ -239,7 +239,7 @@ style={styles.formi}
   onChangeText={text => setFriendLastName(text)}
 />
 <Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
-                 Your friend's last name  
+                 Your friend{"'"}s last name
                   </Text>
 
 
@@ -264,7 +264,7 @@ style={styles.formi}
 />
 
 <Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
-                 Your friend's phone number
+                 Your friend{"'"}s phone number
                   </Text>
 
 </Block>
@@ -334,7 +334,7 @@ function BioData1 ({ navigation }) {
   const [loading, setLoading] = useState(false);
   const [userDetails, setUserDetails] = useState('');
   const [BVN, setBVN] = useState('');
-  const [posts, setPosts] = useState([]);
+  const [bvnMatched, setBvnMatched] = useState([]);
 
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -550,7 +550,7 @@ else{
     SecureStore.getItemAsync("bioInfo")
     .then(userString => {
 
- 
+
       if(userString){
 
         setLoading(true)
@@ -567,11 +567,12 @@ else{
         setMonthlyIncome(user.monthly_income)
          setBVN(user.bvn)
         setDob(user.date_of_birth)
+        setBvnMatched(user.bvn_matches)
 
         //  console.log(user.email)
         setLoading(false)
 
-
+console.log(user)
       }
 
 
@@ -892,6 +893,8 @@ value={BVN}
                            medium
                            color="primary"
 
+
+ style={ bvnMatched && {width:0,height:0}}
                       onPress={() => biodata(first_name,middle_name,last_name,date_of_birth,phone,type_of_residence,employment_status,monthly_income,BVN)}
                          >
                          {
@@ -912,7 +915,7 @@ value={BVN}
 
   );
 
-  
+
 };
 
 
@@ -923,12 +926,12 @@ const Tab = createMaterialTopTabNavigator();
 
 export default function BioData() {
   return (
-     
+
       <Tab.Navigator>
         <Tab.Screen name="Your Details" component={BioData1} />
         <Tab.Screen name="Friend's Details" component={SettingsScreen} />
       </Tab.Navigator>
-     
+
   );
 }
 

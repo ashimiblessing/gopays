@@ -12,7 +12,7 @@ import {
 import { Block, Checkbox, Text, theme } from "galio-framework";
 import { StackActions, NavigationActions } from 'react-navigation';
 import { CommonActions } from '@react-navigation/native';
- 
+
 
 import * as SecureStore from 'expo-secure-store';
 import { Button, Icon, Input } from "../components";
@@ -44,7 +44,6 @@ class Login extends React.Component {
 
   }
 
- 
 
 
 
@@ -92,6 +91,7 @@ axios(options)
       token: response.data.token
     }
 
+
     SecureStore.setItemAsync('userInfo', JSON.stringify(userResponse));
     SecureStore.setItemAsync('is_loggedin', JSON.stringify(response.data));
 
@@ -100,14 +100,27 @@ axios(options)
 
 
 
+       if(response.data.has_not_filled_profile == true || response.data.has_not_filled_profile  )
+       {
+
+         this.props.navigation.replace('BioData');
+         return;
+       }
 
 
     const { navigation } = this.props;
      this.setState({isLoading:false})
 
 
+
+
+
+
+//
+// alert(response.data.has_not_filled_profile)
+
      this.props.navigation.replace('Profile')
-//  navigation.navigate("Profile")
+
 
 })
 .catch(error => {
@@ -151,6 +164,7 @@ else{
 
 
   render() {
+
         const { navigation } = this.props;
     return (
 
@@ -203,6 +217,7 @@ else{
                  />
 
                  <TextInput
+                   keyboardType="numeric"
                    maxLength={6}
                      label="Enter PIN"
                      mode="flat"
@@ -225,7 +240,7 @@ else{
                     <Block middle>
 
 
- 
+
 
 
 

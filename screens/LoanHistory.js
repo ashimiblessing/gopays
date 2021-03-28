@@ -13,14 +13,14 @@ import { Images, argonTheme,Tabs } from "../constants";
 import { HeaderHeight } from "../constants/utils";
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 
-import history_image from '../assets/history.jpg'; 
+import history_image from '../assets/history.jpg';
 
 
 
 const { width, height } = Dimensions.get("screen");
 
 const thumbMeasure = (width - 48 - 32) / 3;
- 
+
 import * as SecureStore from 'expo-secure-store';
 
 import axios from 'axios';
@@ -28,20 +28,20 @@ import axios from 'axios';
 
 class LoanHistory extends React.Component {
 
- 
+
 
   state = {
     active: null,
     loading:false,
     user:'',
      myArray: [],
-      tableHead: ['Amount (NGN) ','Status','Loan Date','Payback Date'],
-     
+      tableHead: ['Amount (NGN) ','Status','Loan Date','Payback Date', 'Due Date'],
+
   }
 
   componentDidMount() {
 
- 
+
       let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
 
 
@@ -49,61 +49,61 @@ class LoanHistory extends React.Component {
         {
            var dat = JSON.parse(dtstr);
       this.setState({user:dat.first_name})
-      
-      
+
+
            const config = {
                headers: { Authorization: 'Bearer '+dat.token }
            };
-      
-      
-      
+
+
+
            axios.post(
                 '/api/loan_history',{
                 foo:''
-      
+
                },
              config
               )
-      
-      
+
+
                   .then(response => {
-      
+
       var loan_hist =[];
       var lh = response.data.success;
       lh.forEach(function(item){
-var it= [item.amount,item.loan_status,item.date,item.payback_date];
+var it= [item.amount,item.loan_status,item.date,item.payback_date, item.due_date];
 loan_hist.push(it);
- 
+
       })
 
      // alert(loan_hist);return;
-   
+
 
            this.setState({myArray:loan_hist})
-         
-      
+
+
                 })
                 .catch(error => {
-      
+
              alert(JSON.stringify(error.response));
-      
+
                 })
-      
-      
-      
+
+
+
         }
             })
   }
 
-   
-  
 
- 
- 
+
+
+
+
 
   render() {
 
-    
+
         const { navigation } = this.props;
           const { data, ...props } = this.props;
     return (
