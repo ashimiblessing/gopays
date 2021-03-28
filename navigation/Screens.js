@@ -52,66 +52,11 @@ const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 
-function ElementsStack(props) {
-  return (
-    <Stack.Navigator mode="card" headerMode="screen">
-      <Stack.Screen
-        name="Elements"
-        component={Elements}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header title="Elements" navigation={navigation} scene={scene} />
-          ),
-          cardStyle: { backgroundColor: "#F8F9FE" }
-        }}
-      />
-            <Stack.Screen
-        name="Pro"
-        component={Pro}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header
-              title=""
-              back
-              white
-              transparent
-              navigation={navigation}
-              scene={scene}
-            />
-          ),
-          headerTransparent: true
-        }}
-      />
-    </Stack.Navigator>
-  );
-}
 
-function ArticlesStack(props) {
-  return (
-    <Stack.Navigator mode="card" headerMode="screen">
-      <Stack.Screen
-        name="Articles"
-        component={Articles}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header title="Articles" navigation={navigation} scene={scene} />
-          ),
-          cardStyle: { backgroundColor: "#F8F9FE" }
-        }}
-      />
-
-
-
-
-
-
-    </Stack.Navigator>
-  );
-}
 
 function ProfileStack(props) {
   return (
-    <Stack.Navigator initialRouteName="Profile" mode="card" headerMode="screen"
+    <Stack.Navigator   mode="card" headerMode="screen"
 
     screenOptions={{
        headerShown: false
@@ -119,8 +64,6 @@ function ProfileStack(props) {
 
     >
       <Stack.Screen
-
-
 
         name="Profile"
         component={Profile}
@@ -150,221 +93,24 @@ headerShown: true,
 
 
 
-              <Stack.Screen name="Borrow" component={BorrowStack}
+              <Stack.Screen name="Borrow" component={BorrowStack} />
 
+                <Stack.Screen name="Repay" component={RepayStack} />
+                <Stack.Screen name="LoanHistory" component={LoanHistoryStack} />
+                  <Stack.Screen name="BioData" component={BioDataStack} />
 
 
-
-              options={{
-headerShown:true,
-                title: 'Get a Loan',
-
-                        headerLeft: ({navigation, screenProps}) => (
-                           <HeaderBackButton
-                             {...props}
-                             onPress={(navigation) => {  props.navigation.goBack() }}
-                           />
-                         ),
-
-                        }}
-
-
-
-
-
-              />
-
-                <Stack.Screen name="Repay" component={RepayStack}
-
-
-
-
-                options={{
-                  headerShown:true,
-                                  title: 'Repay a Loan',
-
-                                          headerLeft: ({navigation, screenProps}) => (
-                                             <HeaderBackButton
-                                               {...props}
-                                               onPress={(navigation) => {  props.navigation.goBack() }}
-                                             />
-                                           ),
-
-                                          }}
-
-
-
-
-
-                />
-                <Stack.Screen name="LoanHistory" component={LoanHistoryStack}
-
-
-
-
-
-
-                options={{
-                  headerShown:true,
-                                  title: 'Loan History',
-
-                                          headerLeft: ({navigation, screenProps}) => (
-                                             <HeaderBackButton
-                                               {...props}
-                                               onPress={(navigation) => {  props.navigation.goBack() }}
-                                             />
-                                           ),
-
-                                          }}
-
-
-
-
-
-                />
-                  <Stack.Screen name="BioData" component={BioDataStack}
-
-
-
-
-                  options={{
-                    headerShown:true,
-                                    title: 'Edit Profile',
-
-                                            headerLeft: ({navigation, screenProps}) => (
-                                               <HeaderBackButton
-                                                 {...props}
-                                                 onPress={(navigation) => {  props.navigation.goBack() }}
-                                               />
-                                             ),
-
-                                            }}
-
-
-
-
-                  />
-
-
-
-
-
-
-
-
-
-
-
-
-<Stack.Screen name="AddBank" component={AddBankStack}
-
-
-
-
-
-
-                options={{
-                  headerShown:true,
-                                  title: 'Add Bank Details',
-
-                                          headerLeft: ({navigation, screenProps}) => (
-                                             <HeaderBackButton
-                                               {...props}
-                                               onPress={(navigation) => {  props.navigation.goBack() }}
-                                             />
-                                           ),
-
-                                          }}
-
-
-
-
-
-                />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<Stack.Screen name="AddBank" component={AddBankStack}   />
 
                  <Stack.Screen name="DummyLoading" component={DummyLoadingStack} />
 
 
+                 <Stack.Screen name="MyCards" component={MyCardsStack} />
 
 
 
-
-
-                 <Stack.Screen name="MyCards" component={MyCardsStack}
-
-
-
-
-                  options={{
-                    headerShown:true,
-                                    title: 'My Cards',
-
-                                            headerLeft: ({navigation, screenProps}) => (
-                                               <HeaderBackButton
-                                                 {...props}
-                                                 onPress={(navigation) => {  props.navigation.goBack() }}
-                                               />
-                                             ),
-
-                                            }}
-
-
-
-
-
-                  />
-
-
-
-
-
-
-
-
-
-
-                  <Stack.Screen name="AddCard" component={AddCardStack}
-
-
-
-
-                  options={{
-                    headerShown:true,
-                                    title: 'Add Card',
-
-                                            headerLeft: ({navigation, screenProps}) => (
-                                               <HeaderBackButton
-                                                 {...props}
-                                                 onPress={(navigation) => {  props.navigation.goBack() }}
-                                               />
-                                             ),
-
-                                            }}
-
-
-
-
-
-                  />
+                  <Stack.Screen name="AddCard" component={AddCardStack} />
+                    <Stack.Screen name="Onboarding" component={OnboardingStack} />
 
 
 
@@ -372,34 +118,6 @@ headerShown:true,
   );
 }
 
-function HomeStack(props) {
-  return (
-    <Stack.Navigator mode="card" headerMode="screen">
-      <Stack.Screen
-        name="Home"
-        component={Home}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header
-              title="Home"
-
-              navigation={navigation}
-              scene={scene}
-            />
-          ),
-          cardStyle: { backgroundColor: "#F8F9FE" }
-        }}
-      />
-
-
-
-
-
-
-
-    </Stack.Navigator>
-  );
-}
 
 function OnboardingStack(props) {
 
@@ -463,11 +181,14 @@ function AddCardStack(props) {
 
      function MyCardsStack(props) {
       return (
-        <Stack.Navigator mode="card" headerMode="none">
+        <Stack.Navigator mode="card" headerMode="screen">
           <Stack.Screen
             name="MyCards"
             component={MyCards}
             options={{
+
+    headerShown: true,
+
 
               header: ({ navigation, scene }) => (
                 <Header
@@ -475,6 +196,7 @@ function AddCardStack(props) {
                   title="Payment Methods"
                   navigation={navigation}
                   scene={scene}
+                  style={{height:60, alignSelf:'center',textAlign:'center'}}
                 />
               ),
               cardStyle: { backgroundColor: "#FFFFFF" },
@@ -501,11 +223,14 @@ function AddCardStack(props) {
 
      function AddBankStack(props) {
       return (
-        <Stack.Navigator mode="card" headerMode="none">
+        <Stack.Navigator mode="card" headerMode="screen">
           <Stack.Screen
             name="AddBank"
             component={AddBank}
             options={{
+
+    headerShown: true,
+
 
               header: ({ navigation, scene }) => (
                 <Header
@@ -513,6 +238,7 @@ function AddCardStack(props) {
                   title="Bank Details"
                   navigation={navigation}
                   scene={scene}
+                  style={{height:60, alignSelf:'center',textAlign:'center'}}
                 />
               ),
               cardStyle: { backgroundColor: "#FFFFFF" },
@@ -544,11 +270,14 @@ function AddCardStack(props) {
 
 function BorrowStack(props) {
  return (
-   <Stack.Navigator mode="card" headerMode="none">
+   <Stack.Navigator mode="card" headerMode="screen">
      <Stack.Screen
        name="Borrow"
        component={Borrow}
        options={{
+
+headerShown: true,
+
 
          header: ({ navigation, scene }) => (
            <Header
@@ -556,6 +285,7 @@ function BorrowStack(props) {
              title="Get a Loan"
              navigation={navigation}
              scene={scene}
+             style={{height:60, alignSelf:'center',textAlign:'center'}}
            />
          ),
          cardStyle: { backgroundColor: "#FFFFFF" },
@@ -651,18 +381,22 @@ function DummyLoadingStack(props) {
 
 function RepayStack(props) {
  return (
-   <Stack.Navigator mode="card" headerMode="none">
+   <Stack.Navigator mode="card" headerMode="screen">
      <Stack.Screen
        name="Repay"
        component={Repay}
        options={{
 
+headerShown: true,
+
+
          header: ({ navigation, scene }) => (
            <Header
 
-             title="Repay Your Loan"
+             title="GRepay Your Loan"
              navigation={navigation}
              scene={scene}
+             style={{height:60, alignSelf:'center',textAlign:'center'}}
            />
          ),
          cardStyle: { backgroundColor: "#FFFFFF" },
@@ -683,18 +417,22 @@ function RepayStack(props) {
 
 function LoanHistoryStack(props) {
  return (
-   <Stack.Navigator mode="card" headerMode="none">
+   <Stack.Navigator mode="card" headerMode="screen">
      <Stack.Screen
        name="LoanHistory"
        component={LoanHistory}
        options={{
 
+headerShown: true,
+
+
          header: ({ navigation, scene }) => (
            <Header
 
-             title="Your previous loans"
+             title="Loan History"
              navigation={navigation}
              scene={scene}
+             style={{height:60, alignSelf:'center',textAlign:'center'}}
            />
          ),
          cardStyle: { backgroundColor: "#FFFFFF" },
@@ -741,18 +479,52 @@ function LoanHistoryStack(props) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  function BioDataStack(props) {
   return (
-    <Stack.Navigator mode="card" headerMode="none"
+    <Stack.Navigator mode="card" headerMode="screen"
 
 
     >
-      <Stack.Screen
-        name="BioData"
-        component={BioData}
+    <Stack.Screen
 
 
-      />
+
+      name="BioData"
+      component={BioData}
+      options={{
+
+    headerShown: true,
+
+
+        header: ({ navigation, scene }) => (
+          <Header
+
+            title="Edit Profile"
+            navigation={navigation}
+            scene={scene}
+            style={{height:60, alignSelf:'center',textAlign:'center'}}
+          />
+        ),
+        cardStyle: { backgroundColor: "#FFFFFF" },
+
+      }}
+    />
 
     </Stack.Navigator>
   );
@@ -783,19 +555,6 @@ function LoanHistoryStack(props) {
       />
       <Stack.Screen name="BioData" component={BioDataStack}
 
-
-options={{
-headerShown:true,
-              title: 'Edit Profile',
-
-                      headerLeft: ({navigation, screenProps}) => (
-                         <HeaderBackButton
-                           {...props}
-                           onPress={(navigation) => {  props.navigation.goBack() }}
-                         />
-                       ),
-
-                      }}
 
 
     />
@@ -864,23 +623,7 @@ function OtpInputStack(props) {
 
 
 
-function CustomNavigationBar() {
-  return (
-    <Appbar.Header>
-      <Appbar.Content title="My awesome app" />
-    </Appbar.Header>
-  );
-}
-
-
-const navigateAction = NavigationActions.navigate({
-  routeName: 'SettingsScreen',
-  params: {},
-})
-
-
-
-export default function AppStack(navigation) {
+export default function AppStack(navigation,props) {
 
   return (
     <Drawer.Navigator
@@ -890,6 +633,7 @@ export default function AppStack(navigation) {
         backgroundColor: "white",
         width: width * 0.8
       }}
+
       drawerContentOptions={{
         activeTintcolor: "white",
         inactiveTintColor: "#000",
@@ -913,78 +657,16 @@ export default function AppStack(navigation) {
 
 
 
-
-      initialRouteName="Profile"
     >
 
 
 
-          <Drawer.Screen name="Onboarding" component={OnboardingStack}
 
-
-
-          />
           <Drawer.Screen name="Dashboard" component={ProfileStack} />
-          <Drawer.Screen name="View Profile" component={BioDataStack}
-
-
-options={{
-  headerShown:true,
-                  title: 'Edit Profile',
-
-                          headerLeft: ({navigation, props}) => (
-                             <HeaderBackButton
-                               {...props}
-                               onPress={(props) => navigation.goBack() }
-                             />
-                           ),
-
-                          }}
-
-
-        />
-        <Drawer.Screen name="Borrow" component={BorrowStack} />
-        <Drawer.Screen name="Bank Details" component={AddBankStack}
-
-
-
-options={{
-  headerShown:true,
-                  title: 'Add Bank',
-
-                          headerLeft: ({navigation, screenProps}) => (
-                             <HeaderBackButton
-                               {...props}
-                                 onPress={(props) => navigation.goBack() }e\
-                             />
-                           ),
-
-                          }}
-
-
-        />
-        <Drawer.Screen name="Loan History" component={LoanHistoryStack}
-
-
-
-options={{
-  headerShown:true,
-                  title: 'Loan History',
-
-                          headerLeft: ({navigation, screenProps}) => (
-                             <HeaderBackButton
-                               {...props}
-                               onPress={(navigation) => { console.log(NavigationActions.back()) }}
-                             />
-                           ),
-
-                          }}
-
-
-
-
-        />
-
+            <Drawer.Screen name="Bank Details" component={AddBankStack}   />
+          <Drawer.Screen name="View Profile" component={BioDataStack}    />
+            <Drawer.Screen name="Loan History" component={LoanHistoryStack}   />
+            
 
 
 

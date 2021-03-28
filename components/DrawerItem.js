@@ -10,7 +10,7 @@ class DrawerItem extends React.Component {
     const { title, focused } = this.props;
 
     switch (title) {
-      case "Dashboard":
+      case "Dashboardx":
         return (
           <Icon
             name="shop"
@@ -37,7 +37,7 @@ class DrawerItem extends React.Component {
             color={focused ? "white" : '#015CE1'}
           />
         );
-      case "Profile":
+      case "Profilex":
         return (
           <Icon
             name="chart-pie-35"
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16
   },
   activeStyle: {
-    backgroundColor: argonTheme.COLORS.ACTIVE,
+    backgroundColor: argonTheme.COLORS.PRIMARY,
     borderRadius: 4
   },
   shadow: {
