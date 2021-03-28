@@ -103,7 +103,7 @@ axios(options)
        if(response.data.has_not_filled_profile == true || response.data.has_not_filled_profile  )
        {
 
-         this.props.navigation.replace('BioData');
+         this.props.navigation.navigate('BioData');
          return;
        }
 
