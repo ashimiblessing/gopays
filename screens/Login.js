@@ -102,8 +102,9 @@ axios(options)
 
        if(response.data.has_not_filled_profile == true || response.data.has_not_filled_profile  )
        {
-
+   this.setState({isLoading:false})
          this.props.navigation.navigate('BioData');
+
          return;
        }
 

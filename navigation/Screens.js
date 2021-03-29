@@ -61,7 +61,7 @@ function ProfileStack(props) {
     screenOptions={{
        headerShown: false
      }}
-
+initialRouteName="Profile"
     >
       <Stack.Screen
 
@@ -156,7 +156,7 @@ function AddCardStack(props) {
 
          header: ({ navigation, scene }) => (
            <Header
-
+            back
              title="Add a card"
              navigation={navigation}
              scene={scene}
@@ -192,7 +192,7 @@ function AddCardStack(props) {
 
               header: ({ navigation, scene }) => (
                 <Header
-
+                back
                   title="Payment Methods"
                   navigation={navigation}
                   scene={scene}
@@ -204,6 +204,7 @@ function AddCardStack(props) {
             }}
 
           />
+
           <Stack.Screen name="Profile" component={ProfileStack} />
 
              </Stack.Navigator>
@@ -234,7 +235,7 @@ function AddCardStack(props) {
 
               header: ({ navigation, scene }) => (
                 <Header
-
+                back
                   title="Bank Details"
                   navigation={navigation}
                   scene={scene}
@@ -281,7 +282,7 @@ headerShown: true,
 
          header: ({ navigation, scene }) => (
            <Header
-
+           back
              title="Get a Loan"
              navigation={navigation}
              scene={scene}
@@ -314,7 +315,7 @@ function UserPermsStack(props) {
       options={{
           header: ({ navigation, scene }) => (
             <Header
-
+            back
               title="Gopays"
               navigation={navigation}
               scene={scene}
@@ -392,7 +393,7 @@ headerShown: true,
 
          header: ({ navigation, scene }) => (
            <Header
-
+           back
              title="GRepay Your Loan"
              navigation={navigation}
              scene={scene}
@@ -428,7 +429,7 @@ headerShown: true,
 
          header: ({ navigation, scene }) => (
            <Header
-
+           back
              title="Loan History"
              navigation={navigation}
              scene={scene}
@@ -514,7 +515,7 @@ headerShown: true,
 
         header: ({ navigation, scene }) => (
           <Header
-
+          back
             title="Edit Profile"
             navigation={navigation}
             scene={scene}
@@ -596,34 +597,11 @@ function OtpInputStack(props) {
 
 
 
+ 
 
 
 
-
-
-
-
-
- function DashboardStack(props) {
-  return (
-    <Stack.Navigator mode="card" headerMode="screen">
-      <Stack.Screen
-        name="Dashboard"
-        component={Dashboard}
-        option={{
-          headerTransparent: false
-        }}
-
-      />
-        <Stack.Screen name="BioData" component={BioDataStack} />
-    </Stack.Navigator>
-  );
-}
-
-
-
-
-export default function AppStack(navigation,props) {
+export default function AppStack(props) {
 
   return (
     <Drawer.Navigator
@@ -666,7 +644,7 @@ export default function AppStack(navigation,props) {
             <Drawer.Screen name="Bank Details" component={AddBankStack}   />
           <Drawer.Screen name="View Profile" component={BioDataStack}    />
             <Drawer.Screen name="Loan History" component={LoanHistoryStack}   />
-            
+
 
 
 

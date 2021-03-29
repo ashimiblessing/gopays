@@ -43,6 +43,7 @@ class Profile extends React.Component {
       setUserInfo:"",
       wallet_balance:"",
       outstanding_balance:"",
+      loan_in_progress :'',
       loan_limit:"",
 
 
@@ -186,6 +187,7 @@ if(this.state.outstanding_balance*1 < 1)
                this.setState({loan_limit:user_info.loan_limit});
                 this.setState({outstanding_balance:user_info.outstanding_balance});
                  this.setState({wallet_balance:user_info.wallet_balance});
+                  this.setState({loan_in_progress :user_info.loan_in_progress });
 
                 })
                 .catch(error => {
@@ -259,6 +261,7 @@ let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
          this.setState({loan_limit:user_info.loan_limit});
           this.setState({outstanding_balance:user_info.outstanding_balance});
            this.setState({wallet_balance:user_info.wallet_balance});
+           this.setState({loan_in_progress :user_info.loan_in_progress });
 
           })
           .catch(error => {
@@ -299,7 +302,7 @@ let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
         Permissions.CONTACTS,
         Permissions.CAMERA,
         Permissions.LOCATION,
-     
+
 
       );
 
@@ -358,6 +361,7 @@ determineLoan()
   LoanButton()
 {
   var outstanding_balance = this.state.outstanding_balance*1;
+  var loan_in_progress = this.state.loan_in_progress;
 
 
 if(outstanding_balance > 0)
@@ -380,6 +384,34 @@ if(outstanding_balance > 0)
              onPress={() => this.props.navigation.navigate("Repay")}
           >
           REPAY YOUR LOAN
+          </Button>
+        </Block>
+
+
+      </Block>)
+}
+
+
+else if(loan_in_progress > 0)
+{
+  return(    <Block>
+
+        <Block
+          middle
+          row
+          space="evenly"
+          style={{ marginTop: 0 }}
+        >
+
+          <Button
+            medium
+             color="primary"
+             style={{width:'85%'}}
+
+
+             onPress={() => alert('You have a loan in progress')}
+          >
+          LOAN IN PROGRESS
           </Button>
         </Block>
 

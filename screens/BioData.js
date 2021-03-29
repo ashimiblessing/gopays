@@ -380,6 +380,15 @@ function BioData1 ({ navigation }) {
 
   function biodata() {
 
+
+if(!date_of_birth)
+{
+  alert('Please select a proper date');
+  return;
+}
+
+
+
 let the_date = date_of_birth.split('/');
 
 let new_dateobj = new Date(the_date[2],the_date[1],the_date[0]);
