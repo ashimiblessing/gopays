@@ -118,7 +118,7 @@ console.log(res)
 
  var card_data = response.data.data.cards;
 var cards_screened =[]
- 
+
  card_data.forEach(function(item){
     var it= [item.last4,item.expiry];
     cards_screened.push(it);
@@ -166,7 +166,7 @@ this.setState({isLoading:false});
 
 
     let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
- 
+
 
       if(dtstr)
       {
@@ -178,7 +178,7 @@ this.setState({isLoading:false});
          const config = {
              headers: { Authorization: 'Bearer '+dat.token }
          };
- 
+
 
          axios.post(
               '/api/get_cards',{
@@ -238,7 +238,7 @@ console.log(card_data)
 
 
   render() {
- 
+
         const { navigation } = this.props;
           const { data, ...props } = this.props;
     return (
@@ -258,7 +258,7 @@ console.log(card_data)
         style={{maxWidth:'60%',height:300, resizeMode:'contain', marginTop:20 }}
         source={repay_image}
       />
- 
+
 </Block>
 
 <Block middle style={{marginTop:-30, marginBottom:30}}>
@@ -267,8 +267,8 @@ Please note that you will be charged the sum of NGN 50 for card verification. Th
 </Text>
 </Block>
 
- 
-    
+
+
 
 
 
@@ -314,7 +314,7 @@ Please note that you will be charged the sum of NGN 50 for card verification. Th
                       <ActivityIndicator  size="large" color="#ffff" />
                       :
                         <Text bold size={14} color={argonTheme.COLORS.WHITE}>
-                       ADD NEW CARD {this.state.user_email+''}
+                       ADD NEW CARD 
                         </Text>
                       }
                       </Button>

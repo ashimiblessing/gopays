@@ -1,5 +1,5 @@
 import React from "react";
-import { Easing, Animated, Dimensions } from "react-native";
+import { Easing, Animated, Dimensions,StatusBar } from "react-native";
 import { Appbar } from 'react-native-paper';
 import { NavigationActions } from 'react-navigation';
 import { createStackNavigator } from "@react-navigation/stack";
@@ -10,6 +10,7 @@ import { HeaderBackButton } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 
 import { Block } from "galio-framework";
+const barHeight = StatusBar.currentHeight;
 
 // screens
 
@@ -78,7 +79,7 @@ headerShown: true,
               title="Gopays"
               navigation={navigation}
               scene={scene}
-              style={{height:60, alignSelf:'center',textAlign:'center'}}
+              style={{height:60, alignSelf:'center',textAlign:'center', marginTop:barHeight}}
             />
           ),
           cardStyle: { backgroundColor: "#FFFFFF" },
@@ -196,7 +197,7 @@ function AddCardStack(props) {
                   title="Payment Methods"
                   navigation={navigation}
                   scene={scene}
-                  style={{height:60, alignSelf:'center',textAlign:'center'}}
+                  style={{height:60, alignSelf:'center',textAlign:'center',marginTop:barHeight}}
                 />
               ),
               cardStyle: { backgroundColor: "#FFFFFF" },
@@ -239,7 +240,7 @@ function AddCardStack(props) {
                   title="Bank Details"
                   navigation={navigation}
                   scene={scene}
-                  style={{height:60, alignSelf:'center',textAlign:'center'}}
+                  style={{height:60, alignSelf:'center',textAlign:'center',marginTop:barHeight}}
                 />
               ),
               cardStyle: { backgroundColor: "#FFFFFF" },
@@ -286,7 +287,7 @@ headerShown: true,
              title="Get a Loan"
              navigation={navigation}
              scene={scene}
-             style={{height:60, alignSelf:'center',textAlign:'center'}}
+             style={{height:60, alignSelf:'center',textAlign:'center',marginTop:barHeight}}
            />
          ),
          cardStyle: { backgroundColor: "#FFFFFF" },
@@ -397,7 +398,7 @@ headerShown: true,
              title="GRepay Your Loan"
              navigation={navigation}
              scene={scene}
-             style={{height:60, alignSelf:'center',textAlign:'center'}}
+             style={{height:60, alignSelf:'center',textAlign:'center',marginTop:barHeight}}
            />
          ),
          cardStyle: { backgroundColor: "#FFFFFF" },
@@ -433,7 +434,7 @@ headerShown: true,
              title="Loan History"
              navigation={navigation}
              scene={scene}
-             style={{height:60, alignSelf:'center',textAlign:'center'}}
+             style={{height:60, alignSelf:'center',textAlign:'center',marginTop:barHeight}}
            />
          ),
          cardStyle: { backgroundColor: "#FFFFFF" },
@@ -519,7 +520,7 @@ headerShown: true,
             title="Edit Profile"
             navigation={navigation}
             scene={scene}
-            style={{height:60, alignSelf:'center',textAlign:'center'}}
+            style={{height:60, alignSelf:'center',textAlign:'center',marginTop:barHeight}}
           />
         ),
         cardStyle: { backgroundColor: "#FFFFFF" },
@@ -597,7 +598,7 @@ function OtpInputStack(props) {
 
 
 
- 
+
 
 
 
