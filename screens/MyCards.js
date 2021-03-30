@@ -23,7 +23,7 @@ import { Images, argonTheme,Tabs } from "../constants";
 import { HeaderHeight } from "../constants/utils";
 
 
-import repay_image from '../assets/cardimg.png';
+import repay_image from '../assets/add-credit-card.png';
 
 
 
@@ -166,19 +166,19 @@ this.setState({isLoading:false});
 
 
     let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
-
+ 
 
       if(dtstr)
       {
          var dat = JSON.parse(dtstr);
-    general_token = dat.token
+    general_token = dat.token;
+    const user_email = dat.user.email;
 
-    this.setState({token:dat.token});
+    this.setState({token:dat.token, user_email:user_email.trim()});
          const config = {
              headers: { Authorization: 'Bearer '+dat.token }
          };
-
-
+ 
 
          axios.post(
               '/api/get_cards',{
@@ -238,10 +238,7 @@ console.log(card_data)
 
 
   render() {
-
-
-
-
+ 
         const { navigation } = this.props;
           const { data, ...props } = this.props;
     return (
@@ -258,18 +255,20 @@ console.log(card_data)
 
 
 <Image
-        style={{width:'50%',height:300,resizeMode:'contain'}}
+        style={{maxWidth:'60%',height:300, resizeMode:'contain', marginTop:20 }}
         source={repay_image}
       />
-
+ 
 </Block>
 
+<Block middle style={{marginTop:-30, marginBottom:30}}>
+<Text style={{  color: argonTheme.COLORS.MUTED, fontSize: 13,marginHorizontal:10}}>
+Please note that you will be charged the sum of NGN 50 for card verification. The charged will be later reversed upon confirmation
+</Text>
+</Block>
 
-
-
-
-
-
+ 
+    
 
 
 
@@ -283,14 +282,14 @@ console.log(card_data)
         showPayButton={false}
         paystackKey="pk_test_70549a8e37bba3b850b89ae72898e5157321a628"
         amount='50'
-        billingEmail="joe@getnada.com"
+        billingEmail={this.state.user_email}
         billingMobile="09787377462"
         billingName="Gopays User"
         ActivityIndicatorColor="green"
         SafeAreaViewContainer={{marginTop: 5}}
         SafeAreaViewContainerModal={{marginTop: 5}}
         onCancel={(e) => {
-          alert('your payment was cancelled')
+          alert('Card verification was cancelled')
         }}
         onSuccess={(res) => {
          this.handle_pay_success(res)
@@ -308,14 +307,14 @@ console.log(card_data)
 
 
 <Block middle>
-                      <Button color="primary" style={styles.createButton}
+                      <Button color="primary" style={{width:'90%'}}
                         onPress={()=> this.paystackWebViewRef.current.StartTransaction()}
                       >
                          {this.state.isLoading ?
                       <ActivityIndicator  size="large" color="#ffff" />
                       :
                         <Text bold size={14} color={argonTheme.COLORS.WHITE}>
-                       ADD CARD
+                       ADD NEW CARD {this.state.user_email+''}
                         </Text>
                       }
                       </Button>
@@ -332,6 +331,12 @@ console.log(card_data)
 
 
       <View middle style={{width:'95%', justifyContent:'center', alignSelf:'center',marginTop:20}}>
+<Block middle style={{marginVertical:20}}>
+<Text style={{fontSize:17, fontWeight:'bold'}}>Saved cards</Text>
+</Block>
+
+
+
         <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}} style={{backgroundColor:'#fff'}}>
           <Row data={this.state.tableHead}   />
           <Rows data={this.state.user_cards} style={styles.row} textStyle={styles.text}    />

@@ -404,11 +404,16 @@ keyboardType="numeric"
                  >
 
                    <Picker.Item label="Select one" value="" />
-                   <Picker.Item label="Housing" value="housing" />
-                   <Picker.Item label="Fees" value="fees" />
-                   <Picker.Item label="Family" value="family" />
-                   <Picker.Item label="Goods" value="goods" />
-                   <Picker.Item label="Other" value="tother" />
+                   <Picker.Item label="Business" value="business" />
+                   <Picker.Item label="House Rent" value="house-rent" />
+                   <Picker.Item label="Hospital" value="hospital" />
+                   <Picker.Item label="Pharmacy" value="Pharmacy" />
+                   <Picker.Item label="Education" value="Education" />
+                   <Picker.Item label="Agric" value="Agric" />
+                   <Picker.Item label="Automobile" value="Automobile" />
+                   <Picker.Item label="Personal" value="Personal" />
+                   <Picker.Item label="Salary Advance" value="Salary Advance" />
+                   <Picker.Item label="Other" value="other" />
 
                   </Picker>
 

@@ -15,7 +15,7 @@ import { Images, argonTheme } from "../constants";
 import { HeaderHeight } from "../constants/utils";
 import axios from 'axios';
 import * as Permissions from 'expo-permissions';
-
+ 
 
 const { width, height } = Dimensions.get("screen");
 

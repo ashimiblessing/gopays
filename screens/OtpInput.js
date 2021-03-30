@@ -185,7 +185,7 @@ alert('Your phone number was verified successfully. Please Login');
           
          <View style={styles.midview}>
           <Icon style={{marginBottom:10}} name="phone-android" family="Ionicons" color='black' size={50} />
-          <Text style={{marginBottom:10,fontWeight:'600'}} size={22}>Very your phone number</Text>
+          <Text style={{marginBottom:10,fontWeight:'600'}} size={22}>Verify your phone number</Text>
       <Text>An OTP has been sent to your phone number. Please enter it here</Text>
       </View>
       
