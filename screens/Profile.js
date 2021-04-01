@@ -49,11 +49,45 @@ class Profile extends React.Component {
 
     }
     this.getUserData = this.getUserData.bind(this);
-
-
-
-
     global.errors = "";
+
+const time_out = 30;
+
+//check if logged in timeout
+
+let dt = SecureStore.getItemAsync("lastLogin").then(dtstr => {
+
+  if(dtstr)
+  {
+    const prev_login = Date.parse(JSON.parse(dtstr));
+ 
+    const curr_date = Date.parse(new Date);
+    const plus30 = new Date(prev_login + time_out*60000);
+
+    if(plus30 < curr_date){
+      SecureStore.deleteItemAsync('lastLogin');
+      this.props.navigation.replace('Login');
+      //alert("Please login");
+    }
+
+  }
+
+
+
+
+
+});
+
+
+
+
+
+
+
+
+
+
+
   }
 
 
@@ -144,6 +178,24 @@ if(this.state.outstanding_balance*1 < 1)
 
 
   componentDidMount(){
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
@@ -324,6 +376,25 @@ let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
 determineLoan()
 {
 
+  var outstanding_balance = this.state.outstanding_balance*1;
+  var loan_in_progress = this.state.loan_in_progress;
+
+
+  if(loan_in_progress > 0)
+  {
+    alert('You have a loan in progress');
+
+    return;
+  }
+
+
+
+  if(outstanding_balance > 0 )
+  {
+    alert('Please repay your outstanding loan');
+    return;
+  }
+
 
 
 
@@ -352,6 +423,10 @@ determineLoan()
 
 
 }
+
+
+
+
 
 
 

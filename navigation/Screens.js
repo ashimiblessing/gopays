@@ -79,7 +79,7 @@ headerShown: true,
               title="Gopays"
               navigation={navigation}
               scene={scene}
-              style={{height:60, alignSelf:'center',textAlign:'center', marginTop:barHeight}}
+              style={{height:barHeight, alignSelf:'center',textAlign:'center', marginTop:15,marginBottom:10}}
             />
           ),
           cardStyle: { backgroundColor: "#FFFFFF" },
@@ -111,6 +111,8 @@ headerShown: true,
 
 
                   <Stack.Screen name="AddCard" component={AddCardStack} />
+                  <Stack.Screen name="Login" component={LoginStack} />
+
                     <Stack.Screen name="Onboarding" component={OnboardingStack} />
 
 
@@ -197,7 +199,7 @@ function AddCardStack(props) {
                   title="Payment Methods"
                   navigation={navigation}
                   scene={scene}
-                  style={{height:60, alignSelf:'center',textAlign:'center',marginTop:barHeight}}
+                  style={{height:barHeight, alignSelf:'center',textAlign:'center',marginTop:15,marginBottom:10}}
                 />
               ),
               cardStyle: { backgroundColor: "#FFFFFF" },
@@ -240,7 +242,7 @@ function AddCardStack(props) {
                   title="Bank Details"
                   navigation={navigation}
                   scene={scene}
-                  style={{height:60, alignSelf:'center',textAlign:'center',marginTop:barHeight}}
+                  style={{height:barHeight, alignSelf:'center',textAlign:'center', marginTop:15,marginBottom:10}}
                 />
               ),
               cardStyle: { backgroundColor: "#FFFFFF" },
@@ -287,7 +289,7 @@ headerShown: true,
              title="Get a Loan"
              navigation={navigation}
              scene={scene}
-             style={{height:60, alignSelf:'center',textAlign:'center',marginTop:barHeight}}
+             style={{height:barHeight, alignSelf:'center',textAlign:'center',marginTop:15,marginBottom:10}}
            />
          ),
          cardStyle: { backgroundColor: "#FFFFFF" },
@@ -398,7 +400,7 @@ headerShown: true,
              title="GRepay Your Loan"
              navigation={navigation}
              scene={scene}
-             style={{height:60, alignSelf:'center',textAlign:'center',marginTop:barHeight}}
+             style={{height:barHeight, alignSelf:'center',textAlign:'center',marginTop:15,marginBottom:10}}
            />
          ),
          cardStyle: { backgroundColor: "#FFFFFF" },
@@ -434,7 +436,7 @@ headerShown: true,
              title="Loan History"
              navigation={navigation}
              scene={scene}
-             style={{height:60, alignSelf:'center',textAlign:'center',marginTop:barHeight}}
+             style={{height:barHeight, alignSelf:'center',textAlign:'center',marginTop:15,marginBottom:10}}
            />
          ),
          cardStyle: { backgroundColor: "#FFFFFF" },
@@ -520,7 +522,7 @@ headerShown: true,
             title="Edit Profile"
             navigation={navigation}
             scene={scene}
-            style={{height:60, alignSelf:'center',textAlign:'center',marginTop:barHeight}}
+            style={{height:barHeight, alignSelf:'center',textAlign:'center',marginTop:15,marginBottom:10}}
           />
         ),
         cardStyle: { backgroundColor: "#FFFFFF" },

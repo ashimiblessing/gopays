@@ -6,7 +6,7 @@ import {
   ActivityIndicator,
   Image,View,
   ImageBackground,
-  Platform,FlatList, Animated,SafeAreaView,KeyboardAvoidingView,TouchableOpacity,
+  Platform,FlatList, Animated,SafeAreaView,KeyboardAvoidingView,TouchableOpacity, RefreshControl
 } from "react-native";
 import { Block, Text,Icon,  theme, Button as GaButton} from "galio-framework";
 import * as SecureStore from 'expo-secure-store';
@@ -79,12 +79,9 @@ function SettingsScreen({ navigation }) {
       SecureStore.deleteItemAsync('bioInfo');
       SecureStore.setItemAsync('bioInfo', JSON.stringify(response.data.data));
       SecureStore.setItemAsync('isProfileSaved', 'YES');
-    //alert(JSON.stringify(response.data.information));
-
-
+   
       navigation.navigate('Profile');
-    //alert(JSON.stringify(response.data))
-
+  
       alert(response.data.success);
 
     })
@@ -93,10 +90,7 @@ function SettingsScreen({ navigation }) {
       const key = Object.keys(error.response.data)[0];
     alert(error.response.data[key]);
     return;
-
-    // const key = Object.keys(error.response.data)[0];
-    //  errors = error.response.data[key][0];
-
+ 
     if(error.response.data[key][0].length > 1) {
       alert(error.response.data[key][0])
     }
@@ -335,10 +329,21 @@ function BioData1 ({ navigation }) {
   const [userDetails, setUserDetails] = useState('');
   const [BVN, setBVN] = useState('');
   const [bvnMatched, setBvnMatched] = useState([]);
-
+  const [refreshing, setRefreshing] = React.useState(false);
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
+
+  const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
+  
+
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
 
 
   const showDatePicker = () => {
@@ -526,9 +531,24 @@ else{
     SecureStore.deleteItemAsync('bioInfo');
     SecureStore.setItemAsync('bioInfo', JSON.stringify(response.data.bio));
 
+const user = response.data.bio;
+setUserDetails(user)
+    setFirstName(user.first_name)
+    setMiddleName(user.middle_name)
+    // setEmail(user.email)
+    setLastName(user.last_name)
+    setPhone(user.phone)
+    setTypeOfResidence(user.type_of_residence)
+    setEmploymentStatus(user.employment_status)
+    setMonthlyIncome(user.monthly_income)
+     setBVN(user.bvn)
+    setDob(user.date_of_birth)
+    setBvnMatched(user.bvn_matches)
+
+
    }
 
-
+   setLoading(false)
 
 
     })
@@ -556,37 +576,37 @@ else{
 
 
 
-    SecureStore.getItemAsync("bioInfo")
-    .then(userString => {
+//     SecureStore.getItemAsync("bioInfo")
+//     .then(userString => {
 
 
-      if(userString){
+//       if(userString){
 
-        setLoading(true)
-        let user = JSON.parse(userString);
+//         setLoading(true)
+//         let user = JSON.parse(userString);
 
-        setUserDetails(user)
-        setFirstName(user.first_name)
-        setMiddleName(user.middle_name)
-        // setEmail(user.email)
-        setLastName(user.last_name)
-        setPhone(user.phone)
-        setTypeOfResidence(user.type_of_residence)
-        setEmploymentStatus(user.employment_status)
-        setMonthlyIncome(user.monthly_income)
-         setBVN(user.bvn)
-        setDob(user.date_of_birth)
-        setBvnMatched(user.bvn_matches)
+//         setUserDetails(user)
+//         setFirstName(user.first_name)
+//         setMiddleName(user.middle_name)
+//         // setEmail(user.email)
+//         setLastName(user.last_name)
+//         setPhone(user.phone)
+//         setTypeOfResidence(user.type_of_residence)
+//         setEmploymentStatus(user.employment_status)
+//         setMonthlyIncome(user.monthly_income)
+//          setBVN(user.bvn)
+//         setDob(user.date_of_birth)
+//         setBvnMatched(user.bvn_matches)
 
-        //  console.log(user.email)
-        setLoading(false)
+//         //  console.log(user.email)
+//         setLoading(false)
 
-console.log(user)
-      }
+// console.log(user)
+//       }
 
 
 
-    });
+//     });
 
     }, []);
 
@@ -604,6 +624,13 @@ console.log(user)
  <ScrollView
 
  showsVerticalScrollIndicator={false}
+
+ refreshControl={
+  <RefreshControl
+    refreshing={refreshing}
+    onRefresh={onRefresh}
+  />
+}
 
  >
  <Block  style={{ marginBottom: 5 }}>
@@ -626,7 +653,7 @@ console.log(user)
 
                          <TextInput    label="First Name" mode="flat" underlineColor="blue"
 
-
+editable={!bvnMatched ? true:false} 
                           style={styles.formi}
 
 
@@ -665,7 +692,7 @@ value={middle_name}
 
                          <TextInput  mode="flat" underlineColor="blue"
 label="Last Name"
-
+editable={!bvnMatched ? true:false} 
                         style={styles.formi}
                             value={last_name}
                            onChangeText={text => setLastName(text)}
@@ -694,7 +721,7 @@ label="Last Name"
 
 <TouchableOpacity
                                          activeOpaticy={1}
-                                         onPress={() => showDatePicker()}
+                                         onPress={() =>     !bvnMatched ? showDatePicker() : console.log('you cant edit this field anymore')     }
 
                                            >
 
@@ -750,10 +777,11 @@ label="Last Name"
 
 
               <Block  style={{ marginBottom: 35 }}>
-
+            
                          <TextInput  mode="flat" underlineColor="blue"
 label="Phone Number"
 value={phone}
+editable={!bvnMatched ? true:false} 
                           style={styles.formi}
                            onChangeText={text => setPhone(text)}
                          />
@@ -779,7 +807,7 @@ value={phone}
                 Type of Residence
               </Text>
              <Picker
-
+  enabled={!bvnMatched ? true:false} 
      style={{ height: 50, }}
  selectedValue={type_of_residence}
      onValueChange={(itemValue, itemIndex) =>
@@ -821,7 +849,7 @@ value={phone}
        Employment Status
      </Text>
                          <Picker
-
+ enabled={!bvnMatched ? true:false} 
                               style={{ height: 50, }}
                           selectedValue={employment_status}
                               onValueChange={(itemValue, itemIndex) =>
@@ -851,7 +879,10 @@ value={phone}
 
               <Block  style={{ marginBottom: 15 }}>
 
-                         <TextInput  mode="flat" underlineColor="blue"
+                         <TextInput
+                         
+                         editable={!bvnMatched ? true:false} 
+                         mode="flat" underlineColor="blue"
 label="Monthly Income"
 value={monthly_income}
                           style={styles.formi}
@@ -871,6 +902,7 @@ value={monthly_income}
               <Block  style={{ marginBottom: 15 }}>
 
                          <TextInput  mode="flat" underlineColor="blue"
+                           editable={!bvnMatched ? true:false} 
 label="BVN"
 value={BVN}
                           style={styles.formi}
@@ -903,7 +935,7 @@ value={BVN}
                            color="primary"
 
 
- style={ bvnMatched && {width:0,height:0}}
+
                       onPress={() => biodata(first_name,middle_name,last_name,date_of_birth,phone,type_of_residence,employment_status,monthly_income,BVN)}
                          >
                          {

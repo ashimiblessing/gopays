@@ -351,8 +351,17 @@ alert(error)
 
 
 
-
+<Block middle>
+<Text style={{color:argonTheme.COLORS.MUTED,marginHorizontal:10, marginTop:20}}>
+WARNING:  Make sure you add the correct bank details. This is where your funds will be sent to
+</Text>
+</Block>
                     <Block middle>
+
+
+
+
+
                       <Button color="primary" style={styles.createButton}
                        onPress={this.save_bank}
                       >
