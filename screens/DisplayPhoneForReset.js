@@ -8,7 +8,6 @@ import {
   ActivityIndicator,
   ScrollView,
   Image,
-  TouchableOpacity,
 } from "react-native";
 import { Block, Checkbox, Text, theme } from "galio-framework";
 import { StackActions, NavigationActions } from 'react-navigation';
@@ -31,17 +30,18 @@ const { width, height } = Dimensions.get("screen");
 
 
 axios.defaults.baseURL = 'http://3.21.215.190';
-class Login extends React.Component {
+class ResetPassword extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       isLoading:false,
-      email:"",
-      password:"",
-      setError:""
+ 
+      phone:"",
+      setError:"",
+ 
     }
-    this.loginState = this.loginState.bind(this);
-    this.login = this.login.bind(this);
+ 
+    this.send_phone = this.send_phone.bind(this);
 
   }
 
@@ -49,34 +49,23 @@ class Login extends React.Component {
 
 
 
+ 
 
+  send_phone() {
 
-  loginState(event){
-
-    this.setState({
-      [event.target.name]:event.target.value,
-    });
-
-  // console.log(event.target.value);
-
-
-  };
-
-  login() {
-
-if(!this.state.email || !this.state.password )
+if(!this.state.phone)
 {
-  alert('Sorry. Please fill all fields');
+  alert('Sorry. Please enter phone number');
 
   return;
 }
 
 const options = {
   method: 'post',
-  url: '/api/login',
+  url: '/api/send_otp_for_password_reset',
  data:{
-   email:this.state.email,
-   password:this.state.password,
+   phone:this.state.phone,
+ 
 
 }
 };
@@ -86,23 +75,17 @@ axios(options)
 
   .then(response => {
 
-    let userResponse =  {
-      user: response.data.user,
-      message: response.data.message,
-      token: response.data.token
-    }
+   
 
-
-    SecureStore.setItemAsync('userInfo', JSON.stringify(userResponse));
-    SecureStore.setItemAsync('is_loggedin', JSON.stringify(response.data));
-
-    SecureStore.setItemAsync('lastLogin', JSON.stringify(new Date()));
-
+console.log(response);
+ 
+     
 
 
 
        if(response.data.has_not_filled_profile == true || response.data.has_not_filled_profile  )
        {
+
    this.setState({isLoading:false})
          this.props.navigation.navigate('BioData');
 
@@ -126,29 +109,19 @@ axios(options)
 
 })
 .catch(error => {
-
-
-
+    this.setState({isLoading:false});
+console.log(error)
+console.log('yes')
+return;
   const key = Object.keys(error.response.data)[0];
 
 
 
+  
+ this.setState({isLoading:false});
+  alert(error.response);
+ console.log(error.response);
 
-
-   this.setState({
-     setError:error.response.data[key][0]
-   })
-
-
- this.setState({isLoading:false})
-if(error.response.data[key] == 'Unauthorized'){
-  alert("Sorry. Your credentials are incorrect")
-}
-else{
-   alert(error.response.data[key])
-
-  // alert(JSON.stringify(error.response.data))
-}
 
 
 })
@@ -179,7 +152,7 @@ else{
       <Block center>
         <Image source={Images.LogoOnboarding}  style={styles.logo} />
         <Text bold size={15} style={{marginTop:30}}>
-         Welcome to Gopays!
+         Reset your password
         </Text>
 
 
@@ -209,41 +182,18 @@ else{
 
                <Block center style={styles.formContain}>
                <TextInput
-                   label="Email"
+                   label="Enter phone number"
                    mode="flat"
                    underlineColor="blue" style={styles.formi}
 
 
-                        onChangeText={(text) => this.setState({ email:text })}
+                        onChangeText={(text) => this.setState({ phone:text })}
 
                  />
 
-                 <TextInput
-                   keyboardType="numeric"
-                   maxLength={6}
-                     label="Enter PIN"
-                     mode="flat"
-                     underlineColor="blue" style={styles.formi}
-                      name="password"
-                        password
-                        onChangeText={(text) => this.setState({ password:text })}
+             
 
-                   />
-
-<Block>
-<TouchableOpacity 
-
-onPress={() => this.props.navigation.navigate("DisplayPhoneForReset")}
-
->
-<Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
-                Forgot PIN?
-                   </Text>
-</TouchableOpacity>
-
-</Block>
-           
-
+                 
 </Block>
 
 
@@ -261,13 +211,13 @@ onPress={() => this.props.navigation.navigate("DisplayPhoneForReset")}
 
 
                       <Button color="primary" style={styles.createButton}
-                      onPress={this.login}
+                      onPress={this.send_phone}
                       >
                             {this.state.isLoading ?
                       <ActivityIndicator  size="large" color="#ffff" />
                       :
                         <Text bold size={14} color={argonTheme.COLORS.WHITE}>
-                        Login
+                        Continue
                         </Text>
                       }
                       </Button>
@@ -378,4 +328,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Login;
+export default ResetPassword;

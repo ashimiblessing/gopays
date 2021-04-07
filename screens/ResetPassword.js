@@ -8,7 +8,6 @@ import {
   ActivityIndicator,
   ScrollView,
   Image,
-  TouchableOpacity,
 } from "react-native";
 import { Block, Checkbox, Text, theme } from "galio-framework";
 import { StackActions, NavigationActions } from 'react-navigation';
@@ -31,14 +30,16 @@ const { width, height } = Dimensions.get("screen");
 
 
 axios.defaults.baseURL = 'http://3.21.215.190';
-class Login extends React.Component {
+class ResetPassword extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       isLoading:false,
       email:"",
       password:"",
-      setError:""
+      setError:"",
+      old_password:"",
+      new_password:"",
     }
     this.loginState = this.loginState.bind(this);
     this.login = this.login.bind(this);
@@ -73,10 +74,11 @@ if(!this.state.email || !this.state.password )
 
 const options = {
   method: 'post',
-  url: '/api/login',
+  url: '/api/reset_password',
  data:{
    email:this.state.email,
-   password:this.state.password,
+   old_password:this.state.old_password,
+   new_password:this.state.new_password,
 
 }
 };
@@ -230,20 +232,9 @@ else{
 
                    />
 
-<Block>
-<TouchableOpacity 
-
-onPress={() => this.props.navigation.navigate("DisplayPhoneForReset")}
-
->
-<Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
+                 <Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
                 Forgot PIN?
                    </Text>
-</TouchableOpacity>
-
-</Block>
-           
-
 </Block>
 
 
@@ -378,4 +369,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Login;
+export default ResetPassword;

@@ -28,6 +28,10 @@ import OtpInput from "../screens/OtpInput";
 import AddBank from "../screens/AddBank";
 import MyCards from "../screens/MyCards";
 
+import ResetPassword from "../screens/ResetPassword";
+import ResetPasswordOtp from "../screens/ResetPasswordOtp";
+import DisplayPhoneForReset from "../screens/DisplayPhoneForReset";
+
 
 
 
@@ -485,9 +489,59 @@ headerShown: true,
 
 
 
+function DisplayPhoneForResetStack(props) {
+  return (
+    <Stack.Navigator mode="card" headerMode="none">
+      <Stack.Screen
+        name="DisplayPhoneForReset"
+        component={DisplayPhoneForReset}
+        option={{
+          headerTransparent: true
+        }}
+      />
+       <Stack.Screen name="OtpInput" component={ResetPasswordOtpStack} />
+       
+    </Stack.Navigator>
+  );
+}
 
 
 
+
+
+function ResetPasswordOtpStack(props) {
+  return (
+    <Stack.Navigator mode="card" headerMode="none">
+      <Stack.Screen
+        name="ResetPasswordOtp"
+        component={ResetPasswordOtp}
+        option={{
+          headerTransparent: true
+        }}
+      />
+       <Stack.Screen name="OtpInput" component={ResetPasswordStack} />
+      
+    </Stack.Navigator>
+  );
+}
+
+
+
+function ResetPasswordStack(props) {
+  return (
+    <Stack.Navigator mode="card" headerMode="none">
+      <Stack.Screen
+        name="ResetPassword"
+        component={ResetPassword}
+        option={{
+          headerTransparent: true
+        }}
+      />
+       
+       <Stack.Screen name="Login" component={LoginStack} />
+    </Stack.Navigator>
+  );
+}
 
 
 
@@ -557,12 +611,9 @@ headerShown: true,
         }}
 
       />
-      <Stack.Screen name="BioData" component={BioDataStack}
-
-
-
-    />
+      <Stack.Screen name="BioData" component={BioDataStack} />
          <Stack.Screen name="Profile" component={ProfileStack} />
+         <Stack.Screen name="DisplayPhoneForReset" component={DisplayPhoneForResetStack} />
     </Stack.Navigator>
   );
 }
