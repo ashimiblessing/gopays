@@ -51,7 +51,7 @@ class Profile extends React.Component {
     this.getUserData = this.getUserData.bind(this);
     global.errors = "";
 
-const time_out = 30;
+const time_out = 5;
 
 //check if logged in timeout
 

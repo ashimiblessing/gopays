@@ -47,7 +47,7 @@ componentDidMount(){
     if(userString)
     {
     
-      let mins_to_add = 30;
+      let mins_to_add = 5;
       let last_date = new Date(JSON.parse(userString));
       var lastDateObj = new Date(last_date.getTime() + mins_to_add*60000);
       let curr_date = new Date();

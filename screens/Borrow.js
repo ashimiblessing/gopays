@@ -187,13 +187,17 @@ var amt = this.state.amount * 1;
 
 
 
-if(amt <1000){alert('Please enter a value between N1000 and N1,000,000')
+if(amt <1000){
+  
+  alert('Please enter a value between N1000 and N1,000,000')
 
 return;
 
 }
 
-if(!this.state.reason){alert('Please select a loan reason')
+if(!this.state.reason){
+  
+  alert('Please select a loan reason')
 
 return;
 
@@ -211,11 +215,24 @@ if(!this.state.tenure)
 return;
 
 }
-
+ 
 
 
 //CurrentLoanOffer is the amount borrowable by user currently
 let data = SecureStore.getItemAsync("is_loggedin").then(dataItem => {
+
+
+
+if(!dataItem)
+{
+  alert("There was an error pulling your login details. Please logout from the dashboard and login again");
+  return;
+}
+
+
+
+
+
 
   const borrow_load = {
     amount:amt,

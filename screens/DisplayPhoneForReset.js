@@ -86,7 +86,7 @@ const the_phone = this.state.phone;
        SecureStore.setItemAsync('user_reset_info', JSON.stringify(response.data.data));
        console.log(response.data.data);
           this.setState({isLoading:false})
-         this.props.navigation.navigate('ResetPasswordOtp');
+         this.props.navigation.replace('ResetPasswordOtp');
 
 return;
        }
@@ -185,10 +185,14 @@ else{
 
 
 
-
 </Block>
 
+<Block style={{marginTop:10, }}>
+<Text color={argonTheme.COLORS.MUTED}>
+  Your registered phone number
+</Text>
 
+</Block>
 
 
 
@@ -222,7 +226,7 @@ else{
 
     <Block center>
                     <Text
- onPress={() => navigation.navigate("Login")}
+ onPress={() => navigation.replace("Login")}
 
                      bold size={12} style={{marginTop:30}} color='#015CE1'>
                      Go to Login

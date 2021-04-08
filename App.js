@@ -6,7 +6,7 @@ import { Asset } from "expo-asset";
 import { Block, GalioProvider } from "galio-framework";
 import { NavigationContainer } from "@react-navigation/native";
 
-
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 // Before rendering any navigation stack
 import { enableScreens } from "react-native-screens";
@@ -71,11 +71,13 @@ export default props => {
   } else if(fontsLoaded) {
     return (
       <NavigationContainer>
+        <SafeAreaProvider>
         <GalioProvider theme={argonTheme}>
           <Block flex>
             <Screens />
           </Block>
         </GalioProvider>
+        </SafeAreaProvider>
       </NavigationContainer>
     );
   } else {

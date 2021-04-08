@@ -9,8 +9,14 @@ import { HeaderBackButton } from '@react-navigation/stack';
 
 import { useNavigation } from '@react-navigation/native';
 
+
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+
 import { Block } from "galio-framework";
-const barHeight = StatusBar.currentHeight;
+//const barHeight = StatusBar.currentHeight;
+
+console.log(StatusBar.currentHeight)
 
 // screens
 
@@ -60,6 +66,8 @@ const Tab = createBottomTabNavigator();
 
 
 function ProfileStack(props) {
+  const insets = useSafeAreaInsets();
+const barHeight = insets.top;
   return (
     <Stack.Navigator   mode="card" headerMode="screen"
 
@@ -83,7 +91,7 @@ headerShown: true,
               title="Gopays"
               navigation={navigation}
               scene={scene}
-              style={{height:barHeight, alignSelf:'center',textAlign:'center', marginTop:15,marginBottom:10}}
+              style={{  paddingTop:insets.top, paddingBottom:insets.bottom,}}
             />
           ),
           cardStyle: { backgroundColor: "#FFFFFF" },
@@ -127,6 +135,8 @@ headerShown: true,
 
 
 function OnboardingStack(props) {
+  const insets = useSafeAreaInsets();
+const barHeight = insets.top;
 
   return (
     <Stack.Navigator mode="card" headerMode="none">
@@ -154,6 +164,8 @@ function OnboardingStack(props) {
 
 
 function AddCardStack(props) {
+  const insets = useSafeAreaInsets();
+const barHeight = insets.top;
  return (
    <Stack.Navigator mode="card" headerMode="none">
      <Stack.Screen
@@ -187,6 +199,8 @@ function AddCardStack(props) {
 
 
      function MyCardsStack(props) {
+      const insets = useSafeAreaInsets();
+      const barHeight = insets.top;
       return (
         <Stack.Navigator mode="card" headerMode="screen">
           <Stack.Screen
@@ -203,7 +217,7 @@ function AddCardStack(props) {
                   title="Payment Methods"
                   navigation={navigation}
                   scene={scene}
-                  style={{height:barHeight, alignSelf:'center',textAlign:'center',marginTop:15,marginBottom:10}}
+                  style={{  paddingTop:insets.top, paddingBottom:insets.bottom,}}
                 />
               ),
               cardStyle: { backgroundColor: "#FFFFFF" },
@@ -230,6 +244,8 @@ function AddCardStack(props) {
 
 
      function AddBankStack(props) {
+      const insets = useSafeAreaInsets();
+      const barHeight = insets.top;
       return (
         <Stack.Navigator mode="card" headerMode="screen">
           <Stack.Screen
@@ -246,7 +262,7 @@ function AddCardStack(props) {
                   title="Bank Details"
                   navigation={navigation}
                   scene={scene}
-                  style={{height:barHeight, alignSelf:'center',textAlign:'center', marginTop:15,marginBottom:10}}
+                  style={{  paddingTop:insets.top, paddingBottom:insets.bottom,}}
                 />
               ),
               cardStyle: { backgroundColor: "#FFFFFF" },
@@ -277,6 +293,8 @@ function AddCardStack(props) {
 
 
 function BorrowStack(props) {
+  const insets = useSafeAreaInsets();
+const barHeight = insets.top;
  return (
    <Stack.Navigator mode="card" headerMode="screen">
      <Stack.Screen
@@ -293,7 +311,7 @@ headerShown: true,
              title="Get a Loan"
              navigation={navigation}
              scene={scene}
-             style={{height:barHeight, alignSelf:'center',textAlign:'center',marginTop:15,marginBottom:10}}
+             style={{  paddingTop:insets.top, paddingBottom:insets.bottom,}}
            />
          ),
          cardStyle: { backgroundColor: "#FFFFFF" },
@@ -314,6 +332,8 @@ headerShown: true,
 
 
 function UserPermsStack(props) {
+  const insets = useSafeAreaInsets();
+const barHeight = insets.top;
  return (
    <Stack.Navigator mode="card" headerMode="none">
      <Stack.Screen
@@ -356,6 +376,8 @@ function UserPermsStack(props) {
 
 
 function DummyLoadingStack(props) {
+  const insets = useSafeAreaInsets();
+const barHeight = insets.top;
  return (
    <Stack.Navigator mode="card" headerMode="none">
     <Stack.Screen
@@ -388,6 +410,8 @@ function DummyLoadingStack(props) {
 
 
 function RepayStack(props) {
+  const insets = useSafeAreaInsets();
+const barHeight = insets.top;
  return (
    <Stack.Navigator mode="card" headerMode="screen">
      <Stack.Screen
@@ -404,7 +428,7 @@ headerShown: true,
              title="GRepay Your Loan"
              navigation={navigation}
              scene={scene}
-             style={{height:barHeight, alignSelf:'center',textAlign:'center',marginTop:15,marginBottom:10}}
+             style={{  paddingTop:insets.top, paddingBottom:insets.bottom,}}
            />
          ),
          cardStyle: { backgroundColor: "#FFFFFF" },
@@ -424,6 +448,8 @@ headerShown: true,
 
 
 function LoanHistoryStack(props) {
+  const insets = useSafeAreaInsets();
+const barHeight = insets.top;
  return (
    <Stack.Navigator mode="card" headerMode="screen">
      <Stack.Screen
@@ -440,7 +466,7 @@ headerShown: true,
              title="Loan History"
              navigation={navigation}
              scene={scene}
-             style={{height:barHeight, alignSelf:'center',textAlign:'center',marginTop:15,marginBottom:10}}
+             style={{  paddingTop:insets.top, paddingBottom:insets.bottom,}}
            />
          ),
          cardStyle: { backgroundColor: "#FFFFFF" },
@@ -468,6 +494,8 @@ headerShown: true,
 
 
  function RegisterStack(props) {
+  const insets = useSafeAreaInsets();
+  const barHeight = insets.top;
   return (
     <Stack.Navigator mode="card" headerMode="none">
       <Stack.Screen
@@ -490,6 +518,8 @@ headerShown: true,
 
 
 function DisplayPhoneForResetStack(props) {
+  const insets = useSafeAreaInsets();
+const barHeight = insets.top;
   return (
     <Stack.Navigator mode="card" headerMode="none">
       <Stack.Screen
@@ -510,6 +540,8 @@ function DisplayPhoneForResetStack(props) {
 
 
 function ResetPasswordOtpStack(props) {
+  const insets = useSafeAreaInsets();
+const barHeight = insets.top;
   return (
     <Stack.Navigator mode="card" headerMode="none">
       <Stack.Screen
@@ -528,6 +560,8 @@ function ResetPasswordOtpStack(props) {
 
 
 function ResetPasswordStack(props) {
+  const insets = useSafeAreaInsets();
+const barHeight = insets.top;
   return (
     <Stack.Navigator mode="card" headerMode="none">
       <Stack.Screen
@@ -554,6 +588,8 @@ function ResetPasswordStack(props) {
 
 
  function BioDataStack(props) {
+  const insets = useSafeAreaInsets();
+  const barHeight = insets.top;
   return (
     <Stack.Navigator mode="card" headerMode="screen"
 
@@ -576,7 +612,7 @@ function ResetPasswordStack(props) {
             title="Edit Profile"
             navigation={navigation}
             scene={scene}
-            style={{height:barHeight, alignSelf:'center',textAlign:'center',marginTop:15,marginBottom:10}}
+            style={{  paddingTop:insets.top, paddingBottom:insets.bottom,}}
           />
         ),
         cardStyle: { backgroundColor: "#FFFFFF" },
@@ -593,6 +629,8 @@ function ResetPasswordStack(props) {
 
 
  function LoginStack(props) {
+  const insets = useSafeAreaInsets();
+  const barHeight = insets.top;
   return (
     <Stack.Navigator
 
@@ -614,6 +652,7 @@ function ResetPasswordStack(props) {
       <Stack.Screen name="BioData" component={BioDataStack} />
          <Stack.Screen name="Profile" component={ProfileStack} />
          <Stack.Screen name="DisplayPhoneForReset" component={DisplayPhoneForResetStack} />
+         <Stack.Screen name="Register" component={RegisterStack} />
     </Stack.Navigator>
   );
 }
@@ -625,6 +664,8 @@ function ResetPasswordStack(props) {
 
 
 function OtpInputStack(props) {
+  const insets = useSafeAreaInsets();
+const barHeight = insets.top;
   return (
     <Stack.Navigator mode="card" headerMode="none">
       <Stack.Screen
@@ -656,7 +697,8 @@ function OtpInputStack(props) {
 
 
 export default function AppStack(props) {
-
+  const insets = useSafeAreaInsets();
+  const barHeight = insets.top;
   return (
     <Drawer.Navigator
       style={{ flex: 1 }}
