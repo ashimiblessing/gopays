@@ -38,7 +38,7 @@ class ResetPassword extends React.Component {
       email:"",
       password:"",
       setError:"",
-      old_password:"",
+      verify_new_password:"",
       new_password:"",
     }
     this.loginState = this.loginState.bind(this);
@@ -65,95 +65,119 @@ class ResetPassword extends React.Component {
 
   login() {
 
-if(!this.state.email || !this.state.password )
+if(!this.state.new_password )
 {
   alert('Sorry. Please fill all fields');
 
   return;
 }
 
-const options = {
-  method: 'post',
-  url: '/api/reset_password',
- data:{
-   email:this.state.email,
-   old_password:this.state.old_password,
-   new_password:this.state.new_password,
 
+if(this.state.new_password  !== this.state.verify_new_password )
+{
+  alert('Sorry. Please enter the same values in the password verification');
+
+  return;
 }
-};
-  this.setState({isLoading:true})
-axios(options)
 
 
+
+
+
+
+
+    let data2 = SecureStore.getItemAsync("user_reset_info").then(userString => {
+
+
+
+        if(userString !== '' || typeof userString !== 'undefined' )
+        {
+
+
+           const user_reset =  JSON.parse(userString);
+
+
+
+
+
+    this.setState({isLoading:true})
+    axios.post('/api/reset_password',{
+      email:user_reset.email,
+     
+      new_password:this.state.new_password,
+
+
+    },
+
+    {
+      headers: {
+
+           'content-type': 'application/json'
+           }
+
+
+    }
+
+    )
   .then(response => {
+    const { navigation } = this.props;
 
-    let userResponse =  {
-      user: response.data.user,
-      message: response.data.message,
-      token: response.data.token
+
+
+
+           if(response.data.success == true )
+           {
+
+       this.setState({isLoading:false})
+
+
+
+   alert('Password reset successfull. Please login');
+
+        navigation.navigate("Login")
+
+    return;
+           }
+    else{
+         this.setState({isLoading:false});
+         alert(response.data.information);
+         return;
     }
 
 
-    SecureStore.setItemAsync('userInfo', JSON.stringify(userResponse));
-    SecureStore.setItemAsync('is_loggedin', JSON.stringify(response.data));
-
-    SecureStore.setItemAsync('lastLogin', JSON.stringify(new Date()));
-
-
-
-
-       if(response.data.has_not_filled_profile == true || response.data.has_not_filled_profile  )
-       {
-   this.setState({isLoading:false})
-         this.props.navigation.navigate('BioData');
-
-         return;
-       }
-
-
-    const { navigation } = this.props;
-     this.setState({isLoading:false})
-
-
-
-
-
-
-//
-// alert(response.data.has_not_filled_profile)
-
-     this.props.navigation.replace('Profile')
 
 
 })
 .catch(error => {
-
-
-
+  //alert(error)
   const key = Object.keys(error.response.data)[0];
 
-
-
-
-
-   this.setState({
-     setError:error.response.data[key][0]
-   })
-
-
+ alert(error.response.data[key]);
  this.setState({isLoading:false})
-if(error.response.data[key] == 'Unauthorized'){
-  alert("Sorry. Your credentials are incorrect")
-}
-else{
-   alert(error.response.data[key])
-
-  // alert(JSON.stringify(error.response.data))
-}
-
-
+ // alert(error.response.data[key])
 })
+
+
+
+
+
+
+
+        }
+        else{
+            alert('System Error. Please try again')
+        }
+        })
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -210,31 +234,34 @@ else{
 
 
                <Block center style={styles.formContain}>
-               <TextInput
-                   label="Email"
-                   mode="flat"
-                   underlineColor="blue" style={styles.formi}
 
 
-                        onChangeText={(text) => this.setState({ email:text })}
 
-                 />
 
-                 <TextInput
-                   keyboardType="numeric"
-                   maxLength={6}
-                     label="Enter PIN"
-                     mode="flat"
-                     underlineColor="blue" style={styles.formi}
-                      name="password"
-                        password
-                        onChangeText={(text) => this.setState({ password:text })}
+                   <TextInput
+                     keyboardType="numeric"
+                     maxLength={6}
+                       label="Enter New PIN"
+                       mode="flat"
+                       underlineColor="blue" style={styles.formi}
+                        name="new_password"
+                          password
+                          onChangeText={(text) => this.setState({ new_password:text })}
 
-                   />
+                     />
 
-                 <Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
-                Forgot PIN?
-                   </Text>
+
+                                        <TextInput
+                                          keyboardType="numeric"
+                                          maxLength={6}
+                                            label="Verify New PIN"
+                                            mode="flat"
+                                            underlineColor="blue" style={styles.formi}
+                                             name="verify_new_password"
+                                               password
+                                               onChangeText={(text) => this.setState({ verify_new_password:text })}
+
+                                          />
 </Block>
 
 
@@ -258,7 +285,7 @@ else{
                       <ActivityIndicator  size="large" color="#ffff" />
                       :
                         <Text bold size={14} color={argonTheme.COLORS.WHITE}>
-                        Login
+                        Reset Password
                         </Text>
                       }
                       </Button>
@@ -269,14 +296,7 @@ else{
 
                     </Block>
 
-    <Block center>
-                    <Text
- onPress={() => navigation.navigate("Register")}
 
-                     bold size={12} style={{marginTop:30}} color='#015CE1'>
-                     Not registered? Sign up now
-                    </Text>
-    </Block>
 
                   </KeyboardAvoidingView>
                 </Block>

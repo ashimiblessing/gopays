@@ -1,68 +1,275 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
-import { Content, Item, Input } from 'native-base';
-import { Grid, Col } from 'react-native-easy-grid';
+import * as React from 'react';
+import {  View, StyleSheet,
+
+Dimensions,
+    ActivityIndicator,
+    KeyboardAvoidingView,
+    Platform,
+
+
+} from 'react-native';
+import { Constants } from 'expo';
+import { Block, Checkbox, Text, theme, Icon,Button } from "galio-framework";
+import {   argonTheme } from "../constants";
+// You can import from local files
+import OtpInputs from '../screens/OtpInputs';
+
+// or any pure javascript modules available in npm
+import { Card } from 'react-native-paper';
+
+const { width, height } = Dimensions.get("screen");
+
+import * as SecureStore from 'expo-secure-store';
+axios.defaults.baseURL = 'http://3.21.215.190';
+import axios from 'axios';
+
+
 
 
 class ResetPasswordOtp extends React.Component {
-    state={otp:[]};
-    otpTextInput = [];
+  state={
 
-    componentDidMount() {
-        this.otpTextInput[0]._root.focus();
-    }
 
-    renderInputs() {
-        const inputs = Array(6).fill(0);
-        const txt = inputs.map(
-            (i, j) => <Col key={j} style={styles.txtMargin}><Item regular>
-                <Input
-                   maxLength={1}
-                    style={[styles.inputRadius, { borderRadius: 10 }]}
-                    keyboardType="numeric"
-                    onChangeText={v => this.focusNext(j, v)}
-                    onKeyPress={e => this.focusPrevious(e.nativeEvent.key, j)}
-                    ref={ref => this.otpTextInput[j] = ref}
-                />
-            </Item></Col>
-        );
-        return txt;
-    }
+};
 
-    focusPrevious(key, index) {
-        if (key === 'Backspace' && index !== 0)
-            this.otpTextInput[index - 1]._root.focus();
-    }
 
-    focusNext(index, value) {
-        if (index < this.otpTextInput.length - 1 && value) {
-            this.otpTextInput[index + 1]._root.focus();
-        }
-        if (index === this.otpTextInput.length - 1) {
-            this.otpTextInput[index]._root.blur();
-        }
-        const otp = this.state.otp;
-        otp[index] = value;
+
+
+constructor(props){
+  super(props);
+  this.state = {
+    otp:'',
+    isLoading:false,
+  }
+
+
+
+
+
+  this.verify_otp = this.verify_otp.bind(this);
+
+}
+
+
+
+
+
+
+
+
+   getOtp(otp) {
+        console.log(otp);
         this.setState({ otp });
-        this.props.getOtp(otp.join(''));
+  }
+
+
+
+
+componentDidMount(){
+  this.setState({isLoading:false})
+}
+
+
+
+
+verify_otp() {
+
+if(!this.state.otp)
+{
+alert('Please fill the otp');
+
+return;
+}
+
+if(this.state.otp.length <6)
+{
+alert('Please fill the fields completely');
+
+return;
+}
+
+
+
+    let data2 = SecureStore.getItemAsync("user_reset_info").then(userString => {
+
+
+
+        if(userString !== '' || typeof userString !== 'undefined' )
+        {
+
+
+           const user_reset =  JSON.parse(userString);
+
+
+
+
+
+    this.setState({isLoading:true})
+    axios.post('/api/verify_otp_for_password_reset',{
+      otp:this.state.otp,
+      user_id:user_reset.id,
+
+
+    },
+
+    {
+      headers: {
+
+           'content-type': 'application/json'
+           }
+
+
+    }
+
+    )
+  .then(response => {
+    const { navigation } = this.props;
+
+
+
+
+           if(response.data.success == true )
+           {
+
+       this.setState({isLoading:false})
+
+
+
+   alert('Your phone number was verified successfully. Please choose a new password');
+
+        navigation.navigate("ResetPassword")
+
+    return;
+           }
+    else{
+         this.setState({isLoading:false});
+         alert(response.data.information);
+         return;
     }
 
 
-    render() {
-        return (
-            <Content padder>
-                <Grid style={styles.gridPad}>
-                    {this.renderInputs()}
-                </Grid>
-            </Content>
-        );
-    }
+
+
+})
+.catch(error => {
+  //alert(error)
+  const key = Object.keys(error.response.data)[0];
+
+ alert(error.response.data[key]);
+ this.setState({isLoading:false})
+ // alert(error.response.data[key])
+})
+
+
+
+
+
+
+
+        }
+        else{
+            alert('System Error. Please try again')
+        }
+        })
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  render() {
+    return (
+      <View style={styles.container}>
+
+         <View style={styles.midview}>
+          <Icon style={{marginBottom:10}} name="phone-android" family="Ionicons" color='black' size={50} />
+          <Text style={{marginBottom:10,fontWeight:'600'}} size={22}>Verify your phone number</Text>
+      <Text>An OTP has been sent to your phone number. Please enter it here</Text>
+      </View>
+
+
+      <OtpInputs getOtp={(otp) => this.getOtp(otp)} />
+
+
+
+
+
+
+      <Block middle>
+                      <Button color="primary" style={styles.createButton}
+                       onPress={this.verify_otp}
+                      >
+                         {this.state.isLoading ?
+                      <ActivityIndicator  size="large" color="#ffff" />
+                      :
+                        <Text bold size={14} color={argonTheme.COLORS.WHITE}>
+                          CONTINUE
+                        </Text>
+                      }
+                      </Button>
+                    </Block>
+
+
+
+
+
+
+
+
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
-    gridPad: { padding: 30 },
-    txtMargin: { margin: 3 },
-    inputRadius: { textAlign: 'center' }
+  container: {
+      marginTop:50,
+    flex: 1,
+    alignContent:'flex-end',
+
+
+    paddingTop: 20,
+    backgroundColor: '#ecf0f1',
+    padding: 8,
+  },
+
+  midview:{
+    justifyContent: 'center',
+    alignItems:'center'
+
+  },
+
+  createButton: {
+    width: width * 0.5,
+    marginTop: 25
+  }
+
+
 });
+
 
 export default ResetPasswordOtp;

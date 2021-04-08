@@ -230,19 +230,21 @@ else{
 
                    />
 
-<Block>
-<TouchableOpacity 
+<Block style={{marginTop:30, }}>
 
+<Text 
 onPress={() => this.props.navigation.navigate("DisplayPhoneForReset")}
 
+ bold size={12} style={{marginTop:30}} color='#015CE1'
+
+
 >
-<Text color={argonTheme.COLORS.MUTED} style={styles.formtext}>
                 Forgot PIN?
                    </Text>
-</TouchableOpacity>
+
 
 </Block>
-           
+
 
 </Block>
 

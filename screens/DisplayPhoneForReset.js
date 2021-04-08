@@ -35,12 +35,12 @@ class ResetPassword extends React.Component {
     super(props);
     this.state = {
       isLoading:false,
- 
+
       phone:"",
       setError:"",
- 
+
     }
- 
+
     this.send_phone = this.send_phone.bind(this);
 
   }
@@ -49,7 +49,7 @@ class ResetPassword extends React.Component {
 
 
 
- 
+
 
   send_phone() {
 
@@ -60,67 +60,58 @@ if(!this.state.phone)
   return;
 }
 
-const options = {
-  method: 'post',
-  url: '/api/send_otp_for_password_reset',
- data:{
-   phone:this.state.phone,
- 
+const the_phone = this.state.phone;
 
-}
-};
   this.setState({isLoading:true})
-axios(options)
+  axios.post(
+    '/api/send_otp_for_password_reset',{
+      phone:the_phone.trim(),
+
+
+   },
+{}
+  )
 
 
   .then(response => {
 
-   
-
-console.log(response);
- 
-     
 
 
 
-       if(response.data.has_not_filled_profile == true || response.data.has_not_filled_profile  )
+       if(response.data.success == true )
        {
 
    this.setState({isLoading:false})
-         this.props.navigation.navigate('BioData');
 
-         return;
+       SecureStore.setItemAsync('user_reset_info', JSON.stringify(response.data.data));
+       console.log(response.data.data);
+          this.setState({isLoading:false})
+         this.props.navigation.navigate('ResetPasswordOtp');
+
+return;
        }
+else{
+     this.setState({isLoading:false});
+     alert(response.data.information);
+     return;
+}
 
 
-    const { navigation } = this.props;
-     this.setState({isLoading:false})
 
 
-
-
-
-
-//
-// alert(response.data.has_not_filled_profile)
-
-     this.props.navigation.replace('Profile')
 
 
 })
 .catch(error => {
-    this.setState({isLoading:false});
-console.log(error)
-console.log('yes')
-return;
+
   const key = Object.keys(error.response.data)[0];
 
 
 
-  
+
  this.setState({isLoading:false});
-  alert(error.response);
- console.log(error.response);
+  alert(error.response.data[key]);
+
 
 
 
@@ -182,6 +173,7 @@ return;
 
                <Block center style={styles.formContain}>
                <TextInput
+                  keyboardType="numeric"
                    label="Enter phone number"
                    mode="flat"
                    underlineColor="blue" style={styles.formi}
@@ -191,9 +183,9 @@ return;
 
                  />
 
-             
 
-                 
+
+
 </Block>
 
 
@@ -230,10 +222,10 @@ return;
 
     <Block center>
                     <Text
- onPress={() => navigation.navigate("Register")}
+ onPress={() => navigation.navigate("Login")}
 
                      bold size={12} style={{marginTop:30}} color='#015CE1'>
-                     Not registered? Sign up now
+                     Go to Login
                     </Text>
     </Block>
 

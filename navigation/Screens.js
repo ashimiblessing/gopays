@@ -499,8 +499,8 @@ function DisplayPhoneForResetStack(props) {
           headerTransparent: true
         }}
       />
-       <Stack.Screen name="OtpInput" component={ResetPasswordOtpStack} />
-       
+       <Stack.Screen name="ResetPasswordOtp" component={ResetPasswordOtpStack} />
+
     </Stack.Navigator>
   );
 }
@@ -519,8 +519,8 @@ function ResetPasswordOtpStack(props) {
           headerTransparent: true
         }}
       />
-       <Stack.Screen name="OtpInput" component={ResetPasswordStack} />
-      
+       <Stack.Screen name="ResetPassword" component={ResetPasswordStack} />
+
     </Stack.Navigator>
   );
 }
@@ -537,7 +537,7 @@ function ResetPasswordStack(props) {
           headerTransparent: true
         }}
       />
-       
+
        <Stack.Screen name="Login" component={LoginStack} />
     </Stack.Navigator>
   );
