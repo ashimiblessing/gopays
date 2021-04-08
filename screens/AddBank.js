@@ -22,7 +22,7 @@ import { TextInput } from 'react-native-paper';
 
 const { width, height } = Dimensions.get("screen");
 
-axios.defaults.baseURL = 'http://3.21.215.190';
+axios.defaults.baseURL = 'http://18.198.103.233';
 import * as SecureStore from 'expo-secure-store';
 
 const banksList = ['Abbey Mortgage Bank','Access Bank','Access Bank (Diamond)','ALAT by WEMA','ASO Savings and Loans','Bowen Microfinance Bank','CEMCS Microfinance Bank','Citibank Nigeria','Coronation Merchant Bank','Ecobank Nigeria','Ekondo Microfinance Bank','Eyowo','Fidelity Bank','First Bank of Nigeria','First City Monument Bank','FSDH Merchant Bank Limited','Globus Bank','Guaranty Trust Bank','Hackman Microfinance Bank','Hasal Microfinance Bank','Heritage Bank','Ibile Microfinance Bank','Infinity MFB','Jaiz Bank','Keystone Bank','Kuda Bank','Lagos Building Investment Company Plc.','Mayfair MFB','One Finance','PalmPay','Parallex Bank','Parkway - ReadyCash','Paycom','Petra Mircofinance Bank Plc','Polaris Bank','Providus Bank','Rand Merchant Bank','Rubies MFB','Sparkle Microfinance Bank','Stanbic IBTC Bank','Standard Chartered Bank','Sterling Bank','Suntrust Bank','TAJ Bank','TCF MFB','Titan Bank','Union Bank of Nigeria','United Bank For Africa','Unity Bank','VFD Microfinance Bank Limited','Wema Bank','Zenith Bank'];

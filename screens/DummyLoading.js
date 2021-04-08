@@ -23,7 +23,7 @@ import { TextInput } from 'react-native-paper';
 const { width, height } = Dimensions.get("screen");
 
 
-axios.defaults.baseURL = 'http://3.21.215.190';
+axios.defaults.baseURL = 'http://18.198.103.233';
 
 class DummyLoading extends React.Component {
 

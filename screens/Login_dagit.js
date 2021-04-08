@@ -16,7 +16,7 @@ import axios from 'axios';
 
 const { width, height } = Dimensions.get("screen");
 
-axios.defaults.baseURL = 'http://3.21.215.190';
+axios.defaults.baseURL = 'http://18.198.103.233';
 class Login extends React.Component {
   constructor(props){
     super(props);

@@ -22,7 +22,7 @@ import { TextInput  , Paragraph, Dialog, Portal } from 'react-native-paper';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 const thumbMeasure = (width - 48 - 32) / 3;
 
-axios.defaults.baseURL = 'http://3.21.215.190';
+axios.defaults.baseURL = 'http://18.198.103.233';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
