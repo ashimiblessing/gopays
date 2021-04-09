@@ -15,7 +15,10 @@ import { Images, argonTheme } from "../constants";
 import { HeaderHeight } from "../constants/utils";
 import axios from 'axios';
 import * as Permissions from 'expo-permissions';
- 
+import * as Contacts from 'expo-contacts';
+import * as Location from "expo-location";
+import Spinner from 'react-native-loading-spinner-overlay';
+
 
 const { width, height } = Dimensions.get("screen");
 
@@ -45,6 +48,7 @@ class Profile extends React.Component {
       outstanding_balance:"",
       loan_in_progress :'',
       loan_limit:"",
+        spinner: false,
 
 
     }
@@ -60,7 +64,7 @@ let dt = SecureStore.getItemAsync("lastLogin").then(dtstr => {
   if(dtstr)
   {
     const prev_login = Date.parse(JSON.parse(dtstr));
- 
+
     const curr_date = Date.parse(new Date);
     const plus30 = new Date(prev_login + time_out*60000);
 
@@ -152,11 +156,7 @@ if(this.state.outstanding_balance*1 < 1)
   getUserData(){
     let data = SecureStore.getItemAsync("userInfo").then(userString => {
       let userInfo = JSON.parse(userString);
-      // this.setState({
-      //   setUserInfo:userInfo.user.first_name
-      // })
 
-// alert(userInfo.user.dob )
 
     })
 
@@ -180,7 +180,7 @@ if(this.state.outstanding_balance*1 < 1)
   componentDidMount(){
 
 
-  
+
 
 
 
@@ -348,25 +348,101 @@ let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
 
 
 
-    async handlePerms() {
+  async handlePerms() {
 
-      const { status, expires, permissions } = await Permissions.askAsync(
+    const { status1, expires1, permissions1 } = await Permissions.askAsync(
+      Permissions.CONTACTS,
+      Permissions.CAMERA,
+      Permissions.LOCATION,
+
+
+    );
+
+    if (status1 === 'granted') {
+      var loc =  Location.getCurrentPositionAsync({enableHighAccuracy: true});
+
+      const { datac } = await Contacts.getContactsAsync({
+    fields: [Contacts.Fields.Name, Contacts.Fields.PHONE_NUMBERS],
+  });
+
+
+  if (datac.length > 0) {
+       SecureStore.setItemAsync('contacts_info', JSON.stringify(datac));
+         SecureStore.setItemAsync('current_location', JSON.stringify(loc));
+     }
+
+
+this.setState({spinner:false})
+
+this.props.navigation.navigate("Borrow")
+
+    } else {
+      this.setState({spinner:false})
+       alert('Please grant permissions to continue');
+
+    }
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+    async checkPerms() {
+    this.setState({spinner:true})
+
+      const { status, expires, permissions } = await Permissions.getAsync(
         Permissions.CONTACTS,
         Permissions.CAMERA,
         Permissions.LOCATION,
+       );
+       if (status !== 'granted') {
+         Alert.alert(
+            //title
+            'Permissions Required',
+            //body
+            "Gopays needs access to your location and contacts. These data are used to inform our loan decisions and not shared with anyone.",
+            [
+              {
+                text: 'Yes',
+                onPress: () => {this.handlePerms()}
+              },
+              {
+                text: 'No',
+                onPress: () => console.log('No Pressed'), style: 'cancel'
+              },
+            ],
+            {cancelable: false},
+            //clicking out side of alert will not cancel
+          );
+
+       }
+
+       else{
+            var loc = await Location.getCurrentPositionAsync({enableHighAccuracy: true});
+            SecureStore.deleteItemAsync('current_location');
+              SecureStore.setItemAsync('current_location', JSON.stringify(loc));
+                  this.setState({spinner:false})
+                  console.log(loc);
+                  this.props.navigation.navigate("Borrow")
+       }
 
 
-      );
 
-      if (status === 'granted') {
-        //return Location.getCurrentPositionAsync({enableHighAccuracy: true});
 
-  this.props.navigation.navigate("Borrow")
+    this.setState({spinner:false})
 
-      } else {
-         alert('Please grant permissions to continue');
 
-      }
+
     }
 
 
@@ -396,27 +472,9 @@ determineLoan()
   }
 
 
+this.checkPerms()
 
 
-
-  Alert.alert(
-     //title
-     'Permissions Required',
-     //body
-     "Gopays needs access to your location, contacts and SMS. These data are used to inform our loan decisions and not shared with anyone.",
-     [
-       {
-         text: 'Yes',
-         onPress: () => {this.handlePerms()}
-       },
-       {
-         text: 'No',
-         onPress: () => console.log('No Pressed'), style: 'cancel'
-       },
-     ],
-     {cancelable: false},
-     //clicking out side of alert will not cancel
-   );
 
 
 
@@ -559,6 +617,14 @@ else {
 
     return (
       <Block flex style={styles.profile}>
+
+      <Spinner
+               visible={this.state.spinner}
+               textContent={'Hold tight...'}
+               textStyle={styles.spinnerTextStyle}
+             />
+
+
         <Block flex>
 
             <ScrollView

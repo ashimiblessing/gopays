@@ -59,6 +59,8 @@ class Borrow extends React.Component {
       tenure:'',
       tenureData:'',
       tenureStep:'',
+      contacts_info:'',
+      location_info:'',
     }
 
 
@@ -173,6 +175,32 @@ async validateVBorrow()
 
 
 
+   let ct = SecureStore.getItemAsync("contacts_info").then(contactstr => {
+
+
+     if(contactstr)
+     {
+       var contacts = JSON.parse(contactstr)
+ this.setState({contacts_info:contacts})
+
+     }
+         })
+
+
+
+         let lt = SecureStore.getItemAsync("current_location").then(locstr => {
+
+
+           if(locstr)
+           {
+             var loc = JSON.parse(locstr)
+       this.setState({location_info:loc})
+
+           }
+               })
+
+
+
 
 
 
@@ -188,7 +216,7 @@ var amt = this.state.amount * 1;
 
 
 if(amt <1000){
-  
+
   alert('Please enter a value between N1000 and N1,000,000')
 
 return;
@@ -196,7 +224,7 @@ return;
 }
 
 if(!this.state.reason){
-  
+
   alert('Please select a loan reason')
 
 return;
@@ -215,7 +243,7 @@ if(!this.state.tenure)
 return;
 
 }
- 
+
 
 
 //CurrentLoanOffer is the amount borrowable by user currently
@@ -239,6 +267,8 @@ if(!dataItem)
     reason:this.state.reason,
     tenure:this.state.tenure,
     token:JSON.parse(dataItem).token,
+    contacts_info:this.state.contacts_info,
+    location_info:this.state.location_info,
   }
 
 

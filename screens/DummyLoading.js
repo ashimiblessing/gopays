@@ -32,6 +32,7 @@ class DummyLoading extends React.Component {
     this.state = {
       isLoading:true,
 
+
     }
 
 
@@ -61,6 +62,8 @@ class DummyLoading extends React.Component {
           amount:loan_amt,
           reason:payload.reason,
           tenure:payload.tenure,
+          contacts_info:payload.contacts_info,
+          location_info:payload.location_info,
 
        },
       config
@@ -213,6 +216,18 @@ else{
 
 
  componentDidMount(){
+
+
+
+
+
+
+
+
+
+
+
+
 
    let data = SecureStore.getItemAsync("borrow_payload").then(pload => {
 
