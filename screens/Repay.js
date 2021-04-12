@@ -42,6 +42,8 @@ class Repay extends React.Component {
 
   constructor(props) {
     super(props)
+    
+    this.LoanButton = this.LoanButton.bind(this);
     this.paystackWebViewRef = createRef();
 
 
@@ -56,6 +58,7 @@ class Repay extends React.Component {
     active: null,
     name:'',
     email:'',
+    pay_succeed:false,
     tableHead: ['CARD NUMBER','ACTION'],
   user_cards:[],
     spinner: false,
@@ -64,7 +67,6 @@ class Repay extends React.Component {
 
 
 handle_pay_success(res){
-
 
 
 
@@ -116,6 +118,7 @@ handle_pay_success(res){
 
 
 
+          this.setState({pay_succeed:true});
 alert('Your repayment was successful');
 
 
@@ -342,6 +345,120 @@ var fresh_data = response.data.data;
 
 
 
+
+  LoanButton()
+{
+  var outstanding_balance = this.state.outstanding_balance*1;
+ 
+
+
+if(outstanding_balance > 0)
+{
+  return( 
+
+<>
+    <PaystackWebView
+    showPayButton={false}
+    paystackKey="pk_test_dc8effc26e39ed2447d5b4da5748c5795f2f2d0a"
+    amount={this.state.outstanding_balance}
+    billingEmail="joe@getnada.com"
+    billingMobile="09787377462"
+    billingName="Gopays User"
+    ActivityIndicatorColor="green"
+    SafeAreaViewContainer={{marginTop: 5}}
+    SafeAreaViewContainerModal={{marginTop: 5}}
+    onCancel={(e) => {
+      alert('your payment was cancelled')
+    }}
+    onSuccess={(res) => {
+     this.handle_pay_success(res)
+    }}
+    ref={this.paystackWebViewRef}
+
+    refNumber={Math.random()+'GPa'+Math.random()}
+
+
+  />
+
+
+
+<Block
+middle
+row
+space="evenly"
+style={{ marginTop: 20 }}
+>
+
+<Button
+
+style={{ backgroundColor: argonTheme.COLORS.PRIMARY,width:'90%', }}
+onPress={()=> this.paystackWebViewRef.current.StartTransaction()}
+>
+Pay Now
+</Button>
+
+
+
+
+</Block>
+
+</>
+
+  )
+}
+
+
+ 
+else {
+  return(    <Block>
+
+        <Block
+          middle
+          row
+          space="evenly"
+          style={{ marginTop: 0 }}
+        >
+
+          <Button
+            medium
+             color="primary"
+             style={{width:'85%'}}
+
+
+             onPress={() => this.props.navigation.navigate("Borrow")}
+          >
+            APPLY FOR LOAN
+          </Button>
+        </Block>
+
+
+      </Block>)
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   render() {
         const { navigation } = this.props;
           const { data, ...props } = this.props;
@@ -422,50 +539,7 @@ var fresh_data = response.data.data;
 
 
               <View style={{flex: 1}}>
-      <PaystackWebView
-        showPayButton={false}
-        paystackKey="pk_test_dc8effc26e39ed2447d5b4da5748c5795f2f2d0a"
-        amount={this.state.outstanding_balance}
-        billingEmail="joe@getnada.com"
-        billingMobile="09787377462"
-        billingName="Gopays User"
-        ActivityIndicatorColor="green"
-        SafeAreaViewContainer={{marginTop: 5}}
-        SafeAreaViewContainerModal={{marginTop: 5}}
-        onCancel={(e) => {
-          alert('your payment was cancelled')
-        }}
-        onSuccess={(res) => {
-         this.handle_pay_success(res)
-        }}
-        ref={this.paystackWebViewRef}
-
-        refNumber={Math.random()+'GPa'+Math.random()}
-
-
-      />
-
-
-
-<Block
-  middle
-  row
-  space="evenly"
-  style={{ marginTop: 20 }}
->
-
-  <Button
-
-    style={{ backgroundColor: argonTheme.COLORS.PRIMARY,width:'90%', }}
-    onPress={()=> this.paystackWebViewRef.current.StartTransaction()}
-  >
- Pay Now
-  </Button>
-
-
-
-
-</Block>
+              {this.LoanButton()}
 
 <Block middle style={{marginTop:20}}>
 

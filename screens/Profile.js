@@ -359,11 +359,26 @@ let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
     );
 
     if (status1 === 'granted') {
-      var loc =  Location.getCurrentPositionAsync({enableHighAccuracy: true});
+  
+      try{
+
+        var loc = await Location.getCurrentPositionAsync({enableHighAccuracy: true});
+      }
+      catch(err)
+      {
+        alert(err);
+        this.setState({spinner:false})
+        return;
+        
+      }
+
+
+
 
       const { datac } = await Contacts.getContactsAsync({
     fields: [Contacts.Fields.Name, Contacts.Fields.PHONE_NUMBERS],
   });
+  
 
 
   if (datac.length > 0) {
@@ -428,7 +443,20 @@ this.props.navigation.navigate("Borrow")
        }
 
        else{
-            var loc = await Location.getCurrentPositionAsync({enableHighAccuracy: true});
+          
+
+            try{
+
+              var loc = await Location.getCurrentPositionAsync({enableHighAccuracy: true});
+            }
+            catch(err)
+            {
+              alert(err);
+              this.setState({spinner:false})
+              return;
+              
+            }
+
             SecureStore.deleteItemAsync('current_location');
               SecureStore.setItemAsync('current_location', JSON.stringify(loc));
                   this.setState({spinner:false})

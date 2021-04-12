@@ -370,38 +370,36 @@ const barHeight = insets.top;
 
 
 
-
-
-
-
-
 function DummyLoadingStack(props) {
   const insets = useSafeAreaInsets();
 const barHeight = insets.top;
  return (
    <Stack.Navigator mode="card" headerMode="none">
-    <Stack.Screen
-        name="DummyLoading"
-        component={DummyLoading}
-        option={{
-          headerTransparent: true
-        }}
-      />
+     <Stack.Screen
+       name="AddCard"
+       component={DummyLoading}
+       options={{
+
+         header: ({ navigation, scene }) => (
+           <Header
+            back
+             title="Please wait.."
+             navigation={navigation}
+             scene={scene}
+           />
+         ),
+         cardStyle: { backgroundColor: "#FFFFFF" },
+
+       }}
+
+     />
 
 
+        </Stack.Navigator>
+      );
+     }
 
-
-
-
-
-   </Stack.Navigator>
- );
-}
-
-
-
-
-
+ 
 
 
 
@@ -425,7 +423,7 @@ headerShown: true,
          header: ({ navigation, scene }) => (
            <Header
            back
-             title="GRepay Your Loan"
+             title="Repay Your Loan"
              navigation={navigation}
              scene={scene}
              style={{  paddingTop:insets.top, paddingBottom:insets.bottom,}}
