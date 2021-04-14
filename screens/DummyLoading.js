@@ -233,7 +233,7 @@ else{
 
 
 var payload= JSON.parse(pload)
-
+console.log(payload);
 const config = {
     headers: { Authorization: 'Bearer '+payload.token }
 };

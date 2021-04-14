@@ -296,7 +296,12 @@ function BorrowStack(props) {
   const insets = useSafeAreaInsets();
 const barHeight = insets.top;
  return (
-   <Stack.Navigator mode="card" headerMode="screen">
+   <Stack.Navigator mode="card" headerMode="screen"
+
+   screenOptions={{
+      headerShown: false
+    }}>
+
      <Stack.Screen
        name="Borrow"
        component={Borrow}
@@ -374,18 +379,19 @@ function DummyLoadingStack(props) {
   const insets = useSafeAreaInsets();
 const barHeight = insets.top;
  return (
-   <Stack.Navigator mode="card" headerMode="none">
+   <Stack.Navigator mode="card" headerMode="screen">
      <Stack.Screen
-       name="AddCard"
+       name="Loading"
        component={DummyLoading}
        options={{
-
+        headerShown: true,
          header: ({ navigation, scene }) => (
            <Header
             back
              title="Please wait.."
              navigation={navigation}
              scene={scene}
+             style={{  paddingTop:insets.top, paddingBottom:insets.bottom,}}
            />
          ),
          cardStyle: { backgroundColor: "#FFFFFF" },

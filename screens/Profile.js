@@ -4,7 +4,7 @@ import {
   Dimensions,
   ScrollView,
   Image,
-  ImageBackground,Alert,
+  ImageBackground,Alert,RefreshControl,
   Platform,View
 } from "react-native";
 import { Block, Text, theme , Button as GaButton} from "galio-framework";
@@ -49,6 +49,7 @@ class Profile extends React.Component {
       loan_in_progress :'',
       loan_limit:"",
         spinner: false,
+        refreshing:false,
 
 
     }
@@ -88,16 +89,18 @@ let dt = SecureStore.getItemAsync("lastLogin").then(dtstr => {
 
 
 
-
-
-
-
   }
 
 
 
 
+  _onRefresh() {
+    this.setState({refreshing: true});
+    this.fetchFreshData();
 
+   
+
+  }
 
 
 
@@ -172,7 +175,61 @@ if(this.state.outstanding_balance*1 < 1)
 
 
 
+fetchFreshData(){
+ 
+  let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
 
+
+    if(dtstr)
+    {
+       var dat = JSON.parse(dtstr);
+
+
+
+       const config = {
+           headers: { Authorization: 'Bearer '+dat.token }
+       };
+
+
+
+       axios.post(
+            '/api/me',{
+            foo:''
+
+           },
+         config
+          )
+
+
+              .then(response => {
+
+
+
+       const user_info = response.data.user;
+       const token_info = response.data.token;
+
+
+
+
+           this.setState({loan_limit:user_info.loan_limit});
+            this.setState({outstanding_balance:user_info.outstanding_balance});
+             this.setState({wallet_balance:user_info.wallet_balance});
+              this.setState({loan_in_progress :user_info.loan_in_progress });
+              this.setState({refreshing: false});
+            })
+            .catch(error => {
+              this.setState({refreshing: false});
+         alert('There was an error loading your information. Please check your network connection');
+
+            })
+
+
+
+    }
+        })
+
+
+}
 
 
 
@@ -201,59 +258,7 @@ if(this.state.outstanding_balance*1 < 1)
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
 
 
-
-      let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
-
-
-        if(dtstr)
-        {
-           var dat = JSON.parse(dtstr);
-
-
-
-           const config = {
-               headers: { Authorization: 'Bearer '+dat.token }
-           };
-
-
-
-           axios.post(
-                '/api/me',{
-                foo:''
-
-               },
-             config
-              )
-
-
-                  .then(response => {
-
-
-
-           const user_info = response.data.user;
-           const token_info = response.data.token;
-
-
-
-
-               this.setState({loan_limit:user_info.loan_limit});
-                this.setState({outstanding_balance:user_info.outstanding_balance});
-                 this.setState({wallet_balance:user_info.wallet_balance});
-                  this.setState({loan_in_progress :user_info.loan_in_progress });
-
-                })
-                .catch(error => {
-
-             alert('There was an error loading your information. Please check your network connection');
-
-                })
-
-
-
-        }
-            })
-
-
+this.fetchFreshData();
 
 
 
@@ -274,67 +279,11 @@ if(this.state.outstanding_balance*1 < 1)
 //get saved data
 
 
-
-
-let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
-
-
-  if(dtstr)
-  {
-     var dat = JSON.parse(dtstr);
+ 
 
 
 
-     const config = {
-         headers: { Authorization: 'Bearer '+dat.token }
-     };
-
-
-
-     axios.post(
-          '/api/me',{
-          foo:''
-
-         },
-       config
-        )
-
-
-            .then(response => {
-
-
-
-     const user_info = response.data.user;
-     const token_info = response.data.token;
-
-
-
-
-         this.setState({loan_limit:user_info.loan_limit});
-          this.setState({outstanding_balance:user_info.outstanding_balance});
-           this.setState({wallet_balance:user_info.wallet_balance});
-           this.setState({loan_in_progress :user_info.loan_in_progress });
-
-          })
-          .catch(error => {
-
-              // alert('There was an error loading your information. Please check your network connection');
-
-          })
-
-
-
-  }
-      })
-
-
-
-
-
-
-
-
-
+this.fetchFreshData();
 
 
 
@@ -384,6 +333,7 @@ let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
   if (datac.length > 0) {
        SecureStore.setItemAsync('contacts_info', JSON.stringify(datac));
          SecureStore.setItemAsync('current_location', JSON.stringify(loc));
+        
      }
 
 
@@ -414,7 +364,7 @@ this.props.navigation.navigate("Borrow")
 
     async checkPerms() {
     this.setState({spinner:true})
-
+    console.log('yes');
       const { status, expires, permissions } = await Permissions.getAsync(
         Permissions.CONTACTS,
         Permissions.CAMERA,
@@ -459,8 +409,13 @@ this.props.navigation.navigate("Borrow")
 
             SecureStore.deleteItemAsync('current_location');
               SecureStore.setItemAsync('current_location', JSON.stringify(loc));
+
+
+
+
+              
                   this.setState({spinner:false})
-                  console.log(loc);
+                
                   this.props.navigation.navigate("Borrow")
        }
 
@@ -658,6 +613,14 @@ else {
             <ScrollView
               showsVerticalScrollIndicator={false}
               style={{ width, marginTop: '10%',textTransform: 'uppercase'}}
+
+              refreshControl={
+                <RefreshControl
+                  refreshing={this.state.refreshing}
+                  onRefresh={this._onRefresh.bind(this)}
+                />
+              }
+
             >
 
             <Block flex style={styles.profileCard}>
