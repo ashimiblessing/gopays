@@ -54,7 +54,7 @@ class DummyLoading extends React.Component {
           headers: { Authorization: 'Bearer '+payload.token }
       };
 
-
+console.log(payload.contacts_info)
 
 
       axios.post(

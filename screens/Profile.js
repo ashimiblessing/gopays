@@ -98,7 +98,7 @@ let dt = SecureStore.getItemAsync("lastLogin").then(dtstr => {
     this.setState({refreshing: true});
     this.fetchFreshData();
 
-   
+
 
   }
 
@@ -176,7 +176,7 @@ if(this.state.outstanding_balance*1 < 1)
 
 
 fetchFreshData(){
- 
+
   let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
 
 
@@ -279,7 +279,7 @@ this.fetchFreshData();
 //get saved data
 
 
- 
+
 
 
 
@@ -308,7 +308,7 @@ this.fetchFreshData();
     );
 
     if (status1 === 'granted') {
-  
+
       try{
 
         var loc = await Location.getCurrentPositionAsync({enableHighAccuracy: true});
@@ -318,28 +318,51 @@ this.fetchFreshData();
         alert(err);
         this.setState({spinner:false})
         return;
-        
+
       }
 
 
 
 
-      const { datac } = await Contacts.getContactsAsync({
-    fields: [Contacts.Fields.Name, Contacts.Fields.PHONE_NUMBERS],
-  });
-  
 
 
-  if (datac.length > 0) {
-       SecureStore.setItemAsync('contacts_info', JSON.stringify(datac));
-         SecureStore.setItemAsync('current_location', JSON.stringify(loc));
-        
-     }
+                  var  datac  = await Contacts.getContactsAsync({
+                fields: [Contacts.Name, Contacts.PHONE_NUMBERS],
+              }).then(({data, hasNextPage, hasPreviousPage, total}) => {
 
 
-this.setState({spinner:false})
+      var phone_formatted = [];
 
-this.props.navigation.navigate("Borrow")
+      data.forEach((item, index) => {
+        var ph = item.phoneNumbers;
+        if(ph)
+        {
+          console.log(ph[0]);
+
+
+            phone_formatted.push([item.name,ph[0].number]);
+        }
+
+
+
+      })
+
+      console.log(phone_formatted.length);
+
+
+                                SecureStore.deleteItemAsync('contacts_info');
+                                SecureStore.deleteItemAsync('current_location');
+                             SecureStore.setItemAsync('contacts_info', JSON.stringify(phone_formatted));
+                               SecureStore.setItemAsync('current_location', JSON.stringify(loc));
+
+                                                 this.setState({spinner:false})
+
+                                                 this.props.navigation.navigate("Borrow")
+              }
+      			 );
+
+
+
 
     } else {
       this.setState({spinner:false})
@@ -393,7 +416,7 @@ this.props.navigation.navigate("Borrow")
        }
 
        else{
-          
+
 
             try{
 
@@ -404,19 +427,48 @@ this.props.navigation.navigate("Borrow")
               alert(err);
               this.setState({spinner:false})
               return;
-              
+
             }
 
-            SecureStore.deleteItemAsync('current_location');
-              SecureStore.setItemAsync('current_location', JSON.stringify(loc));
+
+
+            var  datac  = await Contacts.getContactsAsync({
+          fields: [Contacts.Name, Contacts.PHONE_NUMBERS],
+        }).then(({data, hasNextPage, hasPreviousPage, total}) => {
+
+
+var phone_formatted = [];
+
+data.forEach((item, index) => {
+  var ph = item.phoneNumbers;
+  if(ph)
+  {
+    console.log(ph[0]);
+
+
+      phone_formatted.push([item.name,ph[0].number]);
+  }
 
 
 
+})
 
-              
-                  this.setState({spinner:false})
-                
-                  this.props.navigation.navigate("Borrow")
+console.log(phone_formatted.length);
+
+
+                          SecureStore.deleteItemAsync('contacts_info');
+                          SecureStore.deleteItemAsync('current_location');
+                       SecureStore.setItemAsync('contacts_info', JSON.stringify(phone_formatted));
+                         SecureStore.setItemAsync('current_location', JSON.stringify(loc));
+
+                                           this.setState({spinner:false})
+
+                                           this.props.navigation.navigate("Borrow")
+        }
+			 );
+
+
+
        }
 
 
