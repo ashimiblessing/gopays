@@ -42,7 +42,7 @@ class Repay extends React.Component {
 
   constructor(props) {
     super(props)
-    
+
     this.LoanButton = this.LoanButton.bind(this);
     this.paystackWebViewRef = createRef();
 
@@ -349,17 +349,17 @@ var fresh_data = response.data.data;
   LoanButton()
 {
   var outstanding_balance = this.state.outstanding_balance*1;
- 
+
 
 
 if(outstanding_balance > 0)
 {
-  return( 
+  return(
 
 <>
     <PaystackWebView
     showPayButton={false}
-    paystackKey="pk_test_dc8effc26e39ed2447d5b4da5748c5795f2f2d0a"
+    paystackKey="pk_live_4cb31d85e9e27b470242219a4f3241a1f31b35bc"
     amount={this.state.outstanding_balance}
     billingEmail="joe@getnada.com"
     billingMobile="09787377462"
@@ -408,7 +408,7 @@ Pay Now
 }
 
 
- 
+
 else {
   return(    <Block>
 
