@@ -116,6 +116,7 @@ if(bank_info && typeof bank_info.bank_name !== null)
 
                 })
                 .catch(error => {
+                  this.setState({loading:false});
 alert(error)
            //  alert('There was an error loading your information. Please check your network connection');
 
