@@ -280,7 +280,7 @@ Please note that you will be charged the sum of NGN 50 for card verification. Th
               <View>
       <PaystackWebView
         showPayButton={false}
-        paystackKey="pk_test_70549a8e37bba3b850b89ae72898e5157321a628"
+        paystackKey="pk_live_4cb31d85e9e27b470242219a4f3241a1f31b35bc"
         amount='50'
         billingEmail={this.state.user_email}
         billingMobile="09787377462"
@@ -314,7 +314,7 @@ Please note that you will be charged the sum of NGN 50 for card verification. Th
                       <ActivityIndicator  size="large" color="#ffff" />
                       :
                         <Text bold size={14} color={argonTheme.COLORS.WHITE}>
-                       ADD NEW CARD 
+                       ADD NEW CARD
                         </Text>
                       }
                       </Button>
