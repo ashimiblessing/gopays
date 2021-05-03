@@ -79,9 +79,9 @@ function SettingsScreen({ navigation }) {
       SecureStore.deleteItemAsync('bioInfo');
       SecureStore.setItemAsync('bioInfo', JSON.stringify(response.data.data));
       SecureStore.setItemAsync('isProfileSaved', 'YES');
-   
+
       navigation.navigate('Profile');
-  
+
       alert(response.data.success);
 
     })
@@ -90,7 +90,7 @@ function SettingsScreen({ navigation }) {
       const key = Object.keys(error.response.data)[0];
     alert(error.response.data[key]);
     return;
- 
+
     if(error.response.data[key][0].length > 1) {
       alert(error.response.data[key][0])
     }
@@ -337,7 +337,7 @@ function BioData1 ({ navigation }) {
   const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   }
-  
+
 
 
   const onRefresh = React.useCallback(() => {
@@ -385,7 +385,8 @@ function BioData1 ({ navigation }) {
 
   function biodata() {
 
-
+console.log('is matched')
+console.log(bvnMatched)
 if(!date_of_birth)
 {
   alert('Please select a proper date');
@@ -533,6 +534,7 @@ else{
 
 const user = response.data.bio;
 setUserDetails(user)
+
     setFirstName(user.first_name)
     setMiddleName(user.middle_name)
     // setEmail(user.email)
@@ -653,7 +655,7 @@ setUserDetails(user)
 
                          <TextInput    label="First Name" mode="flat" underlineColor="blue"
 
-editable={!bvnMatched ? true:false} 
+editable={bvnMatched.length < 1 ? true:false}
                           style={styles.formi}
 
 
@@ -692,7 +694,7 @@ value={middle_name}
 
                          <TextInput  mode="flat" underlineColor="blue"
 label="Last Name"
-editable={!bvnMatched ? true:false} 
+editable={bvnMatched.length < 1 ? true:false}
                         style={styles.formi}
                             value={last_name}
                            onChangeText={text => setLastName(text)}
@@ -721,7 +723,7 @@ editable={!bvnMatched ? true:false}
 
 <TouchableOpacity
                                          activeOpaticy={1}
-                                         onPress={() =>     !bvnMatched ? showDatePicker() : console.log('you cant edit this field anymore')     }
+                                         onPress={() =>     bvnMatched.length < 1 ? showDatePicker() : console.log('you cant edit this field anymore')     }
 
                                            >
 
@@ -777,11 +779,11 @@ editable={!bvnMatched ? true:false}
 
 
               <Block  style={{ marginBottom: 35 }}>
-            
+
                          <TextInput  mode="flat" underlineColor="blue"
 label="Phone Number"
 value={phone}
-editable={!bvnMatched ? true:false} 
+editable={bvnMatched.length < 1 ? true:false}
                           style={styles.formi}
                            onChangeText={text => setPhone(text)}
                          />
@@ -807,7 +809,7 @@ editable={!bvnMatched ? true:false}
                 Type of Residence
               </Text>
              <Picker
-  enabled={!bvnMatched ? true:false} 
+  enabled={bvnMatched.length < 1 ? true:false}
      style={{ height: 50, }}
  selectedValue={type_of_residence}
      onValueChange={(itemValue, itemIndex) =>
@@ -849,7 +851,7 @@ editable={!bvnMatched ? true:false}
        Employment Status
      </Text>
                          <Picker
- enabled={!bvnMatched ? true:false} 
+ enabled={bvnMatched.length < 1 ? true:false}
                               style={{ height: 50, }}
                           selectedValue={employment_status}
                               onValueChange={(itemValue, itemIndex) =>
@@ -880,8 +882,8 @@ editable={!bvnMatched ? true:false}
               <Block  style={{ marginBottom: 15 }}>
 
                          <TextInput
-                         
-                         editable={!bvnMatched ? true:false} 
+
+                         editable={bvnMatched.length < 1 ? true:false}
                          mode="flat" underlineColor="blue"
 label="Monthly Income"
 value={monthly_income}
@@ -902,7 +904,7 @@ value={monthly_income}
               <Block  style={{ marginBottom: 15 }}>
 
                          <TextInput  mode="flat" underlineColor="blue"
-                           editable={!bvnMatched ? true:false} 
+                           editable={bvnMatched.length < 1 ? true:false}
 label="BVN"
 value={BVN}
                           style={styles.formi}
