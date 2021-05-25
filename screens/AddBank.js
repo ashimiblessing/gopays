@@ -191,13 +191,14 @@ alert(error)
 
         })
         .catch(error => {
-            alert(error)
-            return;
-            const key = Object.keys(error.response.data)[0];
+        
+          
+            
          this.setState({isLoading:false})
 
         if(error.response.data) {
-          alert(error.response.data)
+          const key = Object.keys(error.response.data)[0];
+          alert(error.response.data[key])
         }
 
         else{

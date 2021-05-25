@@ -47,13 +47,13 @@ function SettingsScreen({ navigation }) {
 
 
 
-        setLoading(true)
-
+     
 
 
 
       let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
 
+        setLoading(true)
 
     const dat = JSON.parse(dtstr);
 
@@ -330,7 +330,7 @@ function BioData1 ({ navigation }) {
   const [BVN, setBVN] = useState('');
   const [bvnMatched, setBvnMatched] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
-
+  const [is_locked, setIsLocked] = useState(true);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
 
@@ -500,7 +500,7 @@ else{
 
     useEffect(() => {
 
-
+      
 
       setLoading(true)
 
@@ -533,6 +533,7 @@ else{
     SecureStore.setItemAsync('bioInfo', JSON.stringify(response.data.bio));
 
 const user = response.data.bio;
+
 setUserDetails(user)
 
     setFirstName(user.first_name)
@@ -546,6 +547,25 @@ setUserDetails(user)
      setBVN(user.bvn)
     setDob(user.date_of_birth)
     setBvnMatched(user.bvn_matches)
+
+    //specify fields of interest
+    const check_locked = [user.first_name,user.last_name,user.phone,user.type_of_residence,user.employment_status,user.monthly_income,user.bvn,user.date_of_birth];
+ 
+//check if any of them is unfilled
+
+for(var k=0; k<check_locked.length;k++){
+ 
+  if(!check_locked[k] || typeof check_locked[k] === null)
+  {
+  
+    setIsLocked(false)
+  }
+  
+  
+
+
+}
+
 
 
    }
@@ -655,7 +675,7 @@ setUserDetails(user)
 
                          <TextInput    label="First Name" mode="flat" underlineColor="blue"
 
-editable={bvnMatched.length < 1 ? true:false}
+editable={is_locked === false ? true:false}
                           style={styles.formi}
 
 
@@ -694,7 +714,7 @@ value={middle_name}
 
                          <TextInput  mode="flat" underlineColor="blue"
 label="Last Name"
-editable={bvnMatched.length < 1 ? true:false}
+editable={is_locked === false ? true:false}
                         style={styles.formi}
                             value={last_name}
                            onChangeText={text => setLastName(text)}
@@ -723,7 +743,7 @@ editable={bvnMatched.length < 1 ? true:false}
 
 <TouchableOpacity
                                          activeOpaticy={1}
-                                         onPress={() =>     bvnMatched.length < 1 ? showDatePicker() : console.log('you cant edit this field anymore')     }
+                                         onPress={() =>     is_locked === false ? showDatePicker() : console.log('you cant edit this field anymore')     }
 
                                            >
 
@@ -783,7 +803,7 @@ editable={bvnMatched.length < 1 ? true:false}
                          <TextInput  mode="flat" underlineColor="blue"
 label="Phone Number"
 value={phone}
-editable={bvnMatched.length < 1 ? true:false}
+editable={is_locked === false ? true:false}
                           style={styles.formi}
                            onChangeText={text => setPhone(text)}
                          />
@@ -809,7 +829,7 @@ editable={bvnMatched.length < 1 ? true:false}
                 Type of Residence
               </Text>
              <Picker
-  enabled={bvnMatched.length < 1 ? true:false}
+  enabled={is_locked === false ? true:false}
      style={{ height: 50, }}
  selectedValue={type_of_residence}
      onValueChange={(itemValue, itemIndex) =>
@@ -851,7 +871,7 @@ editable={bvnMatched.length < 1 ? true:false}
        Employment Status
      </Text>
                          <Picker
- enabled={bvnMatched.length < 1 ? true:false}
+ enabled={is_locked === false ? true:false}
                               style={{ height: 50, }}
                           selectedValue={employment_status}
                               onValueChange={(itemValue, itemIndex) =>
@@ -883,7 +903,7 @@ editable={bvnMatched.length < 1 ? true:false}
 
                          <TextInput
 
-                         editable={bvnMatched.length < 1 ? true:false}
+                         editable={is_locked === false ? true:false}
                          mode="flat" underlineColor="blue"
 label="Monthly Income"
 value={monthly_income}
@@ -904,7 +924,7 @@ value={monthly_income}
               <Block  style={{ marginBottom: 15 }}>
 
                          <TextInput  mode="flat" underlineColor="blue"
-                           editable={bvnMatched.length < 1 ? true:false}
+                           editable={is_locked === false ? true:false}
 label="BVN"
 value={BVN}
                           style={styles.formi}
