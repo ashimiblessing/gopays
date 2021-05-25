@@ -250,6 +250,7 @@ alert(error)
  <TextInput
  keyboardType="numeric"
      label="Account Number"
+     editable={!this.state.account_number ? true:false}
      mode="flat"
      underlineColor="blue" style={styles.formi}
      value={this.state.account_number}
@@ -265,7 +266,7 @@ alert(error)
 
                     <Block center style={styles.formContain}>
                     <TextInput
-
+                    editable={!this.state.account_number ? true:false}
                         label="Account Name"
                         mode="flat"
                         underlineColor="blue" style={styles.formi}
@@ -296,7 +297,7 @@ alert(error)
                           </Text>
 
                                                    <Picker
-
+                                            emabled={!this.state.account_number ? true:false}
                                            style={{ height: 50, }}
 
                                            selectedValue={this.state.bank_name}
