@@ -22,6 +22,8 @@ import { TextInput  , Paragraph, Dialog, Portal } from 'react-native-paper';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 const thumbMeasure = (width - 48 - 32) / 3;
 
+import * as DocumentPicker from 'expo-document-picker';
+
 axios.defaults.baseURL = 'http://18.198.103.233';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -87,6 +89,8 @@ function SettingsScreen({ navigation }) {
     })
     .catch(error => {
       setLoading(false)
+      console.log(error);
+      console.log('1 is here')
       const key = Object.keys(error.response.data)[0];
     alert(error.response.data[key]);
     return;
@@ -332,7 +336,8 @@ function BioData1 ({ navigation }) {
   const [refreshing, setRefreshing] = React.useState(false);
   const [is_locked, setIsLocked] = useState(true);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-
+  const [fileUpload, setFileUpload] = useState('');
+  const [companyName, setCompanyName] = useState('');
 
   const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
@@ -374,6 +379,40 @@ function BioData1 ({ navigation }) {
 
 
 
+  const pickDocument = async () => {
+    let result = await DocumentPicker.getDocumentAsync({});
+    setFileUpload(result);
+    
+     
+    
+}
+
+
+
+const saveFunction = async (formData,token) => {
+ 
+ await fetch('http://18.198.103.233/saveFile', {
+    method: 'POST',
+    body: formData,
+   
+    header: {
+      'content-type': 'multipart/form-data',
+      'Authorization': 'Bearer ' + token,
+    },
+  });
+   
+   
+   
+  
+}
+
+
+
+
+
+
+
+  async function biodata() {
 
 
 
@@ -382,16 +421,14 @@ function BioData1 ({ navigation }) {
 
 
 
-
-  function biodata() {
-
-console.log('is matched')
-console.log(bvnMatched)
+// console.log('is matched')
+// console.log(bvnMatched)
 if(!date_of_birth)
 {
   alert('Please select a proper date');
   return;
 }
+
 
 
 
@@ -414,11 +451,49 @@ let new_dateobj = new Date(the_date[2],the_date[1],the_date[0]);
 
 
 
+    
 
-  let dt = SecureStore.getItemAsync("is_loggedin").then(dtstr => {
 
 
-const dat = JSON.parse(dtstr);
+  let dt = await SecureStore.getItemAsync("is_loggedin").then(dtstr =>  {
+
+
+
+
+    const dat = JSON.parse(dtstr);
+
+
+
+//save the file 
+
+if(fileUpload)
+{
+  const formData = new FormData();
+ 
+var localUri = fileUpload.uri;
+var filename = localUri.split('/').pop();
+
+var match = /\.(\w+)$/.exec(filename);
+var type = match ? `image/${match[1]}` : `image`;
+
+formData.append('file_upload', { uri: localUri, name: filename, type });
+
+ 
+  // alert(fileUpload)
+   saveFunction(formData,dat.token);
+
+}
+
+
+
+
+
+
+
+
+
+
+
 
     const config = {
       headers: { Authorization: 'Bearer '+dat.token }
@@ -431,7 +506,7 @@ const dat = JSON.parse(dtstr);
     middle_name:middle_name,
     last_name:last_name,
     dob:date_of_birth,
-
+    company_name:companyName,
     phone:phone,
     type_of_residence:type_of_residence,
     employment_status:employment_status,
@@ -444,6 +519,7 @@ config
 )
 .then(response => {
 
+ 
   //const { navigation } = this.props;
 
   SecureStore.deleteItemAsync('bioInfo');
@@ -460,10 +536,12 @@ config
 })
 .catch(error => {
   setLoading(false)
-
+  alert(error);
+  console.log('5 is here')
     const key = Object.keys(error.response.data)[0];
 // const key = Object.keys(error.response.data)[0];
 //  errors = error.response.data[key][0];
+
 
 if(error.response.data[key][0].length > 1) {
   alert(error.response.data[key][0])
@@ -547,6 +625,7 @@ setUserDetails(user)
      setBVN(user.bvn)
     setDob(user.date_of_birth)
     setBvnMatched(user.bvn_matches)
+    setCompanyName(user.company_name);
 
     //specify fields of interest
     const check_locked = [user.first_name,user.last_name,user.phone,user.type_of_residence,user.employment_status,user.monthly_income,user.bvn,user.date_of_birth];
@@ -576,7 +655,8 @@ for(var k=0; k<check_locked.length;k++){
     })
     .catch(error => {
       setLoading(false)
-
+      console.log(error);
+      console.log('11 is here')
         const key = Object.keys(error.response.data)[0];
 
 
@@ -894,6 +974,49 @@ editable={is_locked === false ? true:false}
 
 
                        </Block>
+
+
+
+
+
+
+
+                       <Block  style={{ marginBottom: 15 }}>
+
+<TextInput
+
+
+mode="flat" underlineColor="blue"
+label="Company Name"
+value={companyName}
+ style={styles.formi}
+
+  onChangeText={text => setCompanyName(text)}
+/>
+
+
+
+</Block>
+
+
+
+
+
+<Block  style={{ marginBottom: 30,marginTop:30 }}>
+<Text color={argonTheme.COLORS.MUTED} size={14} style={{marginBottom:10}}>
+               Your account statement for the past 3 months
+                  </Text>
+<Button   mode="contained" onPress={() => pickDocument() }  >
+   Select File
+  </Button>
+
+
+
+</Block>
+
+
+
+
 
 
 
