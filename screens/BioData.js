@@ -339,6 +339,8 @@ function BioData1 ({ navigation }) {
   const [fileUpload, setFileUpload] = useState('');
   const [companyName, setCompanyName] = useState('');
 
+  const [statementText, setStatementText] = useState('');
+
   const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   }
@@ -382,6 +384,9 @@ function BioData1 ({ navigation }) {
   const pickDocument = async () => {
     let result = await DocumentPicker.getDocumentAsync({});
     setFileUpload(result);
+    const localUri = result.uri;
+    var filename = localUri.split('/').pop();
+    setStatementText('You selected '+ filename);
     
      
     
@@ -402,6 +407,16 @@ const saveFunction = async (formData,token) => {
   });
    
    
+
+
+
+
+
+
+
+
+
+
    
   
 }
@@ -478,9 +493,23 @@ var type = match ? `image/${match[1]}` : `image`;
 
 formData.append('file_upload', { uri: localUri, name: filename, type });
 
+
+var xhr = new XMLHttpRequest();
+xhr.open('POST', 'http://18.198.103.233/api/saveFile');
+xhr.setRequestHeader('Authorization', 'Bearer '+ dat.token);
+xhr.send(formData);
+
+
+
+
+
+
+
+
+
  
   // alert(fileUpload)
-   saveFunction(formData,dat.token);
+  // saveFunction(formData,dat.token);
 
 }
 
@@ -1004,12 +1033,14 @@ value={companyName}
 
 <Block  style={{ marginBottom: 30,marginTop:30 }}>
 <Text color={argonTheme.COLORS.MUTED} size={14} style={{marginBottom:10}}>
-               Your account statement for the past 3 months
+               Your account statement for the past 3 months {}
                   </Text>
-<Button   mode="contained" onPress={() => pickDocument() }  >
+<Button   mode="contained" onPress={() => pickDocument() } style={{width:'100%'}} >
    Select File
   </Button>
-
+  <Text color={argonTheme.COLORS.MUTED} size={13} style={{marginTop:10}}>
+                {statementText}
+                  </Text>
 
 
 </Block>
